@@ -7,6 +7,20 @@ import "slick-carousel/slick/slick-theme.css";
 
 
 class NewArrival extends Component {
+
+constructor(props) {
+    super(props);
+    this.previous = this.previous.bind(this);
+    this.next = this.next.bind(this);
+}
+next() {
+    this.slider.slickNext();
+}
+
+previous() {
+    this.slider.slickPrev();
+}
+
     render() {
 
         var settings = {
@@ -51,11 +65,15 @@ class NewArrival extends Component {
             <Fragment>
                 <Container className="text-center" fluid={true}>
                     <div className="section-title text-center mb-55">
-                        <h2>NEW ARRIVALS</h2>
+                        <h2>NEW ARRIVALS &nbsp;
+                            <a className='btn btn-sm ml-2 site-btn' onClick={this.previous}><i className='fa fa-angle-left'></i></a>
+                            &nbsp;
+                            <a className='btn btn-sm ml-2 site-btn' onClick={this.next}><i className='fa fa-angle-right'></i></a>
+                        </h2>
                         <p>Some of Our Exclusive Collection, You May like!</p>
                     </div>
                     <Row>
-                        <Slider {...settings}>
+                        <Slider ref={c=>(this.slider=c)} {...settings}>
                             <div>
                             <Card className='image-box card w-100'>
                                 <Card.Body>
