@@ -15,7 +15,7 @@ class Collection extends Component {
                     </div>
                     <Row>
                         <Col className='p-0' key={1} xl={3} lg={3} md={3} sm={6} xs={6}>
-                            < Card className='image-box card w-100'>
+                            <Card className='image-box card w-100'>
                                 <Card.Body>
                                     <img className="center w-75" alt="foo" src='https://rukminim1.flixcart.com/image/416/416/k0plpjk0/cases-covers/back-cover/3/t/k/flipkart-smartbuy-fksb-c-rel-xt-tra-original-imafkfezvfuvtyfq.jpeg?q=70' />
                                 </Card.Body>
