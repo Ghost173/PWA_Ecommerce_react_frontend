@@ -17,7 +17,7 @@ class HomeTop extends Component {
                     </Col>
 
                     {/* Slider */}
-                    <Col lg={9} md={9} sm={12}>
+                    <Col lg={9} md={9} sm={12} className="d-none d-sm-block">
                     <HomeSlider />
                     </Col>
                 </Row>

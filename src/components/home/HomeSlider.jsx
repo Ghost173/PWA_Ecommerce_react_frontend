@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider1 from '../../assets/images/slider1.jpg'
 import Slider2 from '../../assets/images/slider2.jpg'
-import Slider3 from '../../assets/images/slider2.jpg'
+import Slider3 from '../../assets/images/slider3.jpg'
 
 
 class HomeSlider extends Component {
