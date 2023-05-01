@@ -13,11 +13,10 @@ class HomeTop extends Component {
                     {/* MegaMenu */}
                     <Col lg={3} md={3} sm={12}>
                         <MegaMenu />
-                        
                     </Col>
 
-                    {/* Slider */}
-                    <Col lg={9} md={9} sm={12} className="d-none d-sm-block">
+                    {/* Slider className="d-none d-sm-block"*/}
+                    <Col lg={9} md={9} sm={12} >
                     <HomeSlider />
                     </Col>
                 </Row>
