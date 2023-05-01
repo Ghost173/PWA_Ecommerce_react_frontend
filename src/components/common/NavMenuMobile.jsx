@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Logo from '../../assets/images/easyshop.png'
 import { Link } from 'react-router-dom'
+import MegaMenuMobile from '../home/MegaMenuMobile';
 
 class NavMenuMobile extends Component {
 
@@ -61,7 +62,7 @@ class NavMenuMobile extends Component {
           </Container>
 
           <div className={this.state.SideNavState}>
-            sdfsdf
+            <MegaMenuMobile />
           </div>
 
           <div onClick={this.ContentOverlayClickHandler} className={this.state.ContentOverState}>
