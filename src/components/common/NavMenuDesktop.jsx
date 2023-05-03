@@ -52,7 +52,7 @@ class NavMenuDesktop extends Component {
                   <Link to="/"><img src={Logo} className='nav-logo' /> </Link>
                 </Col>
 
-                <Col className='p-1 mt-1' lg={4} md={4} sm={12} xs={12}>
+                <Col className='p-1' lg={4} md={4} sm={12} xs={12}>
                   <div className='input-group w-100'>
                     <input type='text' className='form-control' />
                     <Button type='button' className='btn site-btn'>
@@ -62,7 +62,7 @@ class NavMenuDesktop extends Component {
                 </Col>
 
                 <Col lg={4} md={4} sm={12} xs={12}>
-                  <Link to="/" className='btn p-1 mt-1'><i class="fa h4 fa-bell"></i>
+                  <Link to="/" className='btn p-1 '><i class="fa h4 fa-bell"></i>
                     <sup>
                       <span className='badge text-white bg-danger'>6</span>
                     </sup>
