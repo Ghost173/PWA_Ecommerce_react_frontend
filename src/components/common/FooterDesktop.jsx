@@ -1,5 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import Apple from '../../assets/images/apple.png'
+import Google from '../../assets/images/google.png'
 
 class FooterDesktop extends Component {
   render() {
@@ -20,19 +23,33 @@ class FooterDesktop extends Component {
               </Col>
 
               <Col className="p-2" lg={3} md={3} sm={6} xs={12}>
-              <h5 className="footer-menu-title">THE COMPANY</h5>
-              <li>About us</li>
-              <li>FAQ</li>
+                <h5 className="footer-menu-title">THE COMPANY</h5>
+                <Link to="/" className="footer-link"> About Us</Link><br></br>
+                <Link to="/" className="footer-link"> FAQ</Link><br></br>
+                <Link to="/" className="footer-link"> Contact Us</Link><br></br>
               </Col>
 
               <Col className="p-2" lg={3} md={3} sm={6} xs={12}>
               <h5 className="footer-menu-title">MORE INFO</h5>
+                <Link to="/" className="footer-link">How To Purchase</Link><br></br>
+                <Link to="/" className="footer-link"> Privacy Policy</Link><br></br>
+                <Link to="/" className="footer-link"> Refund Policy </Link><br></br>
               </Col>
 
               <Col className="p-2" lg={3} md={3} sm={6} xs={12}>
-              <h5 className="footer-menu-title">DOWNLOAD APPS</h5>
+                <h5 className="footer-menu-title">DOWNLOAD APPS</h5>
+                <a><img src={Google} /></a><br></br>
+                <a><img className="mt-2" src={Apple} /></a><br></br>
               </Col>
             </Row>
+          </Container>
+
+          <Container fluid={true} className='text-center m-0 pt-3 pb-1 bg-dark'>
+            <Container>
+              <Row>
+                <h6 className='text-white'>© Copyright 2023 by BCAS, All Rights Reserved</h6>
+              </Row>
+            </Container>
           </Container>
         </div>
 
