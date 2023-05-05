@@ -43,6 +43,14 @@ class FooterDesktop extends Component {
               </Col>
             </Row>
           </Container>
+
+          <Container fluid={true} className='text-center m-0 pt-3 pb-1 bg-dark'>
+            <Container>
+              <Row>
+                <h6 className='text-white'>© Copyright 2023 by BCAS, All Rights Reserved</h6>
+              </Row>
+            </Container>
+          </Container>
         </div>
 
       </Fragment>
