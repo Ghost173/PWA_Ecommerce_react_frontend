@@ -12,6 +12,7 @@
 @import "megaMenuAll.css";
 @import "common.css";
 @import "onboard.css";
+@import "productDetails.css";
 
 body{
     background-color: #ffffff;

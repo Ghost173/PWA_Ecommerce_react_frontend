@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Fragment } from 'react'
-import { Col, Container, Row, Button } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
 
 class featureProduct extends Component {
     render() {
@@ -16,6 +17,7 @@ class featureProduct extends Component {
 
                     <Row>
                         <Col className="p-1" key={1} xl={2} lg={2} md={2} sm={4} xs={6}>
+                            <Link to="/productdetails">
                             < Card className='image-box card'>
                                 <Card.Body>
                                     <img className="center" alt="foo" src='https://rukminim1.flixcart.com/image/416/416/k0plpjk0/cases-covers/back-cover/3/t/k/flipkart-smartbuy-fksb-c-rel-xt-tra-original-imafkfezvfuvtyfq.jpeg?q=70' />
@@ -23,6 +25,7 @@ class featureProduct extends Component {
                                 <p className='product-name-on-card'>SmartBuy Back Cover for Realme XT</p>
                                 <p className='product-price-on-card'>Price: $120</p>
                             </Card>
+                            </Link>
                         </Col>
 
                         <Col className="p-1" key={1} xl={2} lg={2} md={2} sm={4} xs={6}>

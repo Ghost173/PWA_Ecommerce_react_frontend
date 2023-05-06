@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Row, Col, Button } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
 import Logo from '../../assets/images/easyshop.png'
 import { Link } from 'react-router-dom'
 import MegaMenuMobile from '../home/MegaMenuMobile';
