@@ -48,7 +48,7 @@ class NavMenuDesktop extends Component {
             <Container fluid={"true"} className='fixed-top shadow-sm p-2 mb-0 bg-white' >
               <Row>
                 <Col lg={4} md={4} sm={12} xs={12}>
-                <Button onClick={this.MenuBarClickHandler} className="btn"><i className="fa fa-bars"></i> </Button>
+                <Button onClick={this.MenuBarClickHandler} variant="light"><i className="fa fa-bars"></i> </Button>
                   <Link to="/"><img src={Logo} className='nav-logo' /> </Link>
                 </Col>
 
@@ -73,7 +73,7 @@ class NavMenuDesktop extends Component {
                     </sup>
                   </a>
 
-                  <Link to="/" className='h4 btn'>LOGIN</Link>
+                  <Link to="/login" className='h4 btn'>LOGIN</Link>
                   <Link to="/" className='h4 btn'>REGISTER</Link>
                   <Button className='cart-btn'><i className='fa fa-shopping-cart'></i> 3 Items</Button>
                 </Col>
