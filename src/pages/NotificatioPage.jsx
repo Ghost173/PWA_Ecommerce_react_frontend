@@ -3,13 +3,12 @@ import NavMenuDesktop from '../components/common/NavMenuDesktop'
 import NavMenuMobile from '../components/common/NavMenuMobile'
 import FooterDesktop from '../components/common/FooterDesktop'
 import FooterMobile from '../components/common/FooterMobile'
-import Productsetails from '../components/products/Productsetails'
-import SggestProdct from '../components/products/SggestProdct'
+import Notification from '../components/notifications/Notification'
 
-class ProductDetailsPage extends Component {
+class NotificatioPage extends Component {
     componentDidMount() {
         window.scroll(0, 0)
-      }
+    }
     render() {
         return (
             <Fragment>
@@ -21,10 +20,8 @@ class ProductDetailsPage extends Component {
                     <NavMenuMobile />
                 </div>
 
-                {/* product page load here */}
-                <Productsetails/>
-                <SggestProdct />
-
+                {/* Notification page load here */}
+                    <Notification />
 
                 <div className='Desktop'>
                     <FooterDesktop />
@@ -37,4 +34,4 @@ class ProductDetailsPage extends Component {
     }
 }
 
-export default ProductDetailsPage
+export default NotificatioPage

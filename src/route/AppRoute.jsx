@@ -9,6 +9,7 @@ import Purchase from '../pages/PurchasePage';
 import PrivacyPage from '../pages/PrivacyPage';
 import RefundPage from '../pages/RefundPage';
 import ProductDetailsPage from '../pages/ProductDetailsPage';
+import NotificatioPage from '../pages/NotificatioPage';
 
 class AppRoute extends Component {
   render() {
@@ -21,9 +22,12 @@ class AppRoute extends Component {
           <Route exact path='/purchase' element={<Purchase />} />
           <Route exact path='/privacy' element={<PrivacyPage />} />
           <Route exact path='/refund' element={<RefundPage />} />
-
+          
+          {/* single product details page */}
           <Route exact path='/productdetails' element={<ProductDetailsPage />} />
 
+          {/* notification */}
+          <Route exact path='/notification' element={<NotificatioPage />} />
 
         </Routes>
 
