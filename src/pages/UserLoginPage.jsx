@@ -6,6 +6,9 @@ import FooterMobile from '../components/common/FooterMobile'
 import UserLogin from '../components/user/UserLogin'
 
 class UserLoginPage extends Component {
+    componentDidMount() {
+        window.scroll(0, 0)
+    }
     render() {
         return (
             <Fragment>

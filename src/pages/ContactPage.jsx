@@ -7,6 +7,9 @@ import FooterMobile from '../components/common/FooterMobile'
 import Contact from '../components/common/Contact'
 
 class ContactPage extends Component {
+    componentDidMount() {
+        window.scroll(0, 0)
+    }
     render() {
         return (
             <Fragment>
@@ -19,7 +22,7 @@ class ContactPage extends Component {
                     <NavMenuMobile />
                 </div>
 
-            {/* contact page load here */}
+                {/* contact page load here */}
                 <Contact />
 
 
