@@ -10,6 +10,7 @@ import PrivacyPage from '../pages/PrivacyPage';
 import RefundPage from '../pages/RefundPage';
 import ProductDetailsPage from '../pages/ProductDetailsPage';
 import NotificatioPage from '../pages/NotificatioPage';
+import FavouuritePage from '../pages/FavouuritePage';
 
 class AppRoute extends Component {
   render() {
@@ -28,6 +29,9 @@ class AppRoute extends Component {
 
           {/* notification */}
           <Route exact path='/notification' element={<NotificatioPage />} />
+
+          {/* favourite */}
+          <Route exact path='/favourite' element={<FavouuritePage />} />
 
         </Routes>
 

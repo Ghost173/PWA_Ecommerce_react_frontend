@@ -67,11 +67,10 @@ class NavMenuDesktop extends Component {
                       <span className='badge text-white bg-danger'>6</span>
                     </sup>
                   </Link>
-                  <a className="btn"><i class="fa h4 fa-heart" aria-hidden="true"></i>
-                    <sup>
-                      <span className='badge text-white bg-danger'>6</span>
-                    </sup>
-                  </a>
+                  
+                  <Link to="/favourite" className="btn"><i className="fa h4 fa-heart"></i>
+                  <sup><span className="badge text-white bg-danger">3</span></sup>                  
+                   </Link>
 
                   <Link to="/login" className='h4 btn'>LOGIN</Link>
                   <Link to="/" className='h4 btn'>REGISTER</Link>
