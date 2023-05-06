@@ -14,7 +14,7 @@ class UserLogin extends Component {
                 <Col className="d-flex justify-content-center" lg={6} md={6} sm={12} xs={12}>
                   <Form className='onboardForm'>
                     <h4 className="section-title-login"> USER SING IN </h4>
-                    <h6 className="section-sub-title">Please Enter Your Mobile Number *</h6>
+                    <h6 className="section-sub-title">Please Enter Your Mobile Number <span className="text-danger">*</span></h6>
                     <input className="form-control m-2" type="text" placeholder="Enter Mobile Number" />
                     <Button className="btn btn-block m-2 site-btn-login"> Next </Button>
                   </Form>

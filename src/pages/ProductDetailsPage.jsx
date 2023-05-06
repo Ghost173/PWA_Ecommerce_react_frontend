@@ -1,19 +1,18 @@
-import React, { Component } from 'react'
-import { Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
 import NavMenuDesktop from '../components/common/NavMenuDesktop'
 import NavMenuMobile from '../components/common/NavMenuMobile'
 import FooterDesktop from '../components/common/FooterDesktop'
 import FooterMobile from '../components/common/FooterMobile'
-import Contact from '../components/common/Contact'
+import Productsetails from '../components/products/Productsetails'
+import SggestProdct from '../components/products/SggestProdct'
 
-class ContactPage extends Component {
+class ProductDetailsPage extends Component {
     componentDidMount() {
         window.scroll(0, 0)
-    }
+      }
     render() {
         return (
             <Fragment>
-
                 <div className='Desktop'>
                     <NavMenuDesktop />
                 </div>
@@ -22,8 +21,9 @@ class ContactPage extends Component {
                     <NavMenuMobile />
                 </div>
 
-                {/* contact page load here */}
-                <Contact />
+                {/* product page load here */}
+                <Productsetails/>
+                <SggestProdct />
 
 
                 <div className='Desktop'>
@@ -37,4 +37,4 @@ class ContactPage extends Component {
     }
 }
 
-export default ContactPage
+export default ProductDetailsPage

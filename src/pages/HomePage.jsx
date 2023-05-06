@@ -11,35 +11,40 @@ import FooterDesktop from '../components/common/FooterDesktop'
 import FooterMobile from '../components/common/FooterMobile'
 
 class HomePage extends Component {
+
+  componentDidMount() {
+    window.scroll(0, 0)
+  }
+
   render() {
     return (
-        <Fragment>
+      <Fragment>
 
-          <div className='Desktop'>
+        <div className='Desktop'>
           <NavMenuDesktop />
           <HomeTop />
-          </div>
+        </div>
 
-          <div className='Mobile'>
+        <div className='Mobile'>
           <NavMenuMobile />
           <HomeTopMobile />
-          </div>
-        
-          {/* <NavMenuDesktop /> */}
-            <FeatureProduct />
-            <NewArrival />
-            <Categories/>
-            <Collection />
-           
+        </div>
 
-            <div className='Desktop'>
-            <FooterDesktop />
-            </div>
-            <div className='Mobile'>
-              <FooterMobile />
-            </div>
-            
-        </Fragment>
+        {/* <NavMenuDesktop /> */}
+        <FeatureProduct />
+        <NewArrival />
+        <Categories />
+        <Collection />
+
+
+        <div className='Desktop'>
+          <FooterDesktop />
+        </div>
+        <div className='Mobile'>
+          <FooterMobile />
+        </div>
+
+      </Fragment>
     )
   }
 }

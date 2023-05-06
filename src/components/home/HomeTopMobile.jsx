@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Fragment } from 'react'
-import { Col, Container, Row, Card } from 'react-bootstrap'
-import MegaMenu from './MegaMenu'
+import { Col, Container, Row } from 'react-bootstrap'
 import HomeSlider from './HomeSlider'
 
 class HomeTopMobile extends Component {
