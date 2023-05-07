@@ -12,6 +12,7 @@ import ProductDetailsPage from '../pages/ProductDetailsPage';
 import NotificatioPage from '../pages/NotificatioPage';
 import FavouuritePage from '../pages/FavouuritePage';
 import CartPage from '../pages/CartPage';
+import AboutUsPage from '../pages/AboutUsPage';
 
 class AppRoute extends Component {
   render() {
@@ -36,6 +37,9 @@ class AppRoute extends Component {
 
           {/* cart route */}
           <Route exact path='/cart' element={<CartPage />} />
+
+          {/* About */}
+          <Route exact path='/about' element={<AboutUsPage />} />
 
         </Routes>
 
