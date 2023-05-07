@@ -2,7 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import axios from 'axios'
 import AppUrl from '../../api/AppUrl';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Refund extends Component {
   constructor() {
@@ -15,15 +16,24 @@ class Refund extends Component {
   }
 
   componentDidMount() {
-    axios.get(AppUrl.allsiteinfo).then(response => {
-      let statuscode = response.status;
-      if (statuscode == 200) {
-        let JsonData = (response.data)[0]['refund'];
-        this.setState({ refund: JsonData , loaderDiv: "d-none", mainDiv: "" })
-      }
-    }).catch(error => {
 
-    })
+    let refund_stoteage = sessionStorage.getItem("allsiteinfo");
+    if(refund_stoteage == null) {
+      axios.get(AppUrl.allsiteinfo).then(response => {
+        let statuscode = response.status;
+        if (statuscode == 200) {
+          let JsonData = (response.data)[0]['refund'];
+          this.setState({ refund: JsonData , loaderDiv: "d-none", mainDiv: "" })
+          sessionStorage.setItem("refund_stoteage",JsonData)
+        } else {
+          toast.error("Something went wrong please try agin later")
+        }
+      }).catch(error => {
+        toast.error("Something went wrong to fetch data")
+      })
+    }
+
+   
   }
   render() {
     return (
@@ -60,6 +70,7 @@ class Refund extends Component {
             </Col>
           </Row>
         </Container>
+        <ToastContainer />
       </Fragment>
     )
   }
