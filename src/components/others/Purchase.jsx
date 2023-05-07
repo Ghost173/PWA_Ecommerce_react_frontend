@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { Container,Row,Col } from 'react-bootstrap'
 import axios from 'axios'
 import AppUrl from '../../api/AppUrl';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Purchase extends Component {
     constructor() {
@@ -12,15 +14,25 @@ class Purchase extends Component {
     }
 
     componentDidMount() {
-        axios.get(AppUrl.allsiteinfo).then(response => {
-            let statuscode  = response.status;
-            if(statuscode == 200) {
-                let JsonData = (response.data)[0]['purchase_guide'];
-                this.setState({purchase_guide:JsonData})
-            }
-        }).catch(error =>{
 
-        })
+        let Siteinfopurchase_guide = sessionStorage.getItem("allsiteinfo");
+        if(Siteinfopurchase_guide == null) {
+            axios.get(AppUrl.allsiteinfo).then(response => {
+                let statuscode  = response.status;
+                
+                if(statuscode == 200) {
+                    let JsonData = (response.data)[0]['purchase_guide'];
+                    this.setState({purchase_guide:JsonData})
+                    sessionStorage.setItem("Siteinfopurchase_guide",JsonData)
+                } else {
+                    toast.error("Someting went wrong please try agin later")
+                }
+            }).catch(error =>{
+                toast.error("Someting went wrong to fetch data")
+            })
+        }
+
+       
     }
 
     render() {
@@ -36,6 +48,7 @@ class Purchase extends Component {
                         </Col>
                     </Row>
                 </Container>
+                <ToastContainer />
             </Fragment>
         )
     }
