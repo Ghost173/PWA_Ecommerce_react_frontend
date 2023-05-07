@@ -11,6 +11,7 @@ import RefundPage from '../pages/RefundPage';
 import ProductDetailsPage from '../pages/ProductDetailsPage';
 import NotificatioPage from '../pages/NotificatioPage';
 import FavouuritePage from '../pages/FavouuritePage';
+import CartPage from '../pages/CartPage';
 
 class AppRoute extends Component {
   render() {
@@ -32,6 +33,9 @@ class AppRoute extends Component {
 
           {/* favourite */}
           <Route exact path='/favourite' element={<FavouuritePage />} />
+
+          {/* cart route */}
+          <Route exact path='/cart' element={<CartPage />} />
 
         </Routes>
 
