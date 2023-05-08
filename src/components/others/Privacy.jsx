@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import axios from 'axios'
 import AppUrl from '../../api/AppUrl';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Privacy extends Component {
 
@@ -15,15 +17,24 @@ class Privacy extends Component {
     }
 
     componentDidMount() {
-        axios.get(AppUrl.allsiteinfo).then(response => {
-            let statuscode = response.status;
-            if (statuscode == 200) {
-                let JsonData = (response.data)[0]['privacy'];
-                this.setState({ privacy: JsonData, loaderDiv: "d-none", mainDiv: ""  })
-            }
-        }).catch(error => {
 
-        })
+        let privacy_stoteage = sessionStorage.getItem("allsiteinfo");
+
+        if(privacy_stoteage == null) {
+            axios.get(AppUrl.allsiteinfo).then(response => {
+                let statuscode = response.status;
+                if (statuscode == 200) {
+                    let JsonData = (response.data)[0]['privacy'];
+                    this.setState({ privacy: JsonData, loaderDiv: "d-none", mainDiv: ""  })
+                    sessionStorage.setItem("privacy_stoteage",JsonData)
+                }else {
+                    toast.error("Something went wrong please try agin later")
+                }
+            }).catch(error => {
+                toast.error("Something went wrong to fetch data")
+            })
+        }
+        
     }
 
     render() {
@@ -62,6 +73,7 @@ class Privacy extends Component {
                         </Col>
                     </Row>
                 </Container>
+                <ToastContainer />
             </Fragment>
         )
     }

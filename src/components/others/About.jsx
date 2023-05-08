@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import axios from 'axios'
 import AppUrl from '../../api/AppUrl';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export class About extends Component {
 
@@ -15,15 +17,23 @@ export class About extends Component {
     }
 
     componentDidMount() {
-        axios.get(AppUrl.allsiteinfo).then(response => {
-            let statuscode = response.status;
-            if (statuscode == 200) {
-                let JsonData = (response.data)[0]['about'];
-                this.setState({ about: JsonData, loaderDiv: "d-none", mainDiv: "" })
-            }
-        }).catch(error => {
-
-        })
+        let about_stoteage = sessionStorage.getItem("allsiteinfo");
+        
+        if(about_stoteage == null) {
+            axios.get(AppUrl.allsiteinfo).then(response => {
+                let statuscode = response.status;
+                if (statuscode == 200) {
+                    let JsonData = (response.data)[0]['about'];
+                    this.setState({ about: JsonData, loaderDiv: "d-none", mainDiv: "" })
+                    sessionStorage.setItem("about_stoteage",JsonData)
+                }else {
+                    toast.error("Something went wrong please try agin later")
+                }
+            }).catch(error => {
+                toast.error("Something went wrong to fetch data")
+            })
+        }
+        
     }
 
     render() {
@@ -61,6 +71,7 @@ export class About extends Component {
                         </Col>
                     </Row>
                 </Container>
+                <ToastContainer />
             </Fragment>
         )
     }
