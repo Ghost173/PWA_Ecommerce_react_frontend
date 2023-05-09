@@ -7,7 +7,7 @@ class MegaMenu extends Component {
   }
 
 
-  MenuItemClick=(event) =>{
+  MenuItemClick = (event) => {
     event.target.classList.toggle("active");
     var panel = event.target.nextElementSibling;
     if (panel.style.maxHeight) {
@@ -30,11 +30,11 @@ class MegaMenu extends Component {
         <div className='panel'>
           <ul>
 
-          {
-            (CategoryList.subcat).map((SubCategorylist, i) =>{
-              return  <li><a href='#' className='accordionItem'>{SubCategorylist.subcategory_name}</a></li>
-            })
-          }
+            {
+              (CategoryList.subcat).map((SubCategorylist, i) => {
+                return <li><a href='#' className='accordionItem'>{SubCategorylist.subcategory_name}</a></li>
+              })
+            }
           </ul>
         </div>
 
@@ -47,8 +47,8 @@ class MegaMenu extends Component {
 
       <div className='accordionMenuDiv'>
         <div className='accordionMenuDivInside'>
-          
-{Myview}
+
+          {Myview}
         </div>
 
       </div>

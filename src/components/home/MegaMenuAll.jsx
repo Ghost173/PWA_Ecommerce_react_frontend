@@ -6,49 +6,64 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 class MegaMenuAll extends Component {
-    constructor(){
+    constructor() {
         super();
-        this.MegaMenu = this.MegaMenu.bind(this);
-   }
-
-   componentDidMount(){
-        this.MegaMenu();
-   }
-
-
-
-   MegaMenu(){
-        var acc = document.getElementsByClassName("accordionAll");
-        var accNum = acc.length;
-        var i;
-        for(i=0;i<accNum;i++){
-             acc[i].addEventListener("click",function (){
-                  this.classList.toggle("active");
-                  var panel = this.nextElementSibling;
-                  if(panel.style.maxHeight){
-                       panel.style.maxHeight = null;
-                  }else{
-                       panel.style.maxHeight= panel.scrollHeight+ "px"
-                  }
-             })
+        this.state = {
+            MenuData: []
         }
-   }
+    }
+
+    componentDidMount() {
+        axios.get(AppUrl.AllCategoryDetails).then(response => {
+            let statuscode = response.status;
+            if (statuscode == 200) {
+                this.setState({ MenuData: response.data })
+            } else {
+                toast.error("Something went wrong please try agin later")
+            }
+        }).catch(error => {
+            toast.error("Something went wrong to fetch data")
+        })
+    }
+
+    MenuItemClick = (event) => {
+        event.target.classList.toggle("active");
+        var panel = event.target.nextElementSibling;
+        if (panel.style.maxHeight) {
+            panel.style.maxHeight = null;
+        } else {
+            panel.style.maxHeight = panel.scrollHeight + "px"
+        }
+    }
+
     render() {
+        const CategoryList = this.state.MenuData;
+        const Myview = CategoryList.map((CategoryList, i) => {
+            return <div key={i.toString()}>
+                <button onClick={this.MenuItemClick} className='accordionAll'>
+                    <img src={CategoryList.category_icon} alt="" className='accordionMenuIconAll' />
+                    &nbsp; {CategoryList.category_name}
+                </button>
+                <div className='panelAll'>
+                    <ul>
+
+                        {
+                            (CategoryList.subcat).map((SubCategorylist, i) => {
+                                return <li><a href='#' className='accordionItemAll'>{SubCategorylist.subcategory_name}</a></li>
+                            })
+                        }
+                    </ul>
+                </div>
+
+            </div>
+
+        })
+
         return (
-            <div className="accordionMenuDivAll">
-                <div className="accordionMenuDivInsideAll">
+            <div className='accordionMenuDiv'>
+                <div className='accordionMenuDivInside'>
 
-
-                    <button className="accordionAll">
-                        <img className="accordionMenuIconAll" src="https://image.flaticon.com/icons/png/128/739/739249.png" />&nbsp; Men's Clothing
-                    </button>
-                    <div className="panelAll">
-                        <ul>
-                            <li><a href="#" className="accordionItemAll" > Mans Tshirt 1</a></li>
-                            <li><a href="#" className="accordionItemAll" > Mans Tshirt 2</a></li>
-                        </ul>
-                    </div>
-
+                    {Myview}
                 </div>
 
             </div>
