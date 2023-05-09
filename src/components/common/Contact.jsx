@@ -71,7 +71,7 @@ class Contact extends Component {
                 }
               })
               .catch(function (error) {
-                toast.error("unable to contact app server")
+                toast.error("unable to contact app server please try again later")
               });
 
         }

@@ -5,6 +5,10 @@ import axios from 'axios'
 import AppUrl from '../../api/AppUrl';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
+
+
 
 class Categories extends Component {
 
@@ -24,24 +28,38 @@ class Categories extends Component {
                 toast.error("Something went wrong please try agin later")
             }
         }).catch(error => {
-            toast.error("Something went wrong to fetch data")
+            toast.error("It looks like there was a problem retrieving the category data. Please contact support if the problem persists")
         })
     }
 
     render() {
 
         const categorylist = this.state.MenuData;
-        const mydata = categorylist.map((categorylist, i) => {
-            return <Col key={i.toString} className='p-0' xl={2} lg={2} md={2} sm={6} xs={6}>
-                <Card className='h-100 w-100 text-center'>
-                    <Card.Body>
-                        <img className="center" alt="foo" src={categorylist.category_image}/>
-                    </Card.Body>
-                    <h5 className='category-name'>{categorylist.category_name}</h5>
-                </Card>
-            </Col>
-        })
+        let mydata;
 
+        if (categorylist.length) {
+            mydata = categorylist.map((categorylist, i) => {
+                return (
+                    <Col key={i.toString} className='p-0' xl={2} lg={2} md={2} sm={6} xs={6}>
+                        <Card className='h-100 w-100 text-center'>
+                            <Card.Body>
+                                <img className="center" alt="foo" src={categorylist.category_image} />
+                            </Card.Body>
+                            <h5 className='category-name'>{categorylist.category_name}</h5>
+                        </Card>
+                    </Col>
+                )
+            });
+        } else {
+            mydata = (
+                <Col className='p-0 text-center' fluid={true}>
+                    <Alert variant="danger">
+                    It looks like there was a problem retrieving the category data. Please  
+                    <Alert.Link href="/contact"> Contact support </Alert.Link>if the problem persists
+                    </Alert>
+                </Col>
+            );
+        }
 
         return (
             <Fragment>
@@ -52,7 +70,7 @@ class Categories extends Component {
 
                     </div>
                     <Row>
-                    {mydata}
+                        {mydata}
                     </Row>
                 </Container>
             </Fragment>
