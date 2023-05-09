@@ -29,7 +29,7 @@ class Purchase extends Component {
                     toast.error("Something went wrong please try agin later")
                 }
             }).catch(error =>{
-                toast.error("Something went wrong to fetch data")
+                toast.error("Unable to retrieve Purchase data")
             })
         }
 
