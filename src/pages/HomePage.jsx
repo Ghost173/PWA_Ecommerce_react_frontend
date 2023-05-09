@@ -28,7 +28,7 @@ class HomePage extends Component {
       <Fragment>
 
         <div className='Desktop'>
-          <NavMenuDesktop />
+        <NavMenuDesktop />
           <HomeTop />
         </div>
 

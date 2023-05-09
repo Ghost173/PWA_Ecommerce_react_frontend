@@ -43,11 +43,11 @@ class Contact extends Component {
         let sendBtn = document.getElementById('sendBtn');
         let contactform = document.getElementById('contactform')
 
-        if (message.length == 0) {
+        if (message.length === 0) {
             toast.error("please enter your message")
-        } else if(name.length == 0) {
+        } else if(name.length === 0) {
             toast.error("please enter your name")
-        }else if (email.length == 0) {
+        }else if (email.length === 0) {
             toast.error("please enter your email")
         } 
         else if(!(validation.NameRegx).test(name)) {
