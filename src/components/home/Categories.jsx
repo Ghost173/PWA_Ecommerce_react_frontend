@@ -15,7 +15,9 @@ class Categories extends Component {
     constructor() {
         super();
         this.state = {
-            MenuData: []
+            MenuData: [],
+            loaderDiv: "",
+            mainDiv: "d-none"
         }
     }
 
@@ -23,7 +25,7 @@ class Categories extends Component {
         axios.get(AppUrl.AllCategoryDetails).then(response => {
             let statuscode = response.status;
             if (statuscode == 200) {
-                this.setState({ MenuData: response.data })
+                this.setState({ MenuData: response.data, loaderDiv: "d-none", mainDiv: ""  })
             } else {
                 toast.error("Something went wrong please try agin later")
             }
@@ -54,8 +56,8 @@ class Categories extends Component {
             mydata = (
                 <Col className='p-0 text-center' fluid={true}>
                     <Alert variant="danger">
-                    It looks like there was a problem retrieving the category data. Please  
-                    <Alert.Link href="/contact"> Contact support </Alert.Link>if the problem persists
+                        It looks like there was a problem retrieving the category data. Please
+                        <Alert.Link href="/contact"> Contact support </Alert.Link>if the problem persists
                     </Alert>
                 </Col>
             );
@@ -69,9 +71,35 @@ class Categories extends Component {
                         <p>Some of Our Exclusive Collection, You May like!</p>
 
                     </div>
-                    <Row>
-                        {mydata}
-                    </Row>
+
+                       
+                            <div className={this.state.loaderDiv}>
+                                <div class="ph-item">
+                                    <div class="ph-col-12">
+                                        <div class="ph-row">
+                                            <div class="ph-col-4"></div>
+                                            <div class="ph-col-8 empty"></div>
+                                            <div class="ph-col-6"></div>
+                                            <div class="ph-col-6 empty"></div>
+                                            <div class="ph-col-12"></div>
+                                            <div class="ph-col-12"></div>
+                                            <div class="ph-col-12"></div>
+                                            <div class="ph-col-12"></div>
+                                            <div class="ph-col-12"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={this.state.mainDiv}>
+                                <Row>
+                                {mydata}
+                                </Row>
+                               
+                            </div>
+                       
+
+   
                 </Container>
             </Fragment>
         )

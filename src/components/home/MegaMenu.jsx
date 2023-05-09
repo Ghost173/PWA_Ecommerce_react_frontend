@@ -1,9 +1,30 @@
 import React, { Component, Fragment } from 'react'
+import axios from 'axios'
+import AppUrl from '../../api/AppUrl';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class MegaMenu extends Component {
 
-  constructor(props) {
+
+  constructor() {
     super();
+    this.state = {
+      MenuData: [],
+    }
+  }
+
+  componentDidMount() {
+    axios.get(AppUrl.AllCategoryDetails).then(response => {
+      let statuscode = response.status;
+      if (statuscode == 200) {
+        this.setState({MenuData:response.data, loaderDiv: "d-none", mainDiv: ""})
+      } else {
+        toast.error("Something went wrong please try agin later")
+      }
+    }).catch(error => {
+      toast.error("Something went wrong to fetch data")
+    })
   }
 
 
@@ -20,7 +41,7 @@ class MegaMenu extends Component {
   render() {
 
 
-    const CategoryList = this.props.data;
+    const CategoryList = this.state.MenuData;
     const Myview = CategoryList.map((CategoryList, i) => {
       return <div key={i.toString()}>
         <button onClick={this.MenuItemClick} className='accordion'>
@@ -44,14 +65,39 @@ class MegaMenu extends Component {
 
     return (
 
+      <div>
 
-      <div className='accordionMenuDiv'>
-        <div className='accordionMenuDivInside'>
 
-          {Myview}
+        <div className={this.state.loaderDiv}>
+          <div class="ph-item">
+            <div class="ph-col-12">
+              <div class="ph-row">
+                <div class="ph-col-4"></div>
+                <div class="ph-col-8 empty"></div>
+                <div class="ph-col-6"></div>
+                <div class="ph-col-6 empty"></div>
+                <div class="ph-col-12"></div>
+                <div class="ph-col-12"></div>
+                <div class="ph-col-12"></div>
+                <div class="ph-col-12"></div>
+                <div class="ph-col-12"></div>
+              </div>
+            </div>
+          </div>
         </div>
 
+
+        <div className={this.state.mainDiv}>
+          <div className='accordionMenuDiv'>
+            <div className='accordionMenuDivInside'>
+
+              {Myview}
+            </div>
+
+          </div>
+        </div>
       </div>
+
     )
   }
 }
