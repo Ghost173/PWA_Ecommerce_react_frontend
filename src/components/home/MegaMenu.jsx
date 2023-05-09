@@ -7,23 +7,13 @@ class MegaMenu extends Component {
   }
 
 
-
-  MegaMenus() {
-    var acc = document.getElementsByClassName("accordion");
-    var accnumber = acc.length;
-    for (var i = 0; i < accnumber; i++) {
-      if (!acc[i].hasAttribute("data-clicked")) {
-        acc[i].setAttribute("data-clicked", "true");
-        acc[i].addEventListener("click", function () {
-          this.classList.toggle("active");
-          var panel = this.nextElementSibling;
-          if (panel.style.maxHeight) {
-            panel.style.maxHeight = null;
-          } else {
-            panel.style.maxHeight = panel.scrollHeight + "px"
-          }
-        });
-      }
+  MenuItemClick=(event) =>{
+    event.target.classList.toggle("active");
+    var panel = event.target.nextElementSibling;
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px"
     }
   }
 
@@ -33,18 +23,18 @@ class MegaMenu extends Component {
     const CategoryList = this.props.data;
     const Myview = CategoryList.map((CategoryList, i) => {
       return <div key={i.toString()}>
-        <button className='accordion'>
+        <button onClick={this.MenuItemClick} className='accordion'>
           <img src={CategoryList.category_icon} alt="" className='accordionMenuIcon' />
           &nbsp; {CategoryList.category_name}
         </button>
         <div className='panel'>
           <ul>
-            <li>
-              <a href='#' className='accordionItem'>Sarees</a>
-            </li>
-            <li>
-              <a href='#' className='accordionItem'>Sarees</a>
-            </li>
+
+          {
+            (CategoryList.subcat).map((SubCategorylist, i) =>{
+              return  <li><a href='#' className='accordionItem'>{SubCategorylist.subcategory_name}</a></li>
+            })
+          }
           </ul>
         </div>
 
