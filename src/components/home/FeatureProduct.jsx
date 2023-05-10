@@ -51,7 +51,7 @@ class featureProduct extends Component {
                                 <img className="center" alt="foo" src={featureproductslist.product_image} />
                             </Card.Body>
                             <p className='product-name-on-card'>{featureproductslist.product_title}</p>
-                            <p className='product-price-on-card'>Rs {featureproductslist.product_price}</p>
+                            <p className='product-price-on-card'>Rs: {featureproductslist.product_price}</p>
                         </Card>
                     </Link>
                 </Col>
@@ -68,8 +68,6 @@ class featureProduct extends Component {
                     </Link>
                 </Col>
             }
-
-
         });
 
 
