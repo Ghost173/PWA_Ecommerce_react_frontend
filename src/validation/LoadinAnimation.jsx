@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
+import Alert from 'react-bootstrap/Alert';
+
 
 export class LoadinAnimation extends Component {
+
+    
     render() {
         return (
             <div>

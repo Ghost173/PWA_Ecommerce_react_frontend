@@ -12,7 +12,7 @@ export class About extends Component {
         this.state = {
             about: "",
             loaderDiv: "",
-            mainDiv: "d-none"
+            mainDiv: "d-none",
         }
     }
 

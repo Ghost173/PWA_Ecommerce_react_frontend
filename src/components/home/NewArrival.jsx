@@ -19,7 +19,9 @@ class NewArrival extends Component {
         this.state = {
             newArrivalProducts: [],
             loaderDiv: "",
-            mainDiv: "d-none"
+            mainDiv: "d-none",
+            error: '',
+            loading: true,
         }
     }
 
@@ -34,7 +36,9 @@ class NewArrival extends Component {
         }).catch(error => {
             setTimeout(() => {
                 toast.error("It looks like there was a problem retrieving theNewArrival Products. Please contact support if the problem persists");
-              }, 3000); // wait for 3 seconds before showing the error message
+            }, 3000); // wait for 3 seconds before showing the error message
+            this.setState({ error: "fail to get api data" })
+
         })
     }
 
@@ -53,27 +57,27 @@ class NewArrival extends Component {
         const data = newarrivalproductslist.map((newarrivalproductslist, i) => {
             if (newarrivalproductslist.discount_price === 'na') {
                 return <div key={i.toString}>
-                <Card className='image-box card w-100'>
-                    <Card.Body>
-                        <img className="center w-75" alt="foo" src={newarrivalproductslist.product_image} />
-                    </Card.Body>
-                    <p className='product-name-on-card'>{newarrivalproductslist.product_title}</p>
-                    <p className='product-price-on-card'>{newarrivalproductslist.product_price}</p>
-                </Card>
-            </div>
+                    <Card className='image-box card w-100'>
+                        <Card.Body>
+                            <img className="center w-75" alt="foo" src={newarrivalproductslist.product_image} />
+                        </Card.Body>
+                        <p className='product-name-on-card'>{newarrivalproductslist.product_title}</p>
+                        <p className='product-price-on-card'>Rs: {newarrivalproductslist.product_price}</p>
+                    </Card>
+                </div>
             } else {
                 return <div key={i.toString}>
-                <Card className='image-box card w-100'>
-                    <Card.Body>
-                        <img className="center w-75" alt="foo" src={newarrivalproductslist.product_image} />
-                    </Card.Body>
-                    <p className='product-name-on-card'>{newarrivalproductslist.product_title}</p>
-                    <p className='product-price-on-card'>Rs: <strike>{newarrivalproductslist.product_price}</strike> {newarrivalproductslist.discount_price}</p>
-                </Card>
-            </div>
+                    <Card className='image-box card w-100'>
+                        <Card.Body>
+                            <img className="center w-75" alt="foo" src={newarrivalproductslist.product_image} />
+                        </Card.Body>
+                        <p className='product-name-on-card'> {newarrivalproductslist.product_title}</p>
+                        <p className='product-price-on-card'>Rs: <strike>{newarrivalproductslist.product_price}</strike> {newarrivalproductslist.discount_price}</p>
+                    </Card>
+                </div>
             }
 
-            
+
         });
 
         var settings = {
@@ -127,18 +131,18 @@ class NewArrival extends Component {
                     </div>
                     <Row>
 
-                        <div>
+                        <div className={this.state.loaderDiv}>
+                            <LoadinAnimation  />
+                        </div>
+                        <div className={this.state.mainDiv}>
+                            <Slider ref={c => (this.slider = c)} {...settings}>
 
+
+
+                                {data}
+                            </Slider>
                         </div>
-                        <div >
-                        <Slider ref={c => (this.slider = c)} {...settings}>
-                           
-                          
-                           
-                          {data}
-                        </Slider>
-                        </div>
-                       
+
                     </Row>
                 </Container>
             </Fragment>
