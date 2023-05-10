@@ -4,6 +4,7 @@ class AppUrl {
   static contactpost = this.BaseURL+"/postcontact"
   static allsiteinfo = this.BaseURL+"/allsiteinfo"
   static AllCategoryDetails = this.BaseURL+"/allcategory"
+  static FeatureProducts = this.BaseURL+"/featureProducts"
 
 
 }

@@ -43,7 +43,7 @@ componentDidMount() {
                 toast.error("Something went wrong please try agin later")
             }
         }).catch(error => {
-            toast.error("Unable to retrieve category data")
+            toast.error("Unable to retrieve footer data")
         })
 
     

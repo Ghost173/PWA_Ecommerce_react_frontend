@@ -9,7 +9,9 @@ class MegaMenuMobile extends Component {
     constructor() {
         super();
         this.state = {
-            MenuData: []
+            MenuData: [],
+            loaderDiv: "",
+            mainDiv: "d-none"
         }
     }
 
@@ -17,7 +19,7 @@ class MegaMenuMobile extends Component {
         axios.get(AppUrl.AllCategoryDetails).then(response => {
             let statuscode = response.status;
             if (statuscode == 200) {
-                this.setState({ MenuData: response.data })
+                this.setState({ MenuData: response.data, loaderDiv: "d-none", mainDiv: "" })
             } else {
                 toast.error("Something went wrong please try agin later")
             }
@@ -86,15 +88,41 @@ class MegaMenuMobile extends Component {
 
         return (
 
+            <div>
 
-
-            <div className="accordionMenuDivMobile">
-                <div className="accordionMenuDivInsideMobile">
-
-                    {Myview}
+                <div className={this.state.loaderDiv}>
+                    <div class="ph-item">
+                        <div class="ph-col-12">
+                            <div class="ph-row">
+                                <div class="ph-col-4"></div>
+                                <div class="ph-col-8 empty"></div>
+                                <div class="ph-col-6"></div>
+                                <div class="ph-col-6 empty"></div>
+                                <div class="ph-col-12"></div>
+                                <div class="ph-col-12"></div>
+                                <div class="ph-col-12"></div>
+                                <div class="ph-col-12"></div>
+                                <div class="ph-col-12"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
+                <div  className={this.state.mainDiv}>
+                    <div className="accordionMenuDivMobile">
+                        <div className="accordionMenuDivInsideMobile">
+
+                            {Myview}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
             </div>
+
+
         )
     }
 }
