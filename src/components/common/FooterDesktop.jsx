@@ -43,7 +43,10 @@ componentDidMount() {
                 toast.error("Something went wrong please try agin later")
             }
         }).catch(error => {
+          setTimeout(() => {
             toast.error("Unable to retrieve footer data")
+          }, 3000); // wait for 3 seconds before showing the error message
+            
         })
 
     

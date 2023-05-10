@@ -23,7 +23,10 @@ class MegaMenu extends Component {
         toast.error("Something went wrong please try agin later")
       }
     }).catch(error => {
-      toast.error("Something went wrong to fetch data")
+      setTimeout(() => {
+        toast.error("Something went wrong to fetch data")      
+      }, 3000); // wait for 3 seconds before showing the error message
+     
     })
   }
 

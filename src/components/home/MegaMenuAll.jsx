@@ -22,7 +22,10 @@ class MegaMenuAll extends Component {
                 toast.error("Something went wrong please try agin later")
             }
         }).catch(error => {
-            toast.error("Unable to retrieve Menu data")
+            setTimeout(() => {
+                toast.error("Unable to retrieve Menu data")
+              }, 3000); // wait for 3 seconds before showing the error message
+            
         })
     }
 
