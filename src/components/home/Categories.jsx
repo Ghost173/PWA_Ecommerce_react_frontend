@@ -30,7 +30,9 @@ class Categories extends Component {
                 toast.error("Something went wrong please try agin later")
             }
         }).catch(error => {
-            toast.error("It looks like there was a problem retrieving the category data. Please contact support if the problem persists")
+            setTimeout(() => {
+                toast.error("It looks like there was a problem retrieving the category data. Please contact support if the problem persists")
+              }, 3000); // wait for 3 seconds before showing the error message
         })
     }
 

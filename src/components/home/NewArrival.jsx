@@ -4,31 +4,84 @@ import Card from 'react-bootstrap/Card';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios'
+import AppUrl from '../../api/AppUrl';
+import LoadinAnimation from '../../validation/LoadinAnimation';
 
 
 class NewArrival extends Component {
 
-constructor(props) {
-    super(props);
-    this.previous = this.previous.bind(this);
-    this.next = this.next.bind(this);
-}
-next() {
-    this.slider.slickNext();
-}
+    constructor(props) {
+        super(props);
+        this.previous = this.previous.bind(this);
+        this.next = this.next.bind(this);
+        this.state = {
+            newArrivalProducts: [],
+            loaderDiv: "",
+            mainDiv: "d-none"
+        }
+    }
 
-previous() {
-    this.slider.slickPrev();
-}
+    componentDidMount() {
+        axios.get(AppUrl.NewArrivalProducts).then(response => {
+            let statuscode = response.status;
+            if (statuscode == 200) {
+                this.setState({ newArrivalProducts: response.data, loaderDiv: "d-none", mainDiv: "" })
+            } else {
+                toast.error("Something went wrong please try agin later")
+            }
+        }).catch(error => {
+            setTimeout(() => {
+                toast.error("It looks like there was a problem retrieving theNewArrival Products. Please contact support if the problem persists");
+              }, 3000); // wait for 3 seconds before showing the error message
+        })
+    }
+
+
+    next() {
+        this.slider.slickNext();
+    }
+
+    previous() {
+        this.slider.slickPrev();
+    }
 
     render() {
+
+        const newarrivalproductslist = this.state.newArrivalProducts;
+        const data = newarrivalproductslist.map((newarrivalproductslist, i) => {
+            if (newarrivalproductslist.discount_price === 'na') {
+                return <div key={i.toString}>
+                <Card className='image-box card w-100'>
+                    <Card.Body>
+                        <img className="center w-75" alt="foo" src={newarrivalproductslist.product_image} />
+                    </Card.Body>
+                    <p className='product-name-on-card'>{newarrivalproductslist.product_title}</p>
+                    <p className='product-price-on-card'>{newarrivalproductslist.product_price}</p>
+                </Card>
+            </div>
+            } else {
+                return <div key={i.toString}>
+                <Card className='image-box card w-100'>
+                    <Card.Body>
+                        <img className="center w-75" alt="foo" src={newarrivalproductslist.product_image} />
+                    </Card.Body>
+                    <p className='product-name-on-card'>{newarrivalproductslist.product_title}</p>
+                    <p className='product-price-on-card'>Rs: <strike>{newarrivalproductslist.product_price}</strike> {newarrivalproductslist.discount_price}</p>
+                </Card>
+            </div>
+            }
+
+            
+        });
 
         var settings = {
             dots: false,
             infinite: false,
             speed: 500,
             autoplay: true,
-            autoplaySpeed:3000,
+            autoplaySpeed: 3000,
             slidesToShow: 4,
             slidesToScroll: 1,
             initialSlide: 0,
@@ -73,80 +126,19 @@ previous() {
                         <p>Some of Our Exclusive Collection, You May like!</p>
                     </div>
                     <Row>
-                        <Slider ref={c=>(this.slider=c)} {...settings}>
-                            <div>
-                            <Card className='image-box card w-100'>
-                                <Card.Body>
-                                    <img className="center w-75" alt="foo" src='https://rukminim1.flixcart.com/image/416/416/k0plpjk0/cases-covers/back-cover/3/t/k/flipkart-smartbuy-fksb-c-rel-xt-tra-original-imafkfezvfuvtyfq.jpeg?q=70' />
-                                </Card.Body>
-                                <p className='product-name-on-card'>SmartBuy Back Cover for Realme XT</p>
-                                <p className='product-price-on-card'>Price: $120</p>
-                            </Card>
-                            </div>
-                            <div>
-                            <Card className='image-box card w-100'>
-                                <Card.Body>
-                                    <img className="center w-75" alt="foo" src='https://rukminim1.flixcart.com/image/416/416/k0plpjk0/cases-covers/back-cover/3/t/k/flipkart-smartbuy-fksb-c-rel-xt-tra-original-imafkfezvfuvtyfq.jpeg?q=70' />
-                                </Card.Body>
-                                <p className='product-name-on-card'>SmartBuy Back Cover for Realme XT</p>
-                                <p className='product-price-on-card'>Price: $120</p>
-                            </Card>
-                            </div>
-                            <div>
-                            <Card className='image-box card w-100'>
-                                <Card.Body>
-                                    <img className="center w-75" alt="foo" src='https://rukminim1.flixcart.com/image/416/416/k0plpjk0/cases-covers/back-cover/3/t/k/flipkart-smartbuy-fksb-c-rel-xt-tra-original-imafkfezvfuvtyfq.jpeg?q=70' />
-                                </Card.Body>
-                                <p className='product-name-on-card'>SmartBuy Back Cover for Realme XT</p>
-                                <p className='product-price-on-card'>Price: $120</p>
-                            </Card>
-                            </div>
-                            <div>
-                            <Card className='image-box card w-100'>
-                                <Card.Body>
-                                    <img className="center w-75" alt="foo" src='https://rukminim1.flixcart.com/image/416/416/k0plpjk0/cases-covers/back-cover/3/t/k/flipkart-smartbuy-fksb-c-rel-xt-tra-original-imafkfezvfuvtyfq.jpeg?q=70' />
-                                </Card.Body>
-                                <p className='product-name-on-card'>SmartBuy Back Cover for Realme XT</p>
-                                <p className='product-price-on-card'>Price: $120</p>
-                            </Card>
-                            </div>
-                            <div>
-                            <Card className='image-box card w-100'>
-                                <Card.Body>
-                                    <img className="center w-75" alt="foo" src='https://rukminim1.flixcart.com/image/416/416/k0plpjk0/cases-covers/back-cover/3/t/k/flipkart-smartbuy-fksb-c-rel-xt-tra-original-imafkfezvfuvtyfq.jpeg?q=70' />
-                                </Card.Body>
-                                <p className='product-name-on-card'>SmartBuy Back Cover for Realme XT</p>
-                                <p className='product-price-on-card'>Price: $120</p>
-                            </Card>
-                            </div>
-                            <div>
-                            <Card className='image-box card w-100'>
-                                <Card.Body>
-                                    <img className="center w-75" alt="foo" src='https://rukminim1.flixcart.com/image/416/416/k0plpjk0/cases-covers/back-cover/3/t/k/flipkart-smartbuy-fksb-c-rel-xt-tra-original-imafkfezvfuvtyfq.jpeg?q=70' />
-                                </Card.Body>
-                                <p className='product-name-on-card'>SmartBuy Back Cover for Realme XT</p>
-                                <p className='product-price-on-card'>Price: $120</p>
-                            </Card>
-                            </div>
-                            <div>
-                            <Card className='image-box card w-100'>
-                                <Card.Body>
-                                    <img className="center w-75" alt="foo" src='https://rukminim1.flixcart.com/image/416/416/k0plpjk0/cases-covers/back-cover/3/t/k/flipkart-smartbuy-fksb-c-rel-xt-tra-original-imafkfezvfuvtyfq.jpeg?q=70' />
-                                </Card.Body>
-                                <p className='product-name-on-card'>SmartBuy Back Cover for Realme XT</p>
-                                <p className='product-price-on-card'>Price: $120</p>
-                            </Card>
-                            </div>
-                            <div>
-                            <Card className='image-box card w-100'>
-                                <Card.Body>
-                                    <img className="center w-75" alt="foo" src='https://rukminim1.flixcart.com/image/416/416/k0plpjk0/cases-covers/back-cover/3/t/k/flipkart-smartbuy-fksb-c-rel-xt-tra-original-imafkfezvfuvtyfq.jpeg?q=70' />
-                                </Card.Body>
-                                <p className='product-name-on-card'>SmartBuy Back Cover for Realme XT</p>
-                                <p className='product-price-on-card'>Price: $120</p>
-                            </Card>
-                            </div>
+
+                        <div>
+
+                        </div>
+                        <div >
+                        <Slider ref={c => (this.slider = c)} {...settings}>
+                           
+                          
+                           
+                          {data}
                         </Slider>
+                        </div>
+                       
                     </Row>
                 </Container>
             </Fragment>

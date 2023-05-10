@@ -12,41 +12,44 @@ class FooterMobile extends Component {
   constructor() {
     super();
     this.state = {
-        address: "",
-        android_app_link: "",
-        ios_app_link: "",
-        facebook_link: "",
-        twitter_link: "",
-        insta_link: "",
-        copyright_text: "",
+      address: "",
+      android_app_link: "",
+      ios_app_link: "",
+      facebook_link: "",
+      twitter_link: "",
+      insta_link: "",
+      copyright_text: "",
 
     }
-}
+  }
 
-componentDidMount() {
-  
-        axios.get(AppUrl.allsiteinfo).then(response => {
-            let statuscode = response.status;
-            if (statuscode == 200) {
-                let JsonData = (response.data)[0];
-                this.setState({ 
-                  address: JsonData['address'], 
-                  android_app_link: JsonData['android_app_link'], 
-                  ios_app_link: JsonData['ios_app_link'], 
-                  facebook_link: JsonData['facebook_link'], 
-                  twitter_link: JsonData['twitter_link'], 
-                  insta_link: JsonData['insta_link'], 
-                  copyright_text: JsonData['copyright_text'], 
-                  loaderDiv: "d-none", mainDiv: "" })
-            }else {
-                toast.error("Something went wrong please try agin later")
-            }
-        }).catch(error => {
-            toast.error("Something went wrong to fetch data")
+  componentDidMount() {
+
+    axios.get(AppUrl.allsiteinfo).then(response => {
+      let statuscode = response.status;
+      if (statuscode == 200) {
+        let JsonData = (response.data)[0];
+        this.setState({
+          address: JsonData['address'],
+          android_app_link: JsonData['android_app_link'],
+          ios_app_link: JsonData['ios_app_link'],
+          facebook_link: JsonData['facebook_link'],
+          twitter_link: JsonData['twitter_link'],
+          insta_link: JsonData['insta_link'],
+          copyright_text: JsonData['copyright_text'],
+          loaderDiv: "d-none", mainDiv: ""
         })
+      } else {
+        toast.error("Something went wrong please try agin later")
+      }
+    }).catch(error => {
+      setTimeout(() => {
+        toast.error("Something went wrong to fetch data")
+      }, 3000); // wait for 3 seconds before showing the error message
+    })
 
-    
-}
+
+  }
 
   render() {
     return (
@@ -57,7 +60,7 @@ componentDidMount() {
               <Col className="p-2" lg={3} md={3} sm={6} xs={12}>
                 <h5 className="footer-menu-title">OFFICE ADDRESS</h5>
                 <p>
-                {this.state.address}
+                  {this.state.address}
                 </p>
                 <h5 className="footer-menu-title">SOCIAL LINK</h5>
                 <a href={this.state.facebook_link} target='_blank'><i className="fab m-1 h4 fa-facebook"></i></a>
