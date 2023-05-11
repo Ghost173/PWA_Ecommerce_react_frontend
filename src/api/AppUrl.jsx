@@ -6,6 +6,8 @@ class AppUrl {
   static AllCategoryDetails = this.BaseURL+"/allcategory"
   static FeatureProducts = this.BaseURL+"/featureProducts"
   static NewArrivalProducts = this.BaseURL+"/newarrivals"
+  static ProductsCollections = this.BaseURL+"/productscolletions"
+
 
 
 }
