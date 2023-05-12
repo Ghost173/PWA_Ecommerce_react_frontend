@@ -8,7 +8,9 @@ class AppUrl {
   static NewArrivalProducts = this.BaseURL+"/newarrivals"
   static ProductsCollections = this.BaseURL+"/productscolletions"
 
-
+static ProductListByCategory(category) {
+  return this.BaseURL+"/productlistbycategory/"+category;
+}
 
 }
 
