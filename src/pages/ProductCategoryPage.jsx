@@ -18,6 +18,7 @@ class ProductCategoryPage extends Component {
         super();
         this.state = {
             categoryid: [],
+            categoryname:[],
             CategoryProductLists: []
         }
     }
@@ -27,10 +28,14 @@ class ProductCategoryPage extends Component {
         let catid = this.props.params.category
         this.setState({ categoryid: catid })
 
+      
+
         axios.get(AppUrl.ProductListByCategory(catid)).then(response => {
             let statuscode = response.status;
             if (statuscode == 200) {
-                this.setState({ CategoryProductLists: response.data })
+                let product_list_basedon_category = (response.data)['product_list_basedon_category'];
+                let categoryname = response.data.category_name[0].category_name;
+                this.setState({ CategoryProductLists:product_list_basedon_category, categoryname: categoryname})
                 console.log(this.state.CategoryProductLists)
                 console.log(this.state.categoryid)
             } else {
@@ -60,7 +65,8 @@ class ProductCategoryPage extends Component {
                 </div>
 
                 {/* Products based on the selected category */}
-                <CategoryProducts Category={this.state.categoryid} ProductsData = {this.state.CategoryProductLists}/>
+
+                <CategoryProducts Category={this.state.categoryid} ProductsData = {this.state.CategoryProductLists} CatgegoryName= {this.state.categoryname}/>
 
                 <div className='Desktop'>
                     <FooterDesktop />
