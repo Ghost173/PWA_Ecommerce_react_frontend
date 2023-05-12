@@ -5,9 +5,10 @@ import FooterDesktop from '../components/common/FooterDesktop'
 import FooterMobile from '../components/common/FooterMobile'
 import CategoryProducts from '../components/products/CategoryProducts'
 import withRouter from '../withRouter'
+import { ToastContainer, toast } from 'react-toastify';
 
 import axios from 'axios'
-import AppUrl from '../../api/AppUrl';
+import AppUrl from '../api/AppUrl';
 
 
 class ProductCategoryPage extends Component {
@@ -26,10 +27,12 @@ class ProductCategoryPage extends Component {
         let catid = this.props.params.category
         this.setState({ categoryid: catid })
 
-        axios.get(AppUrl.ProductListByCategory(this.state.categoryid)).then(response => {
+        axios.get(AppUrl.ProductListByCategory(catid)).then(response => {
             let statuscode = response.status;
             if (statuscode == 200) {
                 this.setState({ CategoryProductLists: response.data })
+                console.log(this.state.CategoryProductLists)
+                console.log(this.state.categoryid)
             } else {
                 toast.error("Something went wrong please try agin later")
             }
@@ -58,7 +61,7 @@ class ProductCategoryPage extends Component {
 
                 {/* Products based on the selected category */}
                 <CategoryProducts Category={this.state.categoryid} ProductsData = {this.state.CategoryProductLists}/>
-                
+
                 <div className='Desktop'>
                     <FooterDesktop />
                 </div>
