@@ -11,24 +11,41 @@ class MegaMenuAll extends Component {
     constructor() {
         super();
         this.state = {
-            MenuData: []
+            MenuData: [],
+            retries: 0,
         }
     }
 
-    componentDidMount() {
+
+    fetchData = () => {
         axios.get(AppUrl.AllCategoryDetails).then(response => {
             let statuscode = response.status;
             if (statuscode == 200) {
-                this.setState({ MenuData: response.data })
+                this.setState({
+                    MenuData: response.data,
+                    loaderDiv: "d-none",
+                    mainDiv: "",
+                    retries: 0, // Reset the retries count when the request succeeds
+                })
             } else {
-                toast.error("Something went wrong please try agin later")
+                this.handleFetchError();
             }
         }).catch(error => {
-            setTimeout(() => {
-                toast.error("Unable to retrieve Menu data")
-            }, 3000); // wait for 3 seconds before showing the error message
-
+            this.handleFetchError();
         })
+    }
+
+    handleFetchError = () => {
+        setTimeout(() => {
+            this.setState({
+                retries: this.state.retries + 1, // Increment the retries count
+            });
+            this.fetchData(); // Retry the request
+        }, 3000);
+    };
+
+    componentDidMount() {
+        this.fetchData();
     }
 
     MenuItemClick = (event) => {

@@ -6,30 +6,50 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
 
 class MegaMenuMobile extends Component {
-
     constructor() {
         super();
         this.state = {
             MenuData: [],
-            loaderDiv: "",
-            mainDiv: "d-none"
+            retries: 0,
         }
     }
 
-    componentDidMount() {
+
+    fetchData = () => {
         axios.get(AppUrl.AllCategoryDetails).then(response => {
             let statuscode = response.status;
             if (statuscode == 200) {
-                this.setState({ MenuData: response.data, loaderDiv: "d-none", mainDiv: "" })
+                this.setState({
+                    MenuData: response.data,
+                    loaderDiv: "d-none",
+                    mainDiv: "",
+                    retries: 0, // Reset the retries count when the request succeeds
+                })
             } else {
-                toast.error("Something went wrong please try agin later")
+                this.handleFetchError();
             }
         }).catch(error => {
-            setTimeout(() => {
-                toast.error("Unable to retrieve Menu data")
-              }, 3000); // wait for 3 seconds before showing the error message
-            
+            this.handleFetchError();
         })
+    }
+
+    handleFetchError = () => {
+        if (this.state.retries === 0) {
+            // Display the error message only if it's the first retry
+            toast.error(
+                "It looks like there was a problem retrieving the Feature Products. Please contact support if the problem persists"
+            );
+        }
+        setTimeout(() => {
+            this.setState({
+                retries: this.state.retries + 1, // Increment the retries count
+            });
+            this.fetchData(); // Retry the request
+        }, 3000);
+    };
+
+    componentDidMount() {
+        this.fetchData();
     }
 
     MenuItemClick = (event) => {
@@ -80,11 +100,11 @@ class MegaMenuMobile extends Component {
                         {
                             (CategoryList.subcat).map((SubCategorylist, i) => {
                                 return <li>
-                         <Link to={"/productslistbysubcategory/"+CategoryList.id+"/"+SubCategorylist.id } className='accordionItem' target="_blank">
-                  {SubCategorylist.subcategory_name}
-                  </Link>
-                                    
-                            </li>
+                                    <Link to={"/productslistbysubcategory/" + CategoryList.id + "/" + SubCategorylist.id} className='accordionItem' target="_blank">
+                                        {SubCategorylist.subcategory_name}
+                                    </Link>
+
+                                </li>
                             })
                         }
                     </ul>
@@ -117,7 +137,7 @@ class MegaMenuMobile extends Component {
                     </div>
                 </div>
 
-                <div  className={this.state.mainDiv}>
+                <div className={this.state.mainDiv}>
                     <div className="accordionMenuDivMobile">
                         <div className="accordionMenuDivInsideMobile">
 
