@@ -12,24 +12,45 @@ class MegaMenu extends Component {
     super();
     this.state = {
       MenuData: [],
+      retries: 0,
     }
   }
 
-  componentDidMount() {
+  fetchData = () => {
     axios.get(AppUrl.AllCategoryDetails).then(response => {
       let statuscode = response.status;
       if (statuscode == 200) {
-        this.setState({MenuData:response.data, loaderDiv: "d-none", mainDiv: ""})
-        console.log(this.state.MenuData)
+        this.setState({
+          MenuData:response.data, 
+          loaderDiv: "d-none", 
+          mainDiv: "",
+          retries: 0, // Reset the retries count when the request succeeds
+        })
       } else {
-        toast.error("Something went wrong please try agin later")
+        this.handleFetchError();
       }
     }).catch(error => {
-      setTimeout(() => {
-        toast.error("Something went wrong to fetch data")      
-      }, 3000); // wait for 3 seconds before showing the error message
-     
+      this.handleFetchError();
     })
+  }
+
+  handleFetchError = () => {
+    if (this.state.retries === 0) {
+        // Display the error message only if it's the first retry
+        toast.error(
+            "It looks like there was a problem retrieving the Feature Products. Please contact support if the problem persists"
+        );
+    }
+    setTimeout(() => {
+        this.setState({
+            retries: this.state.retries + 1, // Increment the retries count
+        });
+        this.fetchData(); // Retry the request
+    }, 3000);
+};
+
+  componentDidMount() {
+    this.fetchData();
   }
 
 

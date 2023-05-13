@@ -61,30 +61,6 @@ class featureProduct extends Component {
     };
 
     componentDidMount() {
-        // const fetchFeatureProducts = () => {
-        //     axios.get(AppUrl.FeatureProducts)
-        //         .then(response => {
-        //             const statuscode = response.status;
-        //             if (statuscode === 200) {
-        //                 this.setState({
-        //                     FeatureProducts: response.data,
-        //                     loaderDiv: "d-none",
-        //                     mainDiv: "",
-        //                 });
-        //             } else {
-        //                 throw new Error("Something went wrong");
-        //             }
-        //         })
-        //         .catch(error => {
-        //             if (this.state.FeatureProducts.length === 0) {
-        //                 // If the first request fails, show the error message
-        //                 toast.error("It looks like there was a problem retrieving the Feature Products. Please contact support if the problem persists");
-        //             }
-        //             // Wait for 5 seconds before making another request
-        //             setTimeout(fetchFeatureProducts, 5000);
-        //         });
-        // };
-
         this.fetchData();
     }
 
