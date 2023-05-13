@@ -18,23 +18,74 @@ class featureProduct extends Component {
         this.state = {
             FeatureProducts: [],
             loaderDiv: "",
-            mainDiv: "d-none"
+            mainDiv: "d-none",
+            retries: 0,
         }
     }
 
+
+    fetchData = () => {
+        axios
+            .get(AppUrl.FeatureProducts)
+            .then((response) => {
+                let statuscode = response.status;
+                if (statuscode == 200) {
+                    this.setState({
+                        FeatureProducts: response.data,
+                        loaderDiv: "d-none",
+                        mainDiv: "",
+                        retries: 0, // Reset the retries count when the request succeeds
+                    });
+                } else {
+                    this.handleFetchError();
+                }
+            })
+            .catch((error) => {
+                this.handleFetchError();
+            });
+    };
+
+    handleFetchError = () => {
+        if (this.state.retries === 0) {
+            // Display the error message only if it's the first retry
+            toast.error(
+                "It looks like there was a problem retrieving the Feature Products. Please contact support if the problem persists"
+            );
+        }
+        setTimeout(() => {
+            this.setState({
+                retries: this.state.retries + 1, // Increment the retries count
+            });
+            this.fetchData(); // Retry the request
+        }, 3000);
+    };
+
     componentDidMount() {
-        axios.get(AppUrl.FeatureProducts).then(response => {
-            let statuscode = response.status;
-            if (statuscode == 200) {
-                this.setState({ FeatureProducts: response.data, loaderDiv: "d-none", mainDiv: "" })
-            } else {
-                toast.error("Something went wrong please try agin later")
-            }
-        }).catch(error => {
-            setTimeout(() => {
-                toast.error("It looks like there was a problem retrieving the Feature Products. Please contact support if the problem persists");
-              }, 3000); // wait for 3 seconds before showing the error message
-        })
+        // const fetchFeatureProducts = () => {
+        //     axios.get(AppUrl.FeatureProducts)
+        //         .then(response => {
+        //             const statuscode = response.status;
+        //             if (statuscode === 200) {
+        //                 this.setState({
+        //                     FeatureProducts: response.data,
+        //                     loaderDiv: "d-none",
+        //                     mainDiv: "",
+        //                 });
+        //             } else {
+        //                 throw new Error("Something went wrong");
+        //             }
+        //         })
+        //         .catch(error => {
+        //             if (this.state.FeatureProducts.length === 0) {
+        //                 // If the first request fails, show the error message
+        //                 toast.error("It looks like there was a problem retrieving the Feature Products. Please contact support if the problem persists");
+        //             }
+        //             // Wait for 5 seconds before making another request
+        //             setTimeout(fetchFeatureProducts, 5000);
+        //         });
+        // };
+
+        this.fetchData();
     }
 
     render() {

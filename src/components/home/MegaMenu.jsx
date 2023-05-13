@@ -3,6 +3,7 @@ import axios from 'axios'
 import AppUrl from '../../api/AppUrl';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 class MegaMenu extends Component {
 
@@ -19,6 +20,7 @@ class MegaMenu extends Component {
       let statuscode = response.status;
       if (statuscode == 200) {
         this.setState({MenuData:response.data, loaderDiv: "d-none", mainDiv: ""})
+        console.log(this.state.MenuData)
       } else {
         toast.error("Something went wrong please try agin later")
       }
@@ -42,8 +44,6 @@ class MegaMenu extends Component {
   }
 
   render() {
-
-
     const CategoryList = this.state.MenuData;
     const Myview = CategoryList.map((CategoryList, i) => {
       return <div key={i.toString()}>
@@ -53,17 +53,18 @@ class MegaMenu extends Component {
         </button>
         <div className='panel'>
           <ul>
-
             {
               (CategoryList.subcat).map((SubCategorylist, i) => {
-                return <li><a href='#' className='accordionItem'>{SubCategorylist.subcategory_name}</a></li>
+                return <li key={i}>
+                  <Link to={"/productslistbysubcategory/"+CategoryList.id+"/"+SubCategorylist.id} className='accordionItem' target="_blank">
+                    {SubCategorylist.subcategory_name}
+                  </Link>
+                </li>
               })
             }
           </ul>
         </div>
-
       </div>
-
     })
 
     return (

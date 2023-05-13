@@ -3,6 +3,7 @@ import axios from 'axios'
 import AppUrl from '../../api/AppUrl';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 class MegaMenuMobile extends Component {
 
@@ -78,7 +79,12 @@ class MegaMenuMobile extends Component {
 
                         {
                             (CategoryList.subcat).map((SubCategorylist, i) => {
-                                return <li><a href='#' className='accordionItemAll'>{SubCategorylist.subcategory_name}</a></li>
+                                return <li>
+                         <Link to={"/productslistbysubcategory/"+CategoryList.id+"/"+SubCategorylist.id } className='accordionItem' target="_blank">
+                  {SubCategorylist.subcategory_name}
+                  </Link>
+                                    
+                            </li>
                             })
                         }
                     </ul>

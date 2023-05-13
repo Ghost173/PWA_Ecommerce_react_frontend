@@ -3,6 +3,8 @@ import axios from 'axios'
 import AppUrl from '../../api/AppUrl';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
+
 
 
 class MegaMenuAll extends Component {
@@ -24,8 +26,8 @@ class MegaMenuAll extends Component {
         }).catch(error => {
             setTimeout(() => {
                 toast.error("Unable to retrieve Menu data")
-              }, 3000); // wait for 3 seconds before showing the error message
-            
+            }, 3000); // wait for 3 seconds before showing the error message
+
         })
     }
 
@@ -52,7 +54,11 @@ class MegaMenuAll extends Component {
 
                         {
                             (CategoryList.subcat).map((SubCategorylist, i) => {
-                                return <li><a href='#' className='accordionItemAll'>{SubCategorylist.subcategory_name}</a></li>
+                                return <li>
+                                    <Link to={"/productslistbysubcategory/" + CategoryList.id + "/" + SubCategorylist.id} className='accordionItem' target="_blank">
+                                        {SubCategorylist.subcategory_name}
+                                    </Link>
+                                </li>
                             })
                         }
                     </ul>
