@@ -34,18 +34,25 @@ class MegaMenuMobile extends Component {
     }
 
     handleFetchError = () => {
-        if (this.state.retries === 0) {
-            // Display the error message only if it's the first retry
-            toast.error(
-                "It looks like there was a problem retrieving the Feature Products. Please contact support if the problem persists"
-            );
-        }
+       const { retries } = this.state;
+    if (this.state.retries === 0) {
         setTimeout(() => {
-            this.setState({
-                retries: this.state.retries + 1, // Increment the retries count
-            });
-            this.fetchData(); // Retry the request
-        }, 10000);
+            this.setState({ retries: retries + 1 });
+            this.fetchData();
+        }, 60000)
+
+    } else {
+        // Subsequent retries after 1 minute
+        setTimeout(() => {
+            this.setState({ retries: retries + 1 });
+            this.fetchData();
+        }, 180000);
+    }
+    if (retries === 0) {
+        toast.error(
+          "It looks like there was a problem retrieving the Menu Data. Please contact support if the problem persists"
+        );
+      }
     };
 
     componentDidMount() {
