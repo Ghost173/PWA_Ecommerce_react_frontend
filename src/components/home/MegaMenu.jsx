@@ -3,6 +3,7 @@ import axios from 'axios'
 import AppUrl from '../../api/AppUrl';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 class MegaMenu extends Component {
 
@@ -11,23 +12,45 @@ class MegaMenu extends Component {
     super();
     this.state = {
       MenuData: [],
+      retries: 0,
     }
   }
 
-  componentDidMount() {
+  fetchData = () => {
     axios.get(AppUrl.AllCategoryDetails).then(response => {
       let statuscode = response.status;
       if (statuscode == 200) {
-        this.setState({MenuData:response.data, loaderDiv: "d-none", mainDiv: ""})
+        this.setState({
+          MenuData:response.data, 
+          loaderDiv: "d-none", 
+          mainDiv: "",
+          retries: 0, // Reset the retries count when the request succeeds
+        })
       } else {
-        toast.error("Something went wrong please try agin later")
+        this.handleFetchError();
       }
     }).catch(error => {
-      setTimeout(() => {
-        toast.error("Something went wrong to fetch data")      
-      }, 3000); // wait for 3 seconds before showing the error message
-     
+      this.handleFetchError();
     })
+  }
+
+  handleFetchError = () => {
+    if (this.state.retries === 0) {
+        // Display the error message only if it's the first retry
+        toast.error(
+            "It looks like there was a problem retrieving the Feature Products. Please contact support if the problem persists"
+        );
+    }
+    setTimeout(() => {
+        this.setState({
+            retries: this.state.retries + 1, // Increment the retries count
+        });
+        this.fetchData(); // Retry the request
+    }, 3000);
+};
+
+  componentDidMount() {
+    this.fetchData();
   }
 
 
@@ -42,8 +65,6 @@ class MegaMenu extends Component {
   }
 
   render() {
-
-
     const CategoryList = this.state.MenuData;
     const Myview = CategoryList.map((CategoryList, i) => {
       return <div key={i.toString()}>
@@ -53,17 +74,18 @@ class MegaMenu extends Component {
         </button>
         <div className='panel'>
           <ul>
-
             {
               (CategoryList.subcat).map((SubCategorylist, i) => {
-                return <li><a href='#' className='accordionItem'>{SubCategorylist.subcategory_name}</a></li>
+                return <li key={i}>
+                  <Link to={"/productslistbysubcategory/"+CategoryList.id+"/"+SubCategorylist.id} className='accordionItem' target="_blank">
+                    {SubCategorylist.subcategory_name}
+                  </Link>
+                </li>
               })
             }
           </ul>
         </div>
-
       </div>
-
     })
 
     return (

@@ -3,30 +3,49 @@ import axios from 'axios'
 import AppUrl from '../../api/AppUrl';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
+
 
 
 class MegaMenuAll extends Component {
     constructor() {
         super();
         this.state = {
-            MenuData: []
+            MenuData: [],
+            retries: 0,
         }
     }
 
-    componentDidMount() {
+
+    fetchData = () => {
         axios.get(AppUrl.AllCategoryDetails).then(response => {
             let statuscode = response.status;
             if (statuscode == 200) {
-                this.setState({ MenuData: response.data })
+                this.setState({
+                    MenuData: response.data,
+                    loaderDiv: "d-none",
+                    mainDiv: "",
+                    retries: 0, // Reset the retries count when the request succeeds
+                })
             } else {
-                toast.error("Something went wrong please try agin later")
+                this.handleFetchError();
             }
         }).catch(error => {
-            setTimeout(() => {
-                toast.error("Unable to retrieve Menu data")
-              }, 3000); // wait for 3 seconds before showing the error message
-            
+            this.handleFetchError();
         })
+    }
+
+    handleFetchError = () => {
+        setTimeout(() => {
+            this.setState({
+                retries: this.state.retries + 1, // Increment the retries count
+            });
+            this.fetchData(); // Retry the request
+        }, 3000);
+    };
+
+    componentDidMount() {
+        this.fetchData();
     }
 
     MenuItemClick = (event) => {
@@ -52,7 +71,11 @@ class MegaMenuAll extends Component {
 
                         {
                             (CategoryList.subcat).map((SubCategorylist, i) => {
-                                return <li><a href='#' className='accordionItemAll'>{SubCategorylist.subcategory_name}</a></li>
+                                return <li>
+                                    <Link to={"/productslistbysubcategory/" + CategoryList.id + "/" + SubCategorylist.id} className='accordionItem' target="_blank">
+                                        {SubCategorylist.subcategory_name}
+                                    </Link>
+                                </li>
                             })
                         }
                     </ul>
