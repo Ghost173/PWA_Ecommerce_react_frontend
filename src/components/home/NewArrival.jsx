@@ -22,24 +22,49 @@ class NewArrival extends Component {
             mainDiv: "d-none",
             error: '',
             loading: true,
+            retries: 0,
         }
     }
 
-    componentDidMount() {
+
+    fetchData = () => {
         axios.get(AppUrl.NewArrivalProducts).then(response => {
             let statuscode = response.status;
             if (statuscode == 200) {
-                this.setState({ newArrivalProducts: response.data, loaderDiv: "d-none", mainDiv: "" })
+                this.setState({
+                    newArrivalProducts: response.data,
+                    loaderDiv: "d-none",
+                    mainDiv: "",
+                    retries: 0,
+
+                })
             } else {
-                toast.error("Something went wrong please try agin later")
+                this.handleFetchError();
             }
         }).catch(error => {
-            setTimeout(() => {
-                toast.error("It looks like there was a problem retrieving theNewArrival Products. Please contact support if the problem persists");
-            }, 3000); // wait for 3 seconds before showing the error message
+            this.handleFetchError();
             this.setState({ error: "fail to get api data" })
 
         })
+    }
+
+    handleFetchError = () => {
+        if (this.state.retries === 0) {
+            // Display the error message only if it's the first retry
+            toast.error(
+                "It looks like there was a problem retrieving the NewArrival Products. Please contact support if the problem persists"
+            );
+        }
+        setTimeout(() => {
+            this.setState({
+                retries: this.state.retries + 1, // Increment the retries count
+            });
+            this.fetchData(); // Retry the request
+        }, 9000);
+    };
+
+    componentDidMount() {
+        this.fetchData();
     }
 
 
@@ -132,7 +157,7 @@ class NewArrival extends Component {
                     <Row>
 
                         <div className={this.state.loaderDiv}>
-                            <LoadinAnimation  />
+                            <LoadinAnimation />
                         </div>
                         <div className={this.state.mainDiv}>
                             <Slider ref={c => (this.slider = c)} {...settings}>

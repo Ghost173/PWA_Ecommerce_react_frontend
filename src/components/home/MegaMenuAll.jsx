@@ -41,7 +41,7 @@ class MegaMenuAll extends Component {
                 retries: this.state.retries + 1, // Increment the retries count
             });
             this.fetchData(); // Retry the request
-        }, 3000);
+        }, 10000);
     };
 
     componentDidMount() {
