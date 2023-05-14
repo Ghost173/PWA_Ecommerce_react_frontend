@@ -18,23 +18,46 @@ class Categories extends Component {
         this.state = {
             MenuData: [],
             loaderDiv: "",
-            mainDiv: "d-none"
+            mainDiv: "d-none",
+            retries: 0,
         }
     }
 
-    componentDidMount() {
+    fetchData = () => {
         axios.get(AppUrl.AllCategoryDetails).then(response => {
             let statuscode = response.status;
             if (statuscode == 200) {
-                this.setState({ MenuData: response.data, loaderDiv: "d-none", mainDiv: "" })
+                this.setState({
+                     MenuData: response.data, 
+                     loaderDiv: "d-none", 
+                     mainDiv: "" ,
+                     retries: 0,
+                    })
             } else {
-                toast.error("Something went wrong please try agin later")
+                this.handleFetchError();
             }
         }).catch(error => {
-            setTimeout(() => {
-                toast.error("It looks like there was a problem retrieving the category data. Please contact support if the problem persists")
-            }, 3000); // wait for 3 seconds before showing the error message
+            this.handleFetchError();
         })
+    }
+
+    handleFetchError = () => {
+        if (this.state.retries === 0) {
+            // Display the error message only if it's the first retry
+            toast.error(
+                "It looks like there was a problem retrieving the category data. Please contact support if the problem persists"
+            );
+        }
+        setTimeout(() => {
+            this.setState({
+                retries: this.state.retries + 1, // Increment the retries count
+            });
+            this.fetchData(); // Retry the request
+        }, 9000);
+    };
+
+    componentDidMount() {
+        this.fetchData();
     }
 
     render() {
@@ -46,7 +69,7 @@ class Categories extends Component {
             mydata = categorylist.map((categorylist, i) => {
                 return (
                     <Col key={i.toString} className='p-0' xl={2} lg={2} md={2} sm={6} xs={6}>
-                        <Link to={"/productslistbycategory/"+categorylist.id}>
+                        <Link to={"/productslistbycategory/" + categorylist.id}>
                             <Card className='h-100 w-100 text-center'>
                                 <Card.Body>
                                     <img className="center" alt="foo" src={categorylist.category_image} />
