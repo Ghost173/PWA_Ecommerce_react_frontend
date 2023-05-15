@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
 
 export class SubCategoryProducts extends Component {
   render() {
@@ -17,16 +18,20 @@ export class SubCategoryProducts extends Component {
 
       if (SubCategoryProductLists.discount_price === 'na') {
         return <Col className='p-0' key={i.toString} xl={3} lg={3} md={3} sm={6} xs={6}>
-          <Card className='image-box card w-100'>
+         <Link to={"/singleproductdetails/"+ SubCategoryProductLists.id}>
+         <Card className='image-box card w-100'>
             <Card.Body>
               <img className="center w-75" alt="foo" src={SubCategoryProductLists.product_image} />
             </Card.Body>
             <p className='product-name-on-card'>{SubCategoryProductLists.product_title}</p>
             <p className='product-price-on-card'>Rs: {SubCategoryProductLists.product_price}</p>
           </Card>
+          </Link>
+          
         </Col>
       } else {
         return <Col className='p-0' key={i.toString} xl={3} lg={3} md={3} sm={6} xs={6}>
+          <Link to={"/singleproductdetails/"+ SubCategoryProductLists.id}>
           <Card className='image-box card w-100'>
             <Card.Body>
               <img className="center w-75" alt="foo" src={SubCategoryProductLists.product_image} />
@@ -34,6 +39,8 @@ export class SubCategoryProducts extends Component {
             <p className='product-name-on-card'>{SubCategoryProductLists.product_title}</p>
             <p className='product-price-on-card'>Rs: <strike>{SubCategoryProductLists.product_price}</strike> {SubCategoryProductLists.discount_price}</p>
           </Card>
+          </Link>
+         
         </Col>
       }
     })
