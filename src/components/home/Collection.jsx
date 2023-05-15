@@ -5,7 +5,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios'
 import AppUrl from '../../api/AppUrl';
 import 'react-toastify/dist/ReactToastify.css';
-import Alert from 'react-bootstrap/Alert';
 import LoadinAnimation from '../../validation/LoadinAnimation';
 import { Link } from 'react-router-dom';
 

@@ -107,7 +107,6 @@ class Productsetails extends Component {
     };
 
     componentDidMount() {
-        window.scroll(0, 0);
         let product_id = this.props.params.product_id
         this.setState({ product_id: product_id })
        this.fetchData();
@@ -126,16 +125,16 @@ class Productsetails extends Component {
                                     <Container className="my-3">
                                         <Row>
                                             <Col className="p-0 m-0" md={3} lg={3} sm={3} xs={3}>
-                                                <img onClick={this.imageOnclick} className="w-100 smallimage" src={this.state.image_one} />
+                                                <img onClick={this.imageOnclick} className="w-100 smallimage product-sm-img" src={this.state.image_one} />
                                             </Col>
                                             <Col className="p-0 m-0" md={3} lg={3} sm={3} xs={3}>
-                                                <img  onClick={this.imageOnclick} className="w-100 smallimage" src={this.state.image_two} />
+                                                <img  onClick={this.imageOnclick} className="w-100 smallimage product-sm-img" src={this.state.image_two} />
                                             </Col>
                                             <Col className="p-0 m-0" md={3} lg={3} sm={3} xs={3}>
-                                                <img onClick={this.imageOnclick} className="w-100 smallimage" src={this.state.image_three} />
+                                                <img onClick={this.imageOnclick} className="w-100 smallimage product-sm-img" src={this.state.image_three} />
                                             </Col>
                                             <Col className="p-0 m-0" md={3} lg={3} sm={3} xs={3}>
-                                                <img onClick={this.imageOnclick} className="w-100 smallimage" src={this.state.image_four} />
+                                                <img onClick={this.imageOnclick} className="w-100 smallimage product-sm-img" src={this.state.image_four} />
                                             </Col>
                                         </Row>
                                     </Container>
