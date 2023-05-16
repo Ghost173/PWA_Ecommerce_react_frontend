@@ -19,7 +19,8 @@ class ProductCategoryPage extends Component {
         this.state = {
             categoryid: [],
             categoryname:[],
-            CategoryProductLists: []
+            CategoryProductLists: [],
+            retries: 0,
         }
     }
 
@@ -27,9 +28,12 @@ class ProductCategoryPage extends Component {
         window.scroll(0, 0);
         let catid = this.props.params.category
         this.setState({ categoryid: catid })
+        this.fetchData()
 
-      
+    }
 
+    fetchData = () => {
+        let catid = this.props.params.category
         axios.get(AppUrl.ProductListByCategory(catid)).then(response => {
             let statuscode = response.status;
             if (statuscode == 200) {
@@ -39,16 +43,34 @@ class ProductCategoryPage extends Component {
                 console.log(this.state.CategoryProductLists)
                 console.log(this.state.categoryid)
             } else {
-                toast.error("Something went wrong please try agin later")
+                this.handleFetchError();
             }
         }).catch(error => {
-            setTimeout(() => {
-                toast.error("It looks like there was a problem retrieving the category data. Please contact support if the problem persists")
-            }, 3000); // wait for 3 seconds before showing the error message
+            this.handleFetchError();
         })
-
-
     }
+
+    handleFetchError = () => {
+        const { retries } = this.state;
+        if (this.state.retries === 0) {
+            setTimeout(() => {
+                this.setState({ retries: retries + 1 });
+                this.fetchData();
+            }, 60000)
+
+        } else {
+            // Subsequent retries after 1 minute
+            setTimeout(() => {
+                this.setState({ retries: retries + 1 });
+                this.fetchData();
+            }, 180000);
+        }
+        if (retries === 0) {
+            toast.error(
+                "It looks like there was a problem retrieving the Products"
+            );
+        }
+    };
 
 
     render() {

@@ -21,6 +21,11 @@ class AppUrl {
     return this.BaseURL+"/productdetails/"+product_id;
   }
 
+
+  static SuggestProducts(product_id) {
+    return this.BaseURL+"/suggestproducts/"+product_id;
+  }
+
 }
 
 export default AppUrl
