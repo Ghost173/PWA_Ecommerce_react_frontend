@@ -32,7 +32,7 @@ class Productsetails extends Component {
             product_color: "",
             product_size: "",
             product_brand:"",
-
+            retries: 0,
         };
     }
 
@@ -41,11 +41,9 @@ class Productsetails extends Component {
         let previewImg = document.getElementById('previewImg');
         ReactDOM.findDOMNode(previewImg).setAttribute('src',imgSrc)
     }
-    
 
     fetchData = () => {
         let product_id = this.props.params.product_id
-
         axios
             .get(AppUrl.SingleProductDetails(product_id))
             .then((response) => {
@@ -76,11 +74,11 @@ class Productsetails extends Component {
                     });
                 } else {
 
-                    // this.handleFetchError();
+                     this.handleFetchError();
                 }
             })
             .catch((error) => {
-                // this.handleFetchError();
+                 this.handleFetchError();
             });
     };
 
@@ -109,9 +107,17 @@ class Productsetails extends Component {
     componentDidMount() {
         let product_id = this.props.params.product_id
         this.setState({ product_id: product_id })
-       this.fetchData();
+        this.fetchData();
+       
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.params.product_id !== this.props.params.product_id) {
+          this.fetchData();
+          window.scrollTo(0, 0); // Scroll to the top of the page
+        }
+      }
+    
 
     render() {
         return (
