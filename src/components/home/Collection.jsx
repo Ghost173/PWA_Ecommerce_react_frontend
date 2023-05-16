@@ -65,7 +65,7 @@ class Collection extends Component {
                             <img className="center w-75" alt="foo" src={colletionsproductslist.product_image} />
                         </Card.Body>
                         <p className='product-name-on-card'>{colletionsproductslist.product_title}</p>
-                        <p className='product-price-on-card'>Rs: <strike>{colletionsproductslist.product_price}</strike> {colletionsproductslist.discount_price}</p>
+                        <p className='product-price-on-card'>Rs: <strike className="text-secondary">{colletionsproductslist.product_price}</strike> {colletionsproductslist.discount_price}</p>
                     </Card>
                     </Link>
                    
