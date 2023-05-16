@@ -102,7 +102,7 @@ class NewArrival extends Component {
                             <img className="center w-75" alt="foo" src={newarrivalproductslist.product_image} />
                         </Card.Body>
                         <p className='product-name-on-card'> {newarrivalproductslist.product_title}</p>
-                        <p className='product-price-on-card'>Rs: <strike>{newarrivalproductslist.product_price}</strike> {newarrivalproductslist.discount_price}</p>
+                        <p className='product-price-on-card'>Rs: <strike className="text-secondary">{newarrivalproductslist.product_price}</strike> {newarrivalproductslist.discount_price}</p>
                     </Card>
                     </Link>
                     
