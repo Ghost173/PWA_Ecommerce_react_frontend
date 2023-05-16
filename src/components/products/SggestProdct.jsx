@@ -71,7 +71,7 @@ componentDidMount() {
         const data = suggestProducts.map((suggestProducts, i) =>{
             if (suggestProducts.discount_price === 'na') {
                 return  <Col key={i.toString} className="p-1" xl={2} lg={2} md={2} sm={4} xs={6}>
-                <Link to={"/singleproductdetails/"+ suggestProducts.id}>
+                <Link className='text-link' to={"/singleproductdetails/"+ suggestProducts.id}>
                     <Card className="image-box card">
                         <img className="center" src={suggestProducts.product_image} />
                         <Card.Body>
@@ -85,7 +85,7 @@ componentDidMount() {
 
             }else {
                 return <Col key={i.toString} className="p-1" xl={2} lg={2} md={2} sm={4} xs={6}>
-                <Link to={"/singleproductdetails/"+ suggestProducts.id}>
+                <Link className='text-link' to={"/singleproductdetails/"+ suggestProducts.id}>
                     <Card className="image-box card">
                         <img className="center" src={suggestProducts.product_image} />
                         <Card.Body>

@@ -5,6 +5,8 @@ import AppUrl from '../../api/AppUrl';
 import { ToastContainer, toast } from 'react-toastify';
 import withRouter from '../../withRouter'
 import ReactDOM from 'react-dom'
+import Badge from 'react-bootstrap/Badge';
+
 
 class Productsetails extends Component {
 
@@ -119,6 +121,20 @@ class Productsetails extends Component {
     }
 
 
+    priceOptions(product_price,discount_price ) {
+        if(discount_price == 'na') {
+            return (
+                <p className='product-price-on-card_singleproducts -price-on-card'>Rs: {product_price}</p>
+            )
+        }else {
+            return (
+                <p className='product-product-price-on-card_singleproducts -on-card'>Rs: <strike className="text-secondary">{product_price}</strike> {discount_price}</p>
+
+            )
+        }
+    }
+
+
     render() {
         var color = this.state.product_color
         var ColorDiv = "d-none"
@@ -142,6 +158,8 @@ class Productsetails extends Component {
                 return <option value={sizelist}>{sizelist}</option>
             })
         }
+
+
 
 
         return (
@@ -170,13 +188,25 @@ class Productsetails extends Component {
                                     </Container>
                                 </Col>
                                 <Col className="p-3 " md={6} lg={6} sm={12} xs={12}>
-                                    <h5 className="Product-Name">{this.state.product_title}</h5>
+                                    <div>
+                                        <Row>
+                                        <Col md={8}>
+                                        <h5 className="Product-Name">{this.state.product_title}</h5>
+                                        </Col>
+                                        {/* <Col md={4}>
+                                        <Badge className='mb-2' bg="secondary">New</Badge>
+                                        </Col> */}
+                                        </Row>
+                                      
+                                    </div>
+                                    
                                     <h6 className="section-sub-title">{this.state.product_short_description}</h6>
-                                    <div className="input-group">
+                                    {this.priceOptions(this.state.product_price, this.state.discount_price)}
+                                    {/* <div className="input-group">
                                         <div className="Product-price-card d-inline ">{this.state.product_price}</div>
                                         <div className="Product-price-card d-inline ">{this.state.discount_price}</div>
                                         <div className="Product-price-card d-inline ">{this.state.category_name}</div>
-                                    </div>
+                                    </div> */}
                                     <h6 className="mt-2">Product Category: {this.state.category_name}</h6>
                                     <h6 className="mt-2">Product SubCategory:  {this.state.Product_subcategoy}</h6>
                                     <h6 className="mt-2">Product Brand:  {this.state.product_brand}</h6>
