@@ -29,7 +29,7 @@ class AppRoute extends Component {
           <Route exact path='/refund' element={<RefundPage />} />
           
           {/* single product details page */}
-          <Route exact path='/productdetails' element={<ProductDetailsPage />} />
+          <Route exact path='/singleproductdetails/:product_id' element={<ProductDetailsPage />} />
 
           {/* notification */}
           <Route exact path='/notification' element={<NotificatioPage />} />
@@ -47,6 +47,9 @@ class AppRoute extends Component {
 
           <Route exact path='/productslistbycategory/:category' element={<ProductCategoryPage />} />
           <Route exact path='/productslistbysubcategory/:category/:subcategory' element={<ProductSubCategoryPage />} />
+
+
+
 
         </Routes>
 

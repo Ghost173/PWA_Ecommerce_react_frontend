@@ -7,6 +7,7 @@ class AppUrl {
   static FeatureProducts = this.BaseURL + "/featureProducts"
   static NewArrivalProducts = this.BaseURL + "/newarrivals"
   static ProductsCollections = this.BaseURL + "/productscolletions"
+  static HomeSliderImages = this.BaseURL + "/getsliders"
 
   static ProductListByCategory(category) {
     return this.BaseURL+"/productlistbycategory/"+category;
@@ -14,6 +15,10 @@ class AppUrl {
 
   static ProductSubcategoryList(categoryid, subcategoryid){
     return this.BaseURL+"/productlistbysubcategory/"+categoryid+"/"+subcategoryid;
+  }
+
+  static SingleProductDetails(product_id) {
+    return this.BaseURL+"/productdetails/"+product_id;
   }
 
 }

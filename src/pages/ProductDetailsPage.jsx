@@ -3,12 +3,24 @@ import NavMenuDesktop from '../components/common/NavMenuDesktop'
 import NavMenuMobile from '../components/common/NavMenuMobile'
 import FooterDesktop from '../components/common/FooterDesktop'
 import FooterMobile from '../components/common/FooterMobile'
-import Productsetails from '../components/products/Productsetails'
+import Productsdetails from '../components/products/Productsdetails'
 import SggestProdct from '../components/products/SggestProdct'
-
+import withRouter from '../withRouter'
 class ProductDetailsPage extends Component {
+
+    constructor() {
+        super();
+        this.state ={
+            ProductId: []
+        };
+    }
+
     componentDidMount() {
-        window.scroll(0, 0)
+        window.scroll(0, 0);
+        let productid = this.props.params.product_id
+        this.setState({ 
+            ProductId: productid
+         })
       }
     render() {
         return (
@@ -22,7 +34,7 @@ class ProductDetailsPage extends Component {
                 </div>
 
                 {/* product page load here */}
-                <Productsetails/>
+                <Productsdetails/>
                 <SggestProdct />
 
 
@@ -37,4 +49,4 @@ class ProductDetailsPage extends Component {
     }
 }
 
-export default ProductDetailsPage
+export default withRouter(ProductDetailsPage)

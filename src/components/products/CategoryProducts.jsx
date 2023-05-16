@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import Card from 'react-bootstrap/Card';
-import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios'
-import AppUrl from '../../api/AppUrl';
+
 import 'react-toastify/dist/ReactToastify.css';
 import Alert from 'react-bootstrap/Alert';
 import LoadinAnimation from '../../validation/LoadinAnimation';
+import { Link } from 'react-router-dom';
 
 class CategoryProducts extends Component {
   render() {
@@ -21,6 +20,7 @@ class CategoryProducts extends Component {
 
       if (catproductlist.discount_price === 'na') {
         return <Col className='p-0' key={i.toString} xl={3} lg={3} md={3} sm={6} xs={6}>
+          <Link to={"/singleproductdetails/"+ catproductlist.id}>
           <Card className='image-box card w-100'>
             <Card.Body>
               <img className="center w-75" alt="foo" src={catproductlist.product_image} />
@@ -28,9 +28,12 @@ class CategoryProducts extends Component {
             <p className='product-name-on-card'>{catproductlist.product_title}</p>
             <p className='product-price-on-card'>Rs: {catproductlist.product_price}</p>
           </Card>
+          </Link>
+         
         </Col>
       } else {
         return <Col className='p-0' key={i.toString} xl={3} lg={3} md={3} sm={6} xs={6}>
+          <Link to={"/singleproductdetails/"+ catproductlist.id}>
           <Card className='image-box card w-100'>
             <Card.Body>
               <img className="center w-75" alt="foo" src={catproductlist.product_image} />
@@ -38,6 +41,8 @@ class CategoryProducts extends Component {
             <p className='product-name-on-card'>{catproductlist.product_title}</p>
             <p className='product-price-on-card'>Rs: <strike>{catproductlist.product_price}</strike> {catproductlist.discount_price}</p>
           </Card>
+          </Link>
+         
         </Col>
       }
 
