@@ -79,7 +79,7 @@ class featureProduct extends Component {
 
             if (featureproductslist.discount_price === 'na') {
                 return <Col className="p-1" key={i.toString} xl={2} lg={2} md={2} sm={4} xs={6}>
-                    <Link to={"/singleproductdetails/"+ featureproductslist.id}>
+                    <Link className='text-link' to={"/singleproductdetails/"+ featureproductslist.id}>
                         < Card className='image-box card'>
                             <Card.Body>
                                 <img className="center" alt="foo" src={featureproductslist.product_image} />
@@ -91,13 +91,13 @@ class featureProduct extends Component {
                 </Col>
             } else {
                 return <Col className="p-1" key={i.toString} xl={2} lg={2} md={2} sm={4} xs={6}>
-                    <Link to={"/singleproductdetails/"+ featureproductslist.id}>
+                    <Link className='text-link' to={"/singleproductdetails/"+ featureproductslist.id}>
                         < Card className='image-box card'>
                             <Card.Body>
                                 <img className="center" alt="foo" src={featureproductslist.product_image} />
                             </Card.Body>
                             <p className='product-name-on-card'>{featureproductslist.product_title}</p>
-                            <p className='product-price-on-card'>Rs: <strike>{featureproductslist.product_price}</strike> {featureproductslist.discount_price}</p>
+                            <p className='product-price-on-card'>Rs: <strike className="text-secondary">{featureproductslist.product_price}</strike> {featureproductslist.discount_price}</p>
                         </Card>
                     </Link>
                 </Col>

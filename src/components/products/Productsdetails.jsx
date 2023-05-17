@@ -5,6 +5,8 @@ import AppUrl from '../../api/AppUrl';
 import { ToastContainer, toast } from 'react-toastify';
 import withRouter from '../../withRouter'
 import ReactDOM from 'react-dom'
+import Badge from 'react-bootstrap/Badge';
+
 
 class Productsetails extends Component {
 
@@ -13,10 +15,10 @@ class Productsetails extends Component {
         super();
         this.state = {
             product_id: [],
-            product_details:[],
-            product_list:[],
-            category_name:"",
-            Product_subcategoy:[],
+            product_details: [],
+            product_list: [],
+            category_name: "",
+            Product_subcategoy: [],
             product_image: "",
             product_price: "",
             discount_price: "",
@@ -27,11 +29,11 @@ class Productsetails extends Component {
             image_two: "",
             image_three: "",
             image_four: "",
-            product_short_description:"",
-            product_long_description:"",
+            product_short_description: "",
+            product_long_description: "",
             product_color: "",
             product_size: "",
-            product_brand:"",
+            product_brand: "",
             retries: 0,
         };
     }
@@ -39,7 +41,7 @@ class Productsetails extends Component {
     imageOnclick(event) {
         let imgSrc = event.target.getAttribute('src');
         let previewImg = document.getElementById('previewImg');
-        ReactDOM.findDOMNode(previewImg).setAttribute('src',imgSrc)
+        ReactDOM.findDOMNode(previewImg).setAttribute('src', imgSrc)
     }
 
     fetchData = () => {
@@ -74,11 +76,11 @@ class Productsetails extends Component {
                     });
                 } else {
 
-                     this.handleFetchError();
+                    this.handleFetchError();
                 }
             })
             .catch((error) => {
-                 this.handleFetchError();
+                this.handleFetchError();
             });
     };
 
@@ -108,18 +110,58 @@ class Productsetails extends Component {
         let product_id = this.props.params.product_id
         this.setState({ product_id: product_id })
         this.fetchData();
-       
+
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.params.product_id !== this.props.params.product_id) {
-          this.fetchData();
-          window.scrollTo(0, 0); // Scroll to the top of the page
+            this.fetchData();
+            window.scrollTo(0, 0); // Scroll to the top of the page
         }
-      }
-    
+    }
+
+
+    priceOptions(product_price,discount_price ) {
+        if(discount_price == 'na') {
+            return (
+                <p className='product-price-on-card_singleproducts -price-on-card'>Rs: {product_price}</p>
+            )
+        }else {
+            return (
+                <p className='product-product-price-on-card_singleproducts -on-card'>Rs: <strike className="text-secondary">{product_price}</strike> {discount_price}</p>
+
+            )
+        }
+    }
+
 
     render() {
+        var color = this.state.product_color
+        var ColorDiv = "d-none"
+        if (color == "na") {
+            ColorDiv = "d-none"
+        } else {
+            let colorArray = color.split(',');
+            var ColorOption = colorArray.map((colorList, i) => {
+                return <option value={colorList}>{colorList}</option>
+            })
+            ColorDiv = ""
+        }
+
+        var size = this.state.product_size
+        var sizeDiv = "d-none"
+        if(size ==  'na') {
+            sizeDiv = "d-none"
+        }else {
+            let sizeArry = size.split(',')
+            var sizeOption = sizeArry.map((sizelist, i) =>{
+                return <option value={sizelist}>{sizelist}</option>
+            })
+        }
+
+
+
+
         return (
             <Fragment>
                 <Container fluid={true} className="BetweenTwoSection">
@@ -127,14 +169,14 @@ class Productsetails extends Component {
                         <Col className="shadow-sm bg-white pb-3 mt-4" md={12} lg={12} sm={12} xs={12}>
                             <Row>
                                 <Col className="p-3" md={6} lg={6} sm={12} xs={12}>
-                                    <img className="w-100 bigimage" src={this.state.product_image} id='previewImg'/>
+                                    <img className="w-100 bigimage" src={this.state.product_image} id='previewImg' />
                                     <Container className="my-3">
                                         <Row>
                                             <Col className="p-0 m-0" md={3} lg={3} sm={3} xs={3}>
                                                 <img onClick={this.imageOnclick} className="w-100 smallimage product-sm-img" src={this.state.image_one} />
                                             </Col>
                                             <Col className="p-0 m-0" md={3} lg={3} sm={3} xs={3}>
-                                                <img  onClick={this.imageOnclick} className="w-100 smallimage product-sm-img" src={this.state.image_two} />
+                                                <img onClick={this.imageOnclick} className="w-100 smallimage product-sm-img" src={this.state.image_two} />
                                             </Col>
                                             <Col className="p-0 m-0" md={3} lg={3} sm={3} xs={3}>
                                                 <img onClick={this.imageOnclick} className="w-100 smallimage product-sm-img" src={this.state.image_three} />
@@ -146,21 +188,51 @@ class Productsetails extends Component {
                                     </Container>
                                 </Col>
                                 <Col className="p-3 " md={6} lg={6} sm={12} xs={12}>
-                                    <h5 className="Product-Name">{this.state.product_title}</h5>
+                                    <div>
+                                        <Row>
+                                        <Col md={8}>
+                                        <h5 className="Product-Name">{this.state.product_title}</h5>
+                                        </Col>
+                                        {/* <Col md={4}>
+                                        <Badge className='mb-2' bg="secondary">New</Badge>
+                                        </Col> */}
+                                        </Row>
+                                      
+                                    </div>
+                                    
                                     <h6 className="section-sub-title">{this.state.product_short_description}</h6>
-                                    <div className="input-group">
+                                    {this.priceOptions(this.state.product_price, this.state.discount_price)}
+                                    {/* <div className="input-group">
                                         <div className="Product-price-card d-inline ">{this.state.product_price}</div>
                                         <div className="Product-price-card d-inline ">{this.state.discount_price}</div>
                                         <div className="Product-price-card d-inline ">{this.state.category_name}</div>
-                                    </div>
+                                    </div> */}
                                     <h6 className="mt-2">Product Category: {this.state.category_name}</h6>
                                     <h6 className="mt-2">Product SubCategory:  {this.state.Product_subcategoy}</h6>
                                     <h6 className="mt-2">Product Brand:  {this.state.product_brand}</h6>
                                     <h6 className="mt-2">Total Qty: {this.state.product_qty}</h6>
                                     <h6 className="mt-2">Colors: {this.state.product_color}</h6>
 
-<br></br>
-                                    <h6 className="mt-2">Choose Color</h6>
+                                    <div className='ColorDiv'>
+                                        <h6 className="mt-2">Choose Color</h6>
+                                        <select className='form-control form-select'>
+                                            <option>Choose Color</option>
+                                            {ColorOption}
+                                        </select>
+                                    </div>
+
+
+                                    <div className='sizeDiv'>
+                                        <h6 className="mt-2">Choose size</h6>
+                                        <select className='form-control form-select'>
+                                            <option>Choose Size</option>
+                                            {sizeOption}
+                                        </select>
+                                    </div>
+
+
+                                    <br></br>
+                                    {/* <h6 className="mt-2">Choose Color</h6>
                                     <div className="input-group">
                                         <div className="form-check mx-1">
                                             <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" />
@@ -174,7 +246,7 @@ class Productsetails extends Component {
                                             <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" />
                                             <label className="form-check-label" htmlFor="exampleRadios1">X</label>
                                         </div>
-                                    </div>
+                                    </div> */}
 
                                     <h6 className="mt-2">Quantity</h6>
                                     <input className="form-control text-center w-50" type="number" />

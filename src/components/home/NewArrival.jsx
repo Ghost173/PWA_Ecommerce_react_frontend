@@ -83,7 +83,7 @@ class NewArrival extends Component {
         const data = newarrivalproductslist.map((newarrivalproductslist, i) => {
             if (newarrivalproductslist.discount_price === 'na') {
                 return <div key={i.toString}>
-                    <Link to={"/singleproductdetails/"+ newarrivalproductslist.id}>
+                    <Link className='text-link' to={"/singleproductdetails/"+ newarrivalproductslist.id}>
                     <Card className='image-box card w-100'>
                         <Card.Body>
                             <img className="center w-75" alt="foo" src={newarrivalproductslist.product_image} />
@@ -96,13 +96,13 @@ class NewArrival extends Component {
                 </div>
             } else {
                 return <div key={i.toString}>
-                    <Link to={"/singleproductdetails/"+ newarrivalproductslist.id}>
+                    <Link className='text-link' to={"/singleproductdetails/"+ newarrivalproductslist.id}>
                     <Card className='image-box card w-100'>
                         <Card.Body>
                             <img className="center w-75" alt="foo" src={newarrivalproductslist.product_image} />
                         </Card.Body>
                         <p className='product-name-on-card'> {newarrivalproductslist.product_title}</p>
-                        <p className='product-price-on-card'>Rs: <strike>{newarrivalproductslist.product_price}</strike> {newarrivalproductslist.discount_price}</p>
+                        <p className='product-price-on-card'>Rs: <strike className="text-secondary">{newarrivalproductslist.product_price}</strike> {newarrivalproductslist.discount_price}</p>
                     </Card>
                     </Link>
                     

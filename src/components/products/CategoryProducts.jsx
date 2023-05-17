@@ -20,7 +20,7 @@ class CategoryProducts extends Component {
 
       if (catproductlist.discount_price === 'na') {
         return <Col className='p-0' key={i.toString} xl={3} lg={3} md={3} sm={6} xs={6}>
-          <Link to={"/singleproductdetails/"+ catproductlist.id}>
+          <Link className='text-link' to={"/singleproductdetails/"+ catproductlist.id}>
           <Card className='image-box card w-100'>
             <Card.Body>
               <img className="center w-75" alt="foo" src={catproductlist.product_image} />
@@ -33,13 +33,13 @@ class CategoryProducts extends Component {
         </Col>
       } else {
         return <Col className='p-0' key={i.toString} xl={3} lg={3} md={3} sm={6} xs={6}>
-          <Link to={"/singleproductdetails/"+ catproductlist.id}>
+          <Link className='text-link' to={"/singleproductdetails/"+ catproductlist.id}>
           <Card className='image-box card w-100'>
             <Card.Body>
               <img className="center w-75" alt="foo" src={catproductlist.product_image} />
             </Card.Body>
             <p className='product-name-on-card'>{catproductlist.product_title}</p>
-            <p className='product-price-on-card'>Rs: <strike>{catproductlist.product_price}</strike> {catproductlist.discount_price}</p>
+            <p className='product-price-on-card'>Rs: <strike className="text-secondary">{catproductlist.product_price}</strike> {catproductlist.discount_price}</p>
           </Card>
           </Link>
          
