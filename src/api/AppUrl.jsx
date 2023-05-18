@@ -8,6 +8,8 @@ class AppUrl {
   static NewArrivalProducts = this.BaseURL + "/newarrivals"
   static ProductsCollections = this.BaseURL + "/productscolletions"
   static HomeSliderImages = this.BaseURL + "/getsliders"
+  static Notifications = this.BaseURL + "/getnotifications"
+
 
   static ProductListByCategory(category) {
     return this.BaseURL+"/productlistbycategory/"+category;
