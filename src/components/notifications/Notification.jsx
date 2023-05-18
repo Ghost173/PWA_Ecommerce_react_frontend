@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap'
-
+import axios from 'axios'
+import AppUrl from '../../api/AppUrl';
+import { ToastContainer, toast } from 'react-toastify';
 
 class Notification extends Component {
 
@@ -8,6 +10,11 @@ class Notification extends Component {
         super();
         this.state = {
             show: false,
+            notificationData: [],
+            retries: 0,
+            loaderDiv: "",
+            mainDiv: "d-none",
+
         }
     }
 
@@ -18,73 +25,100 @@ class Notification extends Component {
         this.setState({ show: true })
     }
 
+    fetchData = () => {
+        axios
+            .get(AppUrl.Notifications)
+            .then((response) => {
+                let statuscode = response.status;
+                if (statuscode == 200) {
+                    this.setState({
+                        notificationData: response.data,
+                        loaderDiv: "d-none",
+                        mainDiv: "",
+                        retries: 0, // Reset the retries count when the request succeeds
+
+                    });
+
+                } else {
+                    this.handleFetchError();
+                }
+            })
+            .catch((error) => {
+                this.handleFetchError();
+            });
+    };
+
+    handleFetchError = () => {
+        const { retries } = this.state;
+        if (this.state.retries === 0) {
+            setTimeout(() => {
+                this.setState({ retries: retries + 1 });
+                this.fetchData();
+            }, 60000)
+
+        } else {
+            // Subsequent retries after 1 minute
+            setTimeout(() => {
+                this.setState({ retries: retries + 1 });
+                this.fetchData();
+            }, 180000);
+        }
+        if (retries === 0) {
+            toast.error(
+                "It looks like there was a problem retrieving the Notifications"
+            );
+        }
+    };
+
+    componentDidMount() {
+        this.fetchData();
+    }
+
     render() {
+
+        const notificationList = this.state.notificationData;
+        const data = notificationList.map((notificationData, i) => {
+            return <Col className=" p-1 " md={6} lg={6} sm={12} xs={12} key={i.toString}>
+                <Card onClick={this.handleShow} className="notification-card">
+                    <Card.Body>
+                        <h6> {notificationData.title}</h6>
+                        <p className="py-1  px-0 text-primary m-0"><i className="fa  fa-bell"></i>   Date:{notificationData.date} | Status: Unread</p>
+                    </Card.Body>
+                </Card>
+            </Col>
+        })
+
+
         return (
             <Fragment>
                 <Container className="TopSection">
-                    <Row>
-                        <Col className=" p-1 " md={6} lg={6} sm={12} xs={12}>
-                            <Card onClick={this.handleShow} className="notification-card">
-                                <Card.Body>
-                                    <h6> Lorem Ipsum is simply dummy text of the printing</h6>
-                                    <p className="py-1  px-0 text-primary m-0"><i className="fa  fa-bell"></i>   Date: 22/12/2010 | Status: Unread</p>
-                                </Card.Body>
-                            </Card>
-                        </Col>
 
-                        <Col className=" p-1 " md={6} lg={6} sm={12} xs={12}>
-                            <Card onClick={this.handleShow} className="notification-card">
-                                <Card.Body>
-                                    <h6> Lorem Ipsum is simply dummy text of the printing</h6>
-                                    <p className="py-1   px-0 text-primary m-0"><i className="fa  fa-bell"></i>   Date: 22/12/2010 | Status: Unread</p>
-                                </Card.Body>
-                            </Card>
-                        </Col>
+                    <div>
+                        <div className={this.state.loaderDiv}>
+                            <div class="ph-item">
+                                <div class="ph-col-12">
+                                    <div class="ph-row">
+                                        <div class="ph-col-4"></div>
+                                        <div class="ph-col-8 empty"></div>
+                                        <div class="ph-col-6"></div>
+                                        <div class="ph-col-6 empty"></div>
+                                        <div class="ph-col-12"></div>
+                                        <div class="ph-col-12"></div>
+                                        <div class="ph-col-12"></div>
+                                        <div class="ph-col-12"></div>
+                                        <div class="ph-col-12"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                        <Col className="p-1" md={6} lg={6} sm={12} xs={12}>
-                            <Card className="notification-card">
-                                <Card.Body>
-                                    <h6> Lorem Ipsum is simply dummy text of the printing</h6>
-                                    <p className="py-1  px-0 text-success m-0"><i className="fa  fa-bell"></i>   Date: 22/12/2010 | Status: Read</p>
-                                </Card.Body>
-                            </Card>
+                        <div className={this.state.mainDiv}>
+                            <Row>
+                                {data}
+                            </Row>
+                        </div>
+                    </div>
 
-                        </Col>
-
-                        <Col className="p-1" md={6} lg={6} sm={12} xs={12}>
-
-                            <Card className="notification-card">
-                                <Card.Body>
-                                    <h5> Lorem Ipsum is simply dummy text of the printing</h5>
-                                    <p className="py-1  px-0 text-success m-0"><i className="fa fa-bell"></i>   Date: 22/12/2010 | Status: Read</p>
-                                </Card.Body>
-                            </Card>
-
-                        </Col>
-
-                        <Col className="p-1" md={6} lg={6} sm={12} xs={12}>
-
-                            <Card className="notification-card">
-                                <Card.Body>
-                                    <h6> Lorem Ipsum is simply dummy text of the printing</h6>
-                                    <p className="py-1  px-0 text-success m-0"><i className="fa  fa-bell"></i>   Date: 22/12/2010 | Status: Read</p>
-                                </Card.Body>
-                            </Card>
-
-                        </Col>
-
-                        <Col className="p-1" md={6} lg={6} sm={12} xs={12}>
-
-                            <Card className="notification-card">
-                                <Card.Body>
-                                    <h6> Lorem Ipsum is simply dummy text of the printing</h6>
-                                    <p className="py-1 px-0 text-success m-0"><i className="fa  fa-bell"></i>   Date: 22/12/2010 | Status: Read</p>
-                                </Card.Body>
-                            </Card>
-
-                        </Col>
-
-                    </Row>
                 </Container>
 
 
@@ -99,7 +133,7 @@ class Notification extends Component {
                         </p>
                     </Modal.Body>
                     <Modal.Footer>
-                    <Button variant="secondary" onClick={this.handleClose}>
+                        <Button variant="secondary" onClick={this.handleClose}>
                             Close
                         </Button>
                     </Modal.Footer>
