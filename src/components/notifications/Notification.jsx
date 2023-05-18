@@ -14,6 +14,9 @@ class Notification extends Component {
             retries: 0,
             loaderDiv: "",
             mainDiv: "d-none",
+            Notificationmsg: "",
+            Notificationtitle: "",
+            Notificationdate: ""
 
         }
     }
@@ -21,8 +24,17 @@ class Notification extends Component {
     handleClose = () => {
         this.setState({ show: false })
     };
-    handleShow = () => {
-        this.setState({ show: true })
+    handleShow = (event) => {
+        this.setState({ show: true });
+        let Notificationmsg = event.target.getAttribute("data-message")
+        let Notificationtitle = event.target.getAttribute("data-title")
+        let Notificationdate = event.target.getAttribute("data-date")
+        this.setState({
+            Notificationmsg: Notificationmsg,
+            Notificationtitle: Notificationtitle,
+            Notificationdate: Notificationdate
+        })
+
     }
 
     fetchData = () => {
@@ -79,11 +91,14 @@ class Notification extends Component {
         const notificationList = this.state.notificationData;
         const data = notificationList.map((notificationData, i) => {
             return <Col className=" p-1 " md={6} lg={6} sm={12} xs={12} key={i.toString}>
-                <Card onClick={this.handleShow} className="notification-card">
+                <Card  className="notification-card">
                     <Card.Body>
                         <h6> {notificationData.title}</h6>
                         <p className="py-1  px-0 text-primary m-0"><i className="fa  fa-bell"></i>   Date:{notificationData.date} | Status: Unread</p>
-                        <Button className='btn btn-warning'>Details</Button>
+                        <Button onClick={this.handleShow} data-title={notificationData.title}
+                            data-date={notificationData.date}
+                            data-message={notificationData.message}
+                            className='btn btn-warning'>Details</Button>
                     </Card.Body>
                 </Card>
             </Col>
@@ -125,12 +140,12 @@ class Notification extends Component {
 
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
-                        <h6><i className="fa fa-bell"></i> Date:11/05/2021</h6>
+                        <h6><i className="fa fa-bell"></i> Date:{this.state.Notificationdate}</h6>
                     </Modal.Header>
                     <Modal.Body>
-                        <h6>Woohoo, you're reading this text in a modal!</h6>
+                        <h6>{this.state.Notificationtitle}</h6>
                         <p>
-                            Each course has been hand-tailored to teach a specific skill. I hope you agree! Whether you’re trying to learn a new skill from scratch or want to refresh your memory on something you’ve learned in the past, you’ve come to the right place.
+                        {this.state.Notificationmsg}
                         </p>
                     </Modal.Body>
                     <Modal.Footer>
