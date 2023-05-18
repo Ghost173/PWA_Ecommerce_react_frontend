@@ -28,6 +28,10 @@ class AppUrl {
     return this.BaseURL+"/suggestproducts/"+product_id;
   }
 
+  static ProductsSearch(key) {
+    return this.BaseURL+"/search/"+key;
+  }
+
 }
 
 export default AppUrl
