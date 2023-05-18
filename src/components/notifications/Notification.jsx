@@ -83,6 +83,7 @@ class Notification extends Component {
                     <Card.Body>
                         <h6> {notificationData.title}</h6>
                         <p className="py-1  px-0 text-primary m-0"><i className="fa  fa-bell"></i>   Date:{notificationData.date} | Status: Unread</p>
+                        <Button className='btn btn-warning'>Details</Button>
                     </Card.Body>
                 </Card>
             </Col>
