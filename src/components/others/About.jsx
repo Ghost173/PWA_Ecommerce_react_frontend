@@ -4,6 +4,8 @@ import axios from 'axios'
 import AppUrl from '../../api/AppUrl';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import { Link } from 'react-router-dom';
 
 export class About extends Component {
 
@@ -18,28 +20,33 @@ export class About extends Component {
 
     componentDidMount() {
         let about_stoteage = sessionStorage.getItem("allsiteinfo");
-        
-        if(about_stoteage == null) {
+
+        if (about_stoteage == null) {
             axios.get(AppUrl.allsiteinfo).then(response => {
                 let statuscode = response.status;
                 if (statuscode == 200) {
                     let JsonData = (response.data)[0]['about'];
                     this.setState({ about: JsonData, loaderDiv: "d-none", mainDiv: "" })
-                    sessionStorage.setItem("about_stoteage",JsonData)
-                }else {
+                    sessionStorage.setItem("about_stoteage", JsonData)
+                } else {
                     toast.error("Something went wrong please try agin later")
                 }
             }).catch(error => {
                 toast.error("Unable to retrieve About_us data")
             })
         }
-        
+
     }
 
     render() {
         return (
             <Fragment>
                 <Container>
+                    <Breadcrumb>
+                        <Breadcrumb.Item > <Link to = "/">Home </Link> </Breadcrumb.Item>
+                        <Breadcrumb.Item > About</Breadcrumb.Item>
+                    </Breadcrumb>
+
                     <Row className="p-2">
                         <Col className="shadow-sm bg-white mt-1" md={12} lg={12} sm={12} xs={12}>
 

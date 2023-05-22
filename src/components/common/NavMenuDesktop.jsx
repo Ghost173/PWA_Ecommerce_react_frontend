@@ -3,8 +3,9 @@ import { Row, Col, Button } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Logo from '../../assets/images/easyshop.png'
-import { Link } from 'react-router-dom'
+import { Link , Navigate} from 'react-router-dom'
 import MegaMenuAll from '../home/MegaMenuAll';
+
 
 class NavMenuDesktop extends Component {
 
@@ -13,10 +14,34 @@ class NavMenuDesktop extends Component {
     super();
     this.state = {
       SideNavState: "sideNavClose",
-      ContentOverState: "ContentOverlayClose"
+      ContentOverState: "ContentOverlayClose",
+      SearchKey: "",
+      SearchRedirectStatus: false
+    }
+
+    this.SearchOnChange = this.SearchOnChange.bind(this)
+    this.searchonclick = this.searchonclick.bind(this)
+    this.searchRedirect = this.searchRedirect.bind(this)
+  }
+
+
+  SearchOnChange(event) {
+    let SearchKey =  event.target.value;
+    this.setState({SearchKey: SearchKey})
+  }
+
+
+  searchonclick() {
+    if(this.state.SearchKey.length >= 2) {
+      this.setState({SearchRedirectStatus:true})
     }
   }
 
+  searchRedirect() {
+    if(this.state.SearchRedirectStatus===true) {
+      return <Navigate to={"/productbysearch/"+this.state.SearchKey} />
+    }
+  }
 
   MenuBarClickHandler = () => {
     this.SideNavOpenClose();
@@ -54,8 +79,9 @@ class NavMenuDesktop extends Component {
 
                 <Col className='p-1' lg={4} md={4} sm={12} xs={12}>
                   <div className='input-group w-100'>
-                    <input type='text' className='form-control' />
-                    <Button type='button' className='btn site-btn'>
+                    <input onChange={this.SearchOnChange} type='text' className='form-control' />
+
+                    <Button onClick={this.searchonclick} type='button' className='btn site-btn'>
                       <i className='fa fa-search'></i>
                     </Button>
                   </div>
@@ -77,6 +103,7 @@ class NavMenuDesktop extends Component {
                   <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> 3 Items </Link>
                 </Col>
               </Row>
+              {this.searchRedirect()}
             </Container>
           </Navbar>
         </div>

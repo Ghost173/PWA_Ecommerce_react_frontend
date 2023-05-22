@@ -124,11 +124,11 @@ class Productsetails extends Component {
     priceOptions(product_price,discount_price ) {
         if(discount_price == 'na') {
             return (
-                <p className='product-price-on-card_singleproducts -price-on-card'>Rs: {product_price}</p>
+                <p className='product-price-on-card_singleproducts'>Rs: {product_price}</p>
             )
         }else {
             return (
-                <p className='product-product-price-on-card_singleproducts -on-card'>Rs: <strike className="text-secondary">{product_price}</strike> {discount_price}</p>
+                <p className='product-price-on-card_singleproducts '>Rs: <strike className="text-secondary">{product_price}</strike> {discount_price}</p>
 
             )
         }
@@ -157,6 +157,7 @@ class Productsetails extends Component {
             var sizeOption = sizeArry.map((sizelist, i) =>{
                 return <option value={sizelist}>{sizelist}</option>
             })
+            sizeDiv = ""
         }
 
 
@@ -216,7 +217,7 @@ class Productsetails extends Component {
                                     <div className='ColorDiv'>
                                         <h6 className="mt-2">Choose Color</h6>
                                         <select className='form-control form-select'>
-                                            <option>Choose Color</option>
+                                            <option disabled selected>--- Choose Color ---</option>
                                             {ColorOption}
                                         </select>
                                     </div>
@@ -225,7 +226,7 @@ class Productsetails extends Component {
                                     <div className='sizeDiv'>
                                         <h6 className="mt-2">Choose size</h6>
                                         <select className='form-control form-select'>
-                                            <option>Choose Size</option>
+                                            <option disabled selected>--- Choose Size ---</option>
                                             {sizeOption}
                                         </select>
                                     </div>

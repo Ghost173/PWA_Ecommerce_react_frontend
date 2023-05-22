@@ -5,7 +5,8 @@ import axios from 'axios'
 import AppUrl from '../../api/AppUrl';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import { Link } from 'react-router-dom';
 
 class Contact extends Component {
     constructor() {
@@ -82,6 +83,10 @@ class Contact extends Component {
         return (
             <Fragment>
                 <Container>
+                <Breadcrumb>
+                        <Breadcrumb.Item > <Link to="/">Home </Link> </Breadcrumb.Item>
+                        <Breadcrumb.Item > Contact Us</Breadcrumb.Item>
+                    </Breadcrumb>
                     <Row className="p-2">
                         <Col className="shadow-sm bg-white mt-2" md={12} lg={12} sm={12} xs={12}>
 
