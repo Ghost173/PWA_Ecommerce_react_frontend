@@ -82,9 +82,9 @@ class NewArrival extends Component {
         const newarrivalproductslist = this.state.newArrivalProducts;
         const data = newarrivalproductslist.map((newarrivalproductslist, i) => {
             if (newarrivalproductslist.discount_price === 'na') {
-                return <div key={i.toString}>
+                return <div key={i.toString} className="p-1">
                     <Link className='text-link' to={"/singleproductdetails/"+ newarrivalproductslist.id}>
-                    <Card className='image-box card w-100'>
+                    <Card className='image-box card w-100 shadow'>
                         <Card.Body>
                             <img className="center w-75" alt="foo" src={newarrivalproductslist.product_image} />
                         </Card.Body>
@@ -95,9 +95,9 @@ class NewArrival extends Component {
                    
                 </div>
             } else {
-                return <div key={i.toString}>
+                return <div key={i.toString} className="p-1">
                     <Link className='text-link' to={"/singleproductdetails/"+ newarrivalproductslist.id}>
-                    <Card className='image-box card w-100'>
+                    <Card className='image-box card w-100 shadow'>
                         <Card.Body>
                             <img className="center w-75" alt="foo" src={newarrivalproductslist.product_image} />
                         </Card.Body>
@@ -168,9 +168,6 @@ class NewArrival extends Component {
                         </div>
                         <div className={this.state.mainDiv}>
                             <Slider ref={c => (this.slider = c)} {...settings}>
-
-
-
                                 {data}
                             </Slider>
                         </div>

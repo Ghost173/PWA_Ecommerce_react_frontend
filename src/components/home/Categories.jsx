@@ -68,7 +68,7 @@ class Categories extends Component {
         if (categorylist.length) {
             mydata = categorylist.map((categorylist, i) => {
                 return (
-                    <Col key={i.toString} className='p-0' xl={2} lg={2} md={2} sm={6} xs={6}>
+                    <Col key={i.toString} className='p-1' xl={2} lg={2} md={2} sm={6} xs={6}>
                         <Link className='text-link' to={"/productslistbycategory/" + categorylist.id}>
                             <Card className='h-100 w-100 text-center'>
                                 <Card.Body>
