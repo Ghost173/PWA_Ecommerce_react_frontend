@@ -16,6 +16,7 @@ import AboutUsPage from '../pages/AboutUsPage';
 import ProductCategoryPage from '../pages/ProductCategoryPage';
 import ProductSubCategoryPage from '../pages/ProductSubCategoryPage';
 import SearchProductsPage from '../pages/SearchProductsPage';
+import RegisterPage from '../pages/RegisterPage';
 
 class AppRoute extends Component {
   render() {
@@ -24,6 +25,8 @@ class AppRoute extends Component {
         <Routes>
           <Route exact path="/" element={<HomePage />} />
           <Route exact path='/login' element={<UserLoginPage />} />
+          <Route exact path='/register' element={<RegisterPage />} />
+
           <Route exact path='/contact' element={<ContactPage />} />
           <Route exact path='/purchase' element={<Purchase />} />
           <Route exact path='/privacy' element={<PrivacyPage />} />
