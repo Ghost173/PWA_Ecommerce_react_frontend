@@ -124,11 +124,11 @@ class Productsetails extends Component {
     priceOptions(product_price,discount_price ) {
         if(discount_price == 'na') {
             return (
-                <p className='product-price-on-card_singleproducts'>Rs: {product_price}</p>
+                <p className='product-price-on-card_singleproducts'>LKR: {product_price}</p>
             )
         }else {
             return (
-                <p className='product-price-on-card_singleproducts '>Rs: <strike className="text-secondary">{product_price}</strike> {discount_price}</p>
+                <p className='product-price-on-card_singleproducts '>LKR {discount_price} <strike className="text-secondary" style={{ fontSize: '17px' }}>{product_price}</strike></p>
 
             )
         }
@@ -193,6 +193,7 @@ class Productsetails extends Component {
                                         <Row>
                                         <Col md={8}>
                                         <h5 className="Product-Name">{this.state.product_title}</h5>
+                                         <span className="text-success"><i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> </span> 
                                         </Col>
                                         {/* <Col md={4}>
                                         <Badge className='mb-2' bg="secondary">New</Badge>
@@ -201,18 +202,18 @@ class Productsetails extends Component {
                                       
                                     </div>
                                     
-                                    <h6 className="section-sub-title">{this.state.product_short_description}</h6>
+                                    {/* <h6 className="section-sub-title">{this.state.product_short_description}</h6> */}
                                     {this.priceOptions(this.state.product_price, this.state.discount_price)}
                                     {/* <div className="input-group">
                                         <div className="Product-price-card d-inline ">{this.state.product_price}</div>
                                         <div className="Product-price-card d-inline ">{this.state.discount_price}</div>
                                         <div className="Product-price-card d-inline ">{this.state.category_name}</div>
                                     </div> */}
-                                    <h6 className="mt-2">Product Category: {this.state.category_name}</h6>
+                                    {/* <h6 className="mt-2">Product Category: {this.state.category_name}</h6>
                                     <h6 className="mt-2">Product SubCategory:  {this.state.Product_subcategoy}</h6>
                                     <h6 className="mt-2">Product Brand:  {this.state.product_brand}</h6>
                                     <h6 className="mt-2">Total Qty: {this.state.product_qty}</h6>
-                                    <h6 className="mt-2">Colors: {this.state.product_color}</h6>
+                                    <h6 className="mt-2">Colors: {this.state.product_color}</h6> */}
 
                                     <div className='ColorDiv'>
                                         <h6 className="mt-2">Choose Color</h6>
