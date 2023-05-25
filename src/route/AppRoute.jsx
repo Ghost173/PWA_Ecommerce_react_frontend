@@ -17,6 +17,8 @@ import ProductCategoryPage from '../pages/ProductCategoryPage';
 import ProductSubCategoryPage from '../pages/ProductSubCategoryPage';
 import SearchProductsPage from '../pages/SearchProductsPage';
 import RegisterPage from '../pages/RegisterPage';
+import FogetPasswordPage from '../pages/FogetPasswordPage';
+import RestPasswordPage from '../pages/RestPasswordPage';
 
 class AppRoute extends Component {
   render() {
@@ -26,6 +28,8 @@ class AppRoute extends Component {
           <Route exact path="/" element={<HomePage />} />
           <Route exact path='/login' element={<UserLoginPage />} />
           <Route exact path='/register' element={<RegisterPage />} />
+          <Route exact path='/forgetpassword' element={<FogetPasswordPage />} />
+          <Route exact path='/restpassword' element={<RestPasswordPage />} />
 
           <Route exact path='/contact' element={<ContactPage />} />
           <Route exact path='/purchase' element={<Purchase />} />
