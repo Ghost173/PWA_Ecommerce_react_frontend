@@ -11,6 +11,7 @@ class AppUrl {
   static Notifications = this.BaseURL + "/getnotifications"
 
 
+
   static ProductListByCategory(category) {
     return this.BaseURL+"/productlistbycategory/"+category;
   }
@@ -35,6 +36,8 @@ class AppUrl {
 
   // user related api calls 
   static UserLogion = this.BaseURL + "/login"
+
+  static UserData = this.BaseURL + "/user"
 }
 
 export default AppUrl
