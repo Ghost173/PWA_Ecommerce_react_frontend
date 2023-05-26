@@ -1,10 +1,54 @@
 import React, { Component, Fragment } from 'react'
 import { Col, Container, Form, Row, Button } from 'react-bootstrap'
 import loginimg from '../../assets/images/login.png'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
+import axios from 'axios';
+import AppUrl from '../../api/AppUrl';
 
 class UserLogin extends Component {
+
+constructor () {
+  super();
+  this.state = {
+    email: "",
+    password: "",
+    message: "",
+    loggedIn: false
+  }
+}
+
+
+// login form submit method 
+formSubmit = (e) => {
+  e.preventDefault();
+   const data = {
+    email: this.state.email,
+    password: this.state.password
+   }
+
+   axios.post(AppUrl.UserLogion,data)
+   .then(response => {
+    localStorage.setItem("token",response.data.token)
+    this.setState({loggedIn:true})
+
+   })
+
+
+}
+
+
+
+
   render() {
+
+
+    //afterLogion 
+    if(this.state.loggedIn) {
+      return <Navigate to={'/profile'}/>
+    }
+
+
+
     return (
       <Fragment>
         <Container>
@@ -13,11 +57,11 @@ class UserLogin extends Component {
 
               <Row className="text-center">
                 <Col className="d-flex justify-content-center" lg={6} md={6} sm={12} xs={12}>
-                  <Form className='onboardForm'>
+                  <Form className='onboardForm' onSubmit={this.formSubmit}>
                     <h4 className="section-title-login"> USER SING IN </h4>
-                    <input className="form-control m-2" type="text" placeholder="Enter your email" required />
-                    <input className="form-control m-2" type="text" placeholder="Enter your password" required/>
-                    <Button className="btn btn-block m-2 site-btn-login"> Login </Button>
+                    <input className="form-control m-2" onChange={(e) =>{this.setState({ email:e.target.value})}} type="text" placeholder="Enter your email" required />
+                    <input className="form-control m-2" onChange={(e) =>{this.setState({ password:e.target.value})}} type="text" placeholder="Enter your password" required/>
+                    <Button type='submit' className="btn btn-block m-2 site-btn-login"> Login </Button>
 
                     <br></br><br></br>
                     <hr />

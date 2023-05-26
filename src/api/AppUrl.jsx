@@ -32,6 +32,9 @@ class AppUrl {
     return this.BaseURL+"/search/"+key;
   }
 
+
+  // user related api calls 
+  static UserLogion = this.BaseURL + "/login"
 }
 
 export default AppUrl
