@@ -8,6 +8,9 @@ import Profile from '../components/user/Profile'
 
 export class UserProfilePage extends Component {
     render() {
+
+        const user = this.props.user;
+
         return (
             <Fragment>
 
@@ -21,7 +24,7 @@ export class UserProfilePage extends Component {
 
 
                 {/* User profile components  */}
-                <Profile />
+                <Profile/>
 
                 <div className='Desktop'>
                     <FooterDesktop />
