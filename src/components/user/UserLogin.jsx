@@ -32,7 +32,9 @@ formSubmit = (e) => {
     localStorage.setItem("token",response.data.token)
     this.setState({loggedIn:true})
 
-   })
+   }).catch(error => {
+    toast.error(error.response.data.message)
+})
 
 
 }

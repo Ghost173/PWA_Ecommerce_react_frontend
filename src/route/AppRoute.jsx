@@ -30,7 +30,7 @@ class AppRoute extends Component {
           <Route exact path='/login' element={<UserLoginPage />} />
           <Route exact path='/register' element={<RegisterPage />} />
           <Route exact path='/forgetpassword' element={<FogetPasswordPage />} />
-          <Route exact path='/restpassword' element={<RestPasswordPage />} />
+          <Route exact path='/restpassword/:code' element={<RestPasswordPage />} />
           <Route exact path='/profile' element={<UserProfilePage />} />
 
           <Route exact path='/contact' element={<ContactPage />} />
