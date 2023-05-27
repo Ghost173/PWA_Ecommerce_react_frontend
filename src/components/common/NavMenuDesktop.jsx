@@ -17,8 +17,6 @@ class NavMenuDesktop extends Component {
       ContentOverState: "ContentOverlayClose",
       SearchKey: "",
       SearchRedirectStatus: false,
-      loginregister: 1,
-      profile: 0,
     }
 
     this.SearchOnChange = this.SearchOnChange.bind(this)
@@ -67,26 +65,10 @@ class NavMenuDesktop extends Component {
   }
 
 
-
-  componentDidMount() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      this.setState({
-        loginregister: 0,
-        profile: 1
-      })
-    }
-
+  logout = () => {
+    localStorage.clear();
   }
 
-  MenuOptions = () => {
-    if (this.state.loginregister == 1) {
-      return (<Link to="/register" className='h4 btn'>REGISTER</Link>)
-
-    } else {
-      return (<Link to="/profile" className='h4 btn'>MY ACCOUNT</Link>)
-    }
-  }
 
   render() {
 
@@ -101,7 +83,7 @@ class NavMenuDesktop extends Component {
           </Link>
 
           <Link to="/profile" className="h4 btn">PROFILE</Link>
-          <Link to="/register" className="h4 btn">LOGOUT</Link>
+          <Link to="/" onClick={this.logout} className="h4 btn">LOGOUT</Link>
 
           <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> 3 Items </Link>
         </div>
