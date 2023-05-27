@@ -34,6 +34,10 @@ class AppUrl {
   }
 
 
+  static ProductReviewsList(product_id) {
+    return this.BaseURL+"/reviewlists/"+product_id;
+  }
+
   // user related api calls 
   static UserLogion = this.BaseURL + "/login"
 

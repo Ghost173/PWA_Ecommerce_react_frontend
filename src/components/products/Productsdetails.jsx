@@ -6,6 +6,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import withRouter from '../../withRouter'
 import ReactDOM from 'react-dom'
 import Badge from 'react-bootstrap/Badge';
+import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
+import InnerImageZoom from 'react-inner-image-zoom';
+import ReviewList from './ReviewList';
 
 
 class Productsetails extends Component {
@@ -35,6 +38,8 @@ class Productsetails extends Component {
             product_size: "",
             product_brand: "",
             retries: 0,
+            previewImg:"0",
+            reviews: []
         };
     }
 
@@ -43,6 +48,7 @@ class Productsetails extends Component {
         let previewImg = document.getElementById('previewImg');
         ReactDOM.findDOMNode(previewImg).setAttribute('src', imgSrc)
     }
+
 
     fetchData = () => {
         let product_id = this.props.params.product_id
@@ -107,8 +113,8 @@ class Productsetails extends Component {
     };
 
     componentDidMount() {
-        let product_id = this.props.params.product_id
-        this.setState({ product_id: product_id })
+        let product_idget = this.props.params.product_id
+        this.setState({ product_id: product_idget })
         this.fetchData();
 
     }
@@ -136,6 +142,8 @@ class Productsetails extends Component {
 
 
     render() {
+        let product_idget = this.props.params.product_id
+
         var color = this.state.product_color
         var ColorDiv = "d-none"
         if (color == "na") {
@@ -158,19 +166,24 @@ class Productsetails extends Component {
                 return <option value={sizelist}>{sizelist}</option>
             })
             sizeDiv = ""
-        }
-
-
-
+        }  
 
         return (
+     
+
             <Fragment>
                 <Container fluid={true} className="BetweenTwoSection">
                     <Row className="p-2">
                         <Col className="shadow-sm bg-white pb-3 mt-4" md={12} lg={12} sm={12} xs={12}>
                             <Row>
                                 <Col className="p-3" md={6} lg={6} sm={12} xs={12}>
-                                    <img className="w-100 bigimage" src={this.state.product_image} id='previewImg' />
+                                <img className="w-100 bigimage" src={this.state.product_image} id='previewImg' />
+                                    {/* <div className=''>
+                                    <InnerImageZoom zoomScale={1.8} zoomType={"hover"} src={this.state.product_image} zoomSrc={this.state.product_image} />
+                                    </div> */}
+                                    {/* */}
+                                   
+
                                     <Container className="my-3">
                                         <Row>
                                             <Col className="p-0 m-0" md={3} lg={3} sm={3} xs={3}>
@@ -193,7 +206,7 @@ class Productsetails extends Component {
                                         <Row>
                                         <Col md={8}>
                                         <h5 className="Product-Name">{this.state.product_title}</h5>
-                                         <span className="text-success"><i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> </span> 
+                                         <span className="text-success"><i className="fa fa-star"></i><i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> </span> 
                                         </Col>
                                         {/* <Col md={4}>
                                         <Badge className='mb-2' bg="secondary">New</Badge>
@@ -201,21 +214,11 @@ class Productsetails extends Component {
                                         </Row>
                                       
                                     </div>
-                                    
-                                    {/* <h6 className="section-sub-title">{this.state.product_short_description}</h6> */}
+                                
                                     {this.priceOptions(this.state.product_price, this.state.discount_price)}
-                                    {/* <div className="input-group">
-                                        <div className="Product-price-card d-inline ">{this.state.product_price}</div>
-                                        <div className="Product-price-card d-inline ">{this.state.discount_price}</div>
-                                        <div className="Product-price-card d-inline ">{this.state.category_name}</div>
-                                    </div> */}
-                                    {/* <h6 className="mt-2">Product Category: {this.state.category_name}</h6>
-                                    <h6 className="mt-2">Product SubCategory:  {this.state.Product_subcategoy}</h6>
-                                    <h6 className="mt-2">Product Brand:  {this.state.product_brand}</h6>
-                                    <h6 className="mt-2">Total Qty: {this.state.product_qty}</h6>
-                                    <h6 className="mt-2">Colors: {this.state.product_color}</h6> */}
 
-                                    <div className='ColorDiv'>
+
+                                    <div className={ColorDiv}>
                                         <h6 className="mt-2">Choose Color</h6>
                                         <select className='form-control form-select'>
                                             <option disabled selected>--- Choose Color ---</option>
@@ -234,21 +237,6 @@ class Productsetails extends Component {
 
 
                                     <br></br>
-                                    {/* <h6 className="mt-2">Choose Color</h6>
-                                    <div className="input-group">
-                                        <div className="form-check mx-1">
-                                            <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" />
-                                            <label className="form-check-label" htmlFor="exampleRadios1" >Black</label>
-                                        </div>
-                                    </div>
-
-                                    <h6 className="mt-2">Choose Size</h6>
-                                    <div className="input-group">
-                                        <div className="form-check mx-1">
-                                            <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" />
-                                            <label className="form-check-label" htmlFor="exampleRadios1">X</label>
-                                        </div>
-                                    </div> */}
 
                                     <h6 className="mt-2">Quantity</h6>
                                     <input className="form-control text-center w-50" type="number" />
@@ -269,18 +257,9 @@ class Productsetails extends Component {
                                     </p>
                                 </Col>
 
-                                <Col className="" md={6} lg={6} sm={12} xs={12}>
-                                    <h6 className="mt-2">REVIEWS</h6>
-                                    <p className=" p-0 m-0"><span className="Review-Title">Kazi Ariyan</span> <span className="text-success"><i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> </span> </p>
-                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-
-                                    <p className=" p-0 m-0"><span className="Review-Title">Kazi Ariyan</span> <span className="text-success"><i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> </span> </p>
-                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-
-                                    <p className=" p-0 m-0"><span className="Review-Title">Kazi Ariyan</span> <span className="text-success"><i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> </span> </p>
-                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-
-                                </Col>
+                                    <ReviewList product_id={product_idget}/>
+                            
+                             
                             </Row>
 
                         </Col>
