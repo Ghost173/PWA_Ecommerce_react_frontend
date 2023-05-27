@@ -4,6 +4,7 @@ import loginimg from '../../assets/images/login.png'
 import { Link, Navigate } from 'react-router-dom'
 import AppUrl from '../../api/AppUrl';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 class UserRegister extends Component {
 
@@ -32,7 +33,25 @@ class UserRegister extends Component {
                 localStorage.setItem("token", response.data.token)
                 this.setState({ loggedIn: true })
 
-            })
+            }) .catch(error => {
+                if (error.response && error.response.data.errors) {
+                  const errorMessage = error.response.data.errors[0];
+                  // Display the error message to the user
+                  toast.error(errorMessage ,
+                    {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored",
+                        });
+                } else {
+                  // Handle other types of errors
+                }
+              });
 
 
     }

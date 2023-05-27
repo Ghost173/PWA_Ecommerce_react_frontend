@@ -47,6 +47,9 @@ class AppUrl {
   static UserForgetPassword = this.BaseURL + "/forgotpassword"
   static UserRestPassword = this.BaseURL + "/restpassword"
   
+
+  //Add to Cart
+  static UserAddToCart = this.BaseURL + "/addtocart"
 }
 
 export default AppUrl
