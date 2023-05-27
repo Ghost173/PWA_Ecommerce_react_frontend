@@ -41,6 +41,7 @@ class AppUrl {
 
   static UserRegister = this.BaseURL + "/register"
   static UserForgetPassword = this.BaseURL + "/forgotpassword"
+  static UserRestPassword = this.BaseURL + "/restpassword"
   
 }
 
