@@ -33,8 +33,8 @@ export class Profile extends Component {
         }).then(response => {
             this.setState({ UserDetails: response.data })
         }).catch(error => {
-            // localStorage.removeItem('token');
-            // window.location.href = '/login';
+            localStorage.removeItem('token');
+            window.location.href = '/login';
         })
 
         console.log("userdata test" + this.state.UserDetails)
