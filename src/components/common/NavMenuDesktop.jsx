@@ -3,7 +3,7 @@ import { Row, Col, Button } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Logo from '../../assets/images/easyshop.png'
-import { Link , Navigate} from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import MegaMenuAll from '../home/MegaMenuAll';
 
 
@@ -16,7 +16,9 @@ class NavMenuDesktop extends Component {
       SideNavState: "sideNavClose",
       ContentOverState: "ContentOverlayClose",
       SearchKey: "",
-      SearchRedirectStatus: false
+      SearchRedirectStatus: false,
+      loginregister: 1,
+      profile: 0,
     }
 
     this.SearchOnChange = this.SearchOnChange.bind(this)
@@ -26,20 +28,20 @@ class NavMenuDesktop extends Component {
 
 
   SearchOnChange(event) {
-    let SearchKey =  event.target.value;
-    this.setState({SearchKey: SearchKey})
+    let SearchKey = event.target.value;
+    this.setState({ SearchKey: SearchKey })
   }
 
 
   searchonclick() {
-    if(this.state.SearchKey.length >= 2) {
-      this.setState({SearchRedirectStatus:true})
+    if (this.state.SearchKey.length >= 2) {
+      this.setState({ SearchRedirectStatus: true })
     }
   }
 
   searchRedirect() {
-    if(this.state.SearchRedirectStatus===true) {
-      return <Navigate to={"/productbysearch/"+this.state.SearchKey} />
+    if (this.state.SearchRedirectStatus === true) {
+      return <Navigate to={"/productbysearch/" + this.state.SearchKey} />
     }
   }
 
@@ -64,58 +66,105 @@ class NavMenuDesktop extends Component {
     }
   }
 
+
+
+  componentDidMount() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.setState({
+        loginregister: 0,
+        profile: 1
+      })
+    }
+
+  }
+
+  MenuOptions = () => {
+    if (this.state.loginregister == 1) {
+      return (<Link to="/register" className='h4 btn'>REGISTER</Link>)
+
+    } else {
+      return (<Link to="/profile" className='h4 btn'>MY ACCOUNT</Link>)
+    }
+  }
+
   render() {
+
+    let buttons;
+    if (localStorage.getItem('token')) {
+      buttons = (
+        <div>
+          <Link to="/favourite" className="btn"><i className="fa h4 fa-heart"></i><sup><span className="badge text-white bg-danger">3</span></sup>
+          </Link>
+
+          <Link to="/notification" className="btn"><i className="fa h4 fa-bell"></i><sup><span className="badge text-white bg-danger">5</span></sup>
+          </Link>
+
+          <Link to="/profile" className="h4 btn">PROFILE</Link>
+          <Link to="/register" className="h4 btn">LOGOUT</Link>
+
+          <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> 3 Items </Link>
+        </div>
+      )
+
+    } else {
+      buttons = (
+        <div>
+          <Link to="/favourite" className="btn"><i className="fa h4 fa-heart"></i><sup><span className="badge text-white bg-danger">3</span></sup>
+          </Link>
+
+          <Link to="/notification" className="btn"><i className="fa h4 fa-bell"></i><sup><span className="badge text-white bg-danger">5</span></sup>
+          </Link>
+
+          <Link to="/login" className="h4 btn">LOGIN</Link>
+          <Link to="/register" className="h4 btn">REGISTER</Link>
+
+          <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> 3 Items </Link>
+        </div>
+      )
+
+    }
+
+
     return (
       <Fragment>
         <div className='TopSectionDown'>
-        <Navbar fixed='top' bg="light" className='navbar'>
+          <Navbar fixed='top' bg="light" className='navbar'>
 
-<Container fluid={"true"} className='fixed-top shadow-sm p-2 mb-0 bg-white' >
-  <Row>
-    <Col lg={4} md={4} sm={12} xs={12}>
-    <Button onClick={this.MenuBarClickHandler} variant="light"><i className="fa fa-bars"></i> </Button>
-      <Link to="/"><img src={Logo} className='nav-logo' /> </Link>
-    </Col>
+            <Container fluid={"true"} className='fixed-top shadow-sm p-2 mb-0 bg-white' >
+              <Row>
+                <Col lg={4} md={4} sm={12} xs={12}>
+                  <Button onClick={this.MenuBarClickHandler} variant="light"><i className="fa fa-bars"></i> </Button>
+                  <Link to="/"><img src={Logo} className='nav-logo' /> </Link>
+                </Col>
 
-    <Col className='p-1' lg={4} md={4} sm={12} xs={12}>
-      <div className='input-group w-100'>
-        <input onChange={this.SearchOnChange} type='text' className='form-control' />
+                <Col className='p-1' lg={4} md={4} sm={12} xs={12}>
+                  <div className='input-group w-100'>
+                    <input onChange={this.SearchOnChange} type='text' className='form-control' />
 
-        <Button onClick={this.searchonclick} type='button' className='btn site-btn'>
-          <i className='fa fa-search'></i>
-        </Button>
-      </div>
-    </Col>
+                    <Button onClick={this.searchonclick} type='button' className='btn site-btn'>
+                      <i className='fa fa-search'></i>
+                    </Button>
+                  </div>
+                </Col>
 
-    <Col lg={4} md={4} sm={12} xs={12}>
-      <Link to="/notification" className='btn p-1 '><i class="fa h4 fa-bell"></i>
-        <sup>
-          <span className='badge text-white bg-danger'>6</span>
-        </sup>
-      </Link>
-      
-      <Link to="/favourite" className="btn"><i className="fa h4 fa-heart"></i>
-      <sup><span className="badge text-white bg-danger">3</span></sup>                  
-       </Link>
-
-      <Link to="/login" className='h4 btn'>LOGIN</Link>
-      <Link to="/register" className='h4 btn'>REGISTER</Link>
-      <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> 3 Items </Link>
-    </Col>
-  </Row>
-  {this.searchRedirect()}
-</Container>
-</Navbar>
+                <Col lg={4} md={4} sm={12} xs={12}>
+                {buttons}
+                </Col>
+              </Row>
+              {this.searchRedirect()}
+            </Container>
+          </Navbar>
         </div>
 
 
         <div className={this.state.SideNavState}>
-                <MegaMenuAll />
-          </div>
+          <MegaMenuAll />
+        </div>
 
-               <div onClick={this.ContentOverlayClickHandler} className={this.state.ContentOverState}>
+        <div onClick={this.ContentOverlayClickHandler} className={this.state.ContentOverState}>
 
-               </div>
+        </div>
 
       </Fragment>
     )
