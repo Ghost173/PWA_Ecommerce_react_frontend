@@ -38,10 +38,19 @@ class UserRegister extends Component {
     }
 
     render() {
-            //after Register 
-    if(this.state.loggedIn) {
-        return <Navigate to={'/profile'}/>
-      }
+
+
+        const token = localStorage.getItem('token');
+
+        if (token) {
+            // Use your preferred method for redirecting to the login page
+            window.location.href = '/profile';
+            return null; // Render nothing
+        }
+        //after Register 
+        if (this.state.loggedIn) {
+            return <Navigate to={'/profile'} />
+        }
         return (
             <Fragment>
                 <Container>
