@@ -37,7 +37,6 @@ export class Profile extends Component {
             window.location.href = '/login';
         })
 
-        console.log("userdata test" + this.state.UserDetails)
     }
 
 

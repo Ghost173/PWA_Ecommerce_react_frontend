@@ -38,8 +38,18 @@ class Productsetails extends Component {
             product_size: "",
             product_brand: "",
             retries: 0,
-            previewImg:"0",
-            reviews: []
+            previewImg: "0",
+
+            //addtocard options
+            isSize: null,
+            isColor: null,
+            color: "",
+            size: "",
+            qty: "",
+            UserDetails:[],
+
+
+
         };
     }
 
@@ -127,12 +137,12 @@ class Productsetails extends Component {
     }
 
 
-    priceOptions(product_price,discount_price ) {
-        if(discount_price == 'na') {
+    priceOptions(product_price, discount_price) {
+        if (discount_price == 'na') {
             return (
                 <p className='product-price-on-card_singleproducts'>LKR: {product_price}</p>
             )
-        }else {
+        } else {
             return (
                 <p className='product-price-on-card_singleproducts '>LKR {discount_price} <strike className="text-secondary" style={{ fontSize: '17px' }}>{product_price}</strike></p>
 
@@ -140,6 +150,89 @@ class Productsetails extends Component {
         }
     }
 
+
+    checkuser = () => {
+        const token = localStorage.getItem('token');
+        axios.get(AppUrl.UserData, {
+            headers: {
+                Authorization: `Bearer ${token}` // Include the token in the Authorization header
+            }
+        }).then(response => {
+            this.setState({ UserDetails: response.data })
+        }).catch(error => {
+            toast.error("Unable to validate your session please login and try again" );
+            localStorage.removeItem('token');
+        })
+    }
+
+    addToCart = () => {
+        let isSize = this.state.isSize;
+        let isColor = this.state.isColor;
+        let color = this.state.color;
+        let size = this.state.size;
+        let qty = this.state.qty;
+        let product_id = this.state.product_id;
+        let email = this.state.UserDetails.email;
+        let user_id = this.state.UserDetails.id;
+        let product_image = this.state.product_image;
+        let product_title = this.state.product_title;
+
+        this.checkuser();
+
+        if (isColor === "YES" && color.length === 0) {
+            toast.error("Please select a color");
+        } else if (isSize === "YES" && color.length === 0) {
+            toast.error("Please select a size");
+        } else if (qty.length === 0) {
+            toast.error("please add a quantity  ");
+        } else if (!localStorage.getItem('token')) {
+            toast.warning("please a Login then only you can add products to cart");
+        }
+
+        else{
+            let MyFormData =  new FormData();
+            MyFormData.append("product_id",product_id);
+            MyFormData.append("user_id",user_id);
+            MyFormData.append("image",product_image);
+            MyFormData.append("email",email);
+            MyFormData.append("product_name",product_title);
+            MyFormData.append("product_size",size);
+            MyFormData.append("product_color",color);
+            MyFormData.append("product_quantity",qty);
+
+            axios.post(AppUrl.UserAddToCart, MyFormData)
+            .then(response => {
+              toast.success("Product added to cart successfully");
+            })
+            .catch(error => {
+              if (error.response && error.response.status === 400) {
+                toast.error("Cart item already exists", 
+                {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    });
+              } else {
+                console.log(error);
+                toast.error("Unable to contact app server, please try again later");
+              }
+            });
+        }
+
+
+    }
+
+    // end add to cart
+
+    // colorOnChange = (e) => {
+    //     let color = event.target.value
+    //     this.setState ({color: color})
+    // }
 
     render() {
         let product_idget = this.props.params.product_id
@@ -158,18 +251,37 @@ class Productsetails extends Component {
 
         var size = this.state.product_size
         var sizeDiv = "d-none"
-        if(size ==  'na') {
+        if (size == 'na') {
             sizeDiv = "d-none"
-        }else {
+        } else {
             let sizeArry = size.split(',')
-            var sizeOption = sizeArry.map((sizelist, i) =>{
+            var sizeOption = sizeArry.map((sizelist, i) => {
                 return <option value={sizelist}>{sizelist}</option>
             })
             sizeDiv = ""
-        }  
+        }
+
+
+
+        //addtocart 
+        if (this.state.isSize === null) {
+            if (size != 'na') {
+                this.setState({ isSize: "YES" })
+            } else {
+                this.setState({ isSize: "NO" })
+            }
+        }
+
+        if (this.state.isColor === null) {
+            if (color != 'na') {
+                this.setState({ isColor: "YES" })
+            } else {
+                this.setState({ isColor: "NO" })
+            }
+        }
 
         return (
-     
+
 
             <Fragment>
                 <Container fluid={true} className="BetweenTwoSection">
@@ -177,12 +289,12 @@ class Productsetails extends Component {
                         <Col className="shadow-sm bg-white pb-3 mt-4" md={12} lg={12} sm={12} xs={12}>
                             <Row>
                                 <Col className="p-3" md={6} lg={6} sm={12} xs={12}>
-                                <img className="w-100 bigimage" src={this.state.product_image} id='previewImg' />
+                                    <img className="w-100 bigimage" src={this.state.product_image} id='previewImg' />
                                     {/* <div className=''>
                                     <InnerImageZoom zoomScale={1.8} zoomType={"hover"} src={this.state.product_image} zoomSrc={this.state.product_image} />
                                     </div> */}
                                     {/* */}
-                                   
+
 
                                     <Container className="my-3">
                                         <Row>
@@ -204,23 +316,23 @@ class Productsetails extends Component {
                                 <Col className="p-3 " md={6} lg={6} sm={12} xs={12}>
                                     <div>
                                         <Row>
-                                        <Col md={8}>
-                                        <h5 className="Product-Name">{this.state.product_title}</h5>
-                                         <span className="text-success"><i className="fa fa-star"></i><i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> </span> 
-                                        </Col>
-                                        {/* <Col md={4}>
+                                            <Col md={8}>
+                                                <h5 className="Product-Name">{this.state.product_title}</h5>
+                                                <span className="text-success"><i className="fa fa-star"></i><i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> </span>
+                                            </Col>
+                                            {/* <Col md={4}>
                                         <Badge className='mb-2' bg="secondary">New</Badge>
                                         </Col> */}
                                         </Row>
-                                      
+
                                     </div>
-                                
+
                                     {this.priceOptions(this.state.product_price, this.state.discount_price)}
 
 
                                     <div className={ColorDiv}>
                                         <h6 className="mt-2">Choose Color</h6>
-                                        <select className='form-control form-select'>
+                                        <select onChange={(e) => { this.setState({ color: e.target.value }) }} className='form-control form-select'>
                                             <option disabled selected>--- Choose Color ---</option>
                                             {ColorOption}
                                         </select>
@@ -229,21 +341,20 @@ class Productsetails extends Component {
 
                                     <div className='sizeDiv'>
                                         <h6 className="mt-2">Choose size</h6>
-                                        <select className='form-control form-select'>
+                                        <select onChange={(e) => { this.setState({ size: e.target.value }) }} className='form-control form-select'>
                                             <option disabled selected>--- Choose Size ---</option>
                                             {sizeOption}
                                         </select>
                                     </div>
 
-
                                     <br></br>
 
                                     <h6 className="mt-2">Quantity</h6>
-                                    <input className="form-control text-center w-50" type="number" />
+                                    <input onChange={(e) => { this.setState({ qty: e.target.value }) }} className="form-control text-center w-50" type="number" />
 
                                     <div className="input-group mt-3">
-                                        <button className="btn site-btn m-1 "> <i className="fa fa-shopping-cart"></i>  Add To Cart</button>
-                                        {/* <button className="btn btn-primary m-1"> <i className="fa fa-car"></i> Order Now</button> */}
+                                        <button onClick={this.addToCart} className="btn site-btn m-1 "> <i className="fa fa-shopping-cart"></i>  Add To Cart</button>
+                                        <button className="btn btn-primary m-1"> <i className="fa fa-car"></i> Order Now</button>
                                         <button className="btn btn-primary m-1"> <i className="fa fa-heart"></i> Favourite</button>
                                     </div>
                                 </Col>
@@ -257,9 +368,9 @@ class Productsetails extends Component {
                                     </p>
                                 </Col>
 
-                                    <ReviewList product_id={product_idget}/>
-                            
-                             
+                                <ReviewList product_id={product_idget} />
+
+
                             </Row>
 
                         </Col>
