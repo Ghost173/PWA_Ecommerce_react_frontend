@@ -336,7 +336,7 @@ class Productsetails extends Component {
                                         <Row>
                                             <Col md={8}>
                                                 <h5 className="Product-Name">{this.state.product_title}</h5>
-                                                <span className="text-success"><i className="fa fa-star"></i><i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> </span>
+                                                <span className="text-success"><i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> </span>
                                             </Col>
                                             {/* <Col md={4}>
                                         <Badge className='mb-2' bg="secondary">New</Badge>
