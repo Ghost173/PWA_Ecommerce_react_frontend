@@ -5,6 +5,9 @@ import Navbar from 'react-bootstrap/Navbar';
 import Logo from '../../assets/images/easyshop.png'
 import { Link, Navigate } from 'react-router-dom'
 import MegaMenuAll from '../home/MegaMenuAll';
+import axios from 'axios';
+import AppUrl from '../../api/AppUrl';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 class NavMenuDesktop extends Component {
@@ -17,6 +20,8 @@ class NavMenuDesktop extends Component {
       ContentOverState: "ContentOverlayClose",
       SearchKey: "",
       SearchRedirectStatus: false,
+      CartCount: "",
+      UserDetails:[]
     }
 
     this.SearchOnChange = this.SearchOnChange.bind(this)
@@ -69,6 +74,47 @@ class NavMenuDesktop extends Component {
     localStorage.clear();
   }
 
+  
+
+  async componentDidMount () {
+    await this.checkuser();
+
+  }
+
+  componentDidUpdate() {
+    this.fetchData();
+  }
+
+  checkuser = () => {
+    const token = localStorage.getItem('token');
+
+      axios.get(AppUrl.UserData, {
+        headers: {
+            Authorization: `Bearer ${token}` // Include the token in the Authorization header
+        }
+    }).then(response => {
+        this.setState({ UserDetails: response.data })
+        // alert(this.state.UserDetails.id)
+    }).catch(error => {
+        toast.error("Unable to validate your session please login and try again" );
+        localStorage.removeItem('token');
+    })
+
+    
+}
+
+
+  fetchData = () => {
+    let id = this.state.UserDetails.id;
+      axios.get(AppUrl.ProductCountInCart(id))
+      .then(response => {
+          this.setState({ CartCount: response.data })
+      }).catch(error => {
+
+      })
+
+    
+}
 
   render() {
 
@@ -85,7 +131,7 @@ class NavMenuDesktop extends Component {
           <Link to="/profile" className="h4 btn">PROFILE</Link>
           <Link to="/" onClick={this.logout} className="h4 btn">LOGOUT</Link>
 
-          <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> 3 Items </Link>
+          <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i>{this.state.CartCount}</Link>
         </div>
       )
 
@@ -101,7 +147,7 @@ class NavMenuDesktop extends Component {
           <Link to="/login" className="h4 btn">LOGIN</Link>
           <Link to="/register" className="h4 btn">REGISTER</Link>
 
-          <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> 3 Items </Link>
+          <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> Items </Link>
         </div>
       )
 

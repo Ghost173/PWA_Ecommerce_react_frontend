@@ -38,6 +38,10 @@ class AppUrl {
     return this.BaseURL+"/reviewlists/"+product_id;
   }
 
+  static ProductCountInCart(id) {
+    return this.BaseURL+"/cartcount/"+id;
+  }
+
   // user related api calls 
   static UserLogion = this.BaseURL + "/login"
 

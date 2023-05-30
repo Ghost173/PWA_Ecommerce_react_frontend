@@ -61,7 +61,9 @@ class Productsetails extends Component {
 
 
     fetchData = () => {
-        let product_id = this.props.params.product_id
+        let product_id = this.props.params.product_id;
+        let token = localStorage.getItem('token');
+
         axios
             .get(AppUrl.SingleProductDetails(product_id))
             .then((response) => {
@@ -98,6 +100,20 @@ class Productsetails extends Component {
             .catch((error) => {
                 this.handleFetchError();
             });
+
+            if(token) {
+                axios.get(AppUrl.UserData, {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Include the token in the Authorization header
+                    }
+                }).then(response => {
+                    this.setState({ UserDetails: response.data })
+                }).catch(error => {
+                    toast.error("Unable to validate your session please login and try again" );
+                    localStorage.removeItem('token');
+                })
+            }
+           
     };
 
     handleFetchError = () => {
@@ -166,6 +182,7 @@ class Productsetails extends Component {
     }
 
     addToCart = () => {
+        this.checkuser();
         let isSize = this.state.isSize;
         let isColor = this.state.isColor;
         let color = this.state.color;
@@ -177,11 +194,10 @@ class Productsetails extends Component {
         let product_image = this.state.product_image;
         let product_title = this.state.product_title;
 
-        this.checkuser();
 
         if (isColor === "YES" && color.length === 0) {
             toast.error("Please select a color");
-        } else if (isSize === "YES" && color.length === 0) {
+        } else if (isSize === "YES" && size.length === 0) {
             toast.error("Please select a size");
         } else if (qty.length === 0) {
             toast.error("please add a quantity  ");
@@ -206,7 +222,7 @@ class Productsetails extends Component {
             })
             .catch(error => {
               if (error.response && error.response.status === 400) {
-                toast.error("Cart item already exists", 
+                toast.error(error.response.data.error, 
                 {
                     position: "top-right",
                     autoClose: 5000,
@@ -223,7 +239,9 @@ class Productsetails extends Component {
               }
             });
         }
+        
 
+        
 
     }
 
