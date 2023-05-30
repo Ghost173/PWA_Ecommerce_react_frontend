@@ -349,7 +349,7 @@ class Productsetails extends Component {
 
 
                                     <div className={ColorDiv}>
-                                        <h6 className="mt-2">Choose Color</h6>
+                                        <h6 className="mt-2">Choose Color <span className='text-danger'>*</span></h6>
                                         <select onChange={(e) => { this.setState({ color: e.target.value }) }} className='form-control form-select'>
                                             <option disabled selected>--- Choose Color ---</option>
                                             {ColorOption}
@@ -358,7 +358,7 @@ class Productsetails extends Component {
 
 
                                     <div className='sizeDiv'>
-                                        <h6 className="mt-2">Choose size</h6>
+                                        <h6 className="mt-2">Choose size <span className='text-danger'>*</span></h6>
                                         <select onChange={(e) => { this.setState({ size: e.target.value }) }} className='form-control form-select'>
                                             <option disabled selected>--- Choose Size ---</option>
                                             {sizeOption}
@@ -367,13 +367,13 @@ class Productsetails extends Component {
 
                                     <br></br>
 
-                                    <h6 className="mt-2">Quantity</h6>
+                                    <h6 className="mt-2">Quantity <span className='text-danger'>*</span></h6>
                                     <input onChange={(e) => { this.setState({ qty: e.target.value }) }} className="form-control text-center w-50" type="number" />
 
                                     <div className="input-group mt-3">
                                         <button onClick={this.addToCart} className="btn site-btn m-1 "> <i className="fa fa-shopping-cart"></i>  Add To Cart</button>
                                         <button className="btn btn-primary m-1"> <i className="fa fa-car"></i> Order Now</button>
-                                        <button className="btn btn-primary m-1"> <i className="fa fa-heart"></i> Favourite</button>
+                                        {/* <button className="btn btn-primary m-1"> <i className="fa fa-heart"></i> Favourite</button> */}
                                     </div>
                                 </Col>
                             </Row>
