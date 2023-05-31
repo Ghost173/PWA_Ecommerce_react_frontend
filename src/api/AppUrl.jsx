@@ -54,6 +54,12 @@ class AppUrl {
 
   //Add to Cart
   static UserAddToCart = this.BaseURL + "/addtocart"
+
+  //get cart items
+  static GetCartDetails(user_id) {
+    return this.BaseURL+"/getcartitems/"+user_id;
+  }
+
 }
 
 export default AppUrl

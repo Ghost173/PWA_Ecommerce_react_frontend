@@ -43,35 +43,27 @@ class NavMenuMobile extends Component {
     }
   }
 
-  async componentDidMount() {
-    await this.checkuser();
+ componentDidMount() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    axios.get(AppUrl.UserData, {
+      headers: {
+        Authorization: `Bearer ${token}` // Include the token in the Authorization header
+      }
+    }).then(response => {
+      this.setState({ UserDetails: response.data })
+      this.fetchData();
+      // alert(this.state.UserDetails.id)
+    }).catch(error => {
+      toast.error("Unable to validate your session please login and try again");
+      localStorage.removeItem('token');
+    })
+
+  }
+    
 
   }
 
-  componentDidUpdate() {
-    this.fetchData();
-  }
-
-  checkuser = () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      axios.get(AppUrl.UserData, {
-        headers: {
-          Authorization: `Bearer ${token}` // Include the token in the Authorization header
-        }
-      }).then(response => {
-        this.setState({ UserDetails: response.data })
-        // alert(this.state.UserDetails.id)
-      }).catch(error => {
-        toast.error("Unable to validate your session please login and try again");
-        localStorage.removeItem('token');
-      })
-    }
-
-
-
-
-  }
 
 
   fetchData = () => {

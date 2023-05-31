@@ -21,7 +21,7 @@ class NavMenuDesktop extends Component {
       SearchKey: "",
       SearchRedirectStatus: false,
       CartCount: "",
-      UserDetails:[]
+      UserDetails: []
     }
 
     this.SearchOnChange = this.SearchOnChange.bind(this)
@@ -74,50 +74,42 @@ class NavMenuDesktop extends Component {
     localStorage.clear();
   }
 
-  
 
-  async componentDidMount () {
-    await this.checkuser();
 
-  }
+  componentDidMount() {
 
-  componentDidUpdate() {
-    this.fetchData();
-  }
-
-  checkuser = () => {
     const token = localStorage.getItem('token');
-if(token) {
-  axios.get(AppUrl.UserData, {
-    headers: {
-        Authorization: `Bearer ${token}` // Include the token in the Authorization header
+    if (token) {
+      axios.get(AppUrl.UserData, {
+        headers: {
+          Authorization: `Bearer ${token}` // Include the token in the Authorization header
+        }
+      }).then(response => {
+        this.setState({ UserDetails: response.data })
+        this.fetchData();
+        // alert(this.state.UserDetails.id)
+      }).catch(error => {
+        toast.error("Unable to validate your session please login and try again");
+        localStorage.removeItem('token');
+      })
+
     }
-}).then(response => {
-    this.setState({ UserDetails: response.data })
-    // alert(this.state.UserDetails.id)
-}).catch(error => {
-    toast.error("Unable to validate your session please login and try again" );
-    localStorage.removeItem('token');
-})
-}
+  }
 
-    
 
-    
-}
 
 
   fetchData = () => {
     let id = this.state.UserDetails.id;
-      axios.get(AppUrl.ProductCountInCart(id))
+    axios.get(AppUrl.ProductCountInCart(id))
       .then(response => {
-          this.setState({ CartCount: response.data })
+        this.setState({ CartCount: response.data })
       }).catch(error => {
 
       })
 
-    
-}
+
+  }
 
   render() {
 
@@ -180,7 +172,7 @@ if(token) {
                 </Col>
 
                 <Col lg={4} md={4} sm={12} xs={12}>
-                {buttons}
+                  {buttons}
                 </Col>
               </Row>
               {this.searchRedirect()}
