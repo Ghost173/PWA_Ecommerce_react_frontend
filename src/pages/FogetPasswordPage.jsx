@@ -6,6 +6,9 @@ import FooterMobile from '../components/common/FooterMobile'
 import ForgetPassword from '../components/user/ForgetPassword'
 
 class FogetPasswordPage extends Component {
+    componentDidMount() {
+        window.scroll(0, 0)
+    }
     render() {
         return (
             <Fragment>
