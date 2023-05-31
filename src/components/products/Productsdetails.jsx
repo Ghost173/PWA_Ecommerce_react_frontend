@@ -61,7 +61,9 @@ class Productsetails extends Component {
 
 
     fetchData = () => {
-        let product_id = this.props.params.product_id
+        let product_id = this.props.params.product_id;
+        let token = localStorage.getItem('token');
+
         axios
             .get(AppUrl.SingleProductDetails(product_id))
             .then((response) => {
@@ -98,6 +100,20 @@ class Productsetails extends Component {
             .catch((error) => {
                 this.handleFetchError();
             });
+
+            if(token) {
+                axios.get(AppUrl.UserData, {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Include the token in the Authorization header
+                    }
+                }).then(response => {
+                    this.setState({ UserDetails: response.data })
+                }).catch(error => {
+                    toast.error("Unable to validate your session please login and try again" );
+                    localStorage.removeItem('token');
+                })
+            }
+           
     };
 
     handleFetchError = () => {
@@ -166,6 +182,7 @@ class Productsetails extends Component {
     }
 
     addToCart = () => {
+        this.checkuser();
         let isSize = this.state.isSize;
         let isColor = this.state.isColor;
         let color = this.state.color;
@@ -177,11 +194,10 @@ class Productsetails extends Component {
         let product_image = this.state.product_image;
         let product_title = this.state.product_title;
 
-        this.checkuser();
 
         if (isColor === "YES" && color.length === 0) {
             toast.error("Please select a color");
-        } else if (isSize === "YES" && color.length === 0) {
+        } else if (isSize === "YES" && size.length === 0) {
             toast.error("Please select a size");
         } else if (qty.length === 0) {
             toast.error("please add a quantity  ");
@@ -206,7 +222,7 @@ class Productsetails extends Component {
             })
             .catch(error => {
               if (error.response && error.response.status === 400) {
-                toast.error("Cart item already exists", 
+                toast.error(error.response.data.error, 
                 {
                     position: "top-right",
                     autoClose: 5000,
@@ -223,7 +239,9 @@ class Productsetails extends Component {
               }
             });
         }
+        
 
+        
 
     }
 
@@ -318,7 +336,7 @@ class Productsetails extends Component {
                                         <Row>
                                             <Col md={8}>
                                                 <h5 className="Product-Name">{this.state.product_title}</h5>
-                                                <span className="text-success"><i className="fa fa-star"></i><i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> </span>
+                                                <span className="text-success"><i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> <i className="fa fa-star"></i> </span>
                                             </Col>
                                             {/* <Col md={4}>
                                         <Badge className='mb-2' bg="secondary">New</Badge>
@@ -331,7 +349,7 @@ class Productsetails extends Component {
 
 
                                     <div className={ColorDiv}>
-                                        <h6 className="mt-2">Choose Color</h6>
+                                        <h6 className="mt-2">Choose Color <span className='text-danger'>*</span></h6>
                                         <select onChange={(e) => { this.setState({ color: e.target.value }) }} className='form-control form-select'>
                                             <option disabled selected>--- Choose Color ---</option>
                                             {ColorOption}
@@ -340,7 +358,7 @@ class Productsetails extends Component {
 
 
                                     <div className='sizeDiv'>
-                                        <h6 className="mt-2">Choose size</h6>
+                                        <h6 className="mt-2">Choose size <span className='text-danger'>*</span></h6>
                                         <select onChange={(e) => { this.setState({ size: e.target.value }) }} className='form-control form-select'>
                                             <option disabled selected>--- Choose Size ---</option>
                                             {sizeOption}
@@ -349,13 +367,13 @@ class Productsetails extends Component {
 
                                     <br></br>
 
-                                    <h6 className="mt-2">Quantity</h6>
+                                    <h6 className="mt-2">Quantity <span className='text-danger'>*</span></h6>
                                     <input onChange={(e) => { this.setState({ qty: e.target.value }) }} className="form-control text-center w-50" type="number" />
 
                                     <div className="input-group mt-3">
                                         <button onClick={this.addToCart} className="btn site-btn m-1 "> <i className="fa fa-shopping-cart"></i>  Add To Cart</button>
                                         <button className="btn btn-primary m-1"> <i className="fa fa-car"></i> Order Now</button>
-                                        <button className="btn btn-primary m-1"> <i className="fa fa-heart"></i> Favourite</button>
+                                        {/* <button className="btn btn-primary m-1"> <i className="fa fa-heart"></i> Favourite</button> */}
                                     </div>
                                 </Col>
                             </Row>

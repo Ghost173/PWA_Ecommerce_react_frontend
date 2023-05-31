@@ -4,6 +4,9 @@ import Container from 'react-bootstrap/Container';
 import Logo from '../../assets/images/easyshop.png'
 import { Link } from 'react-router-dom'
 import MegaMenuMobile from '../home/MegaMenuMobile';
+import axios from 'axios';
+import AppUrl from '../../api/AppUrl';
+import { ToastContainer, toast } from 'react-toastify';
 
 class NavMenuMobile extends Component {
 
@@ -12,7 +15,9 @@ class NavMenuMobile extends Component {
     super();
     this.state = {
       SideNavState: "sideNavClose",
-      ContentOverState: "ContentOverlayClose"
+      ContentOverState: "ContentOverlayClose",
+      CartCount: "",
+      UserDetails:[]
     }
   }
 
@@ -38,6 +43,40 @@ class NavMenuMobile extends Component {
     }
   }
 
+ componentDidMount() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    axios.get(AppUrl.UserData, {
+      headers: {
+        Authorization: `Bearer ${token}` // Include the token in the Authorization header
+      }
+    }).then(response => {
+      this.setState({ UserDetails: response.data })
+      this.fetchData();
+      // alert(this.state.UserDetails.id)
+    }).catch(error => {
+      toast.error("Unable to validate your session please login and try again");
+      localStorage.removeItem('token');
+    })
+
+  }
+    
+
+  }
+
+
+
+  fetchData = () => {
+    let id = this.state.UserDetails.id;
+    axios.get(AppUrl.ProductCountInCart(id))
+      .then(response => {
+        this.setState({ CartCount: response.data })
+      }).catch(error => {
+
+      })
+
+
+  }
 
   render() {
     return (
@@ -50,7 +89,7 @@ class NavMenuMobile extends Component {
               <Col lg={4} md={4} sm={12} xs={12}>
                 <Button onClick={this.MenuBarClickHandler} className="btn" variant="light"><i className="fa fa-bars"></i>  </Button>
                 <Link to="/"> <img className="nav-logo" src={Logo} /> </Link>
-                <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> 3 Items </Link>
+                <Link to="/cart" className="cart-btn"><i className="fa fa-shopping-cart"></i> {this.state.CartCount} Items </Link>
               </Col>
 
             </Row>

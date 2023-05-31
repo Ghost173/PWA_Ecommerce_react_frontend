@@ -4,8 +4,116 @@ import Product1 from '../../assets/images/product/product1.png'
 import Product2 from '../../assets/images/product/product2.png'
 import Product3 from '../../assets/images/product/product3.png'
 import Product4 from '../../assets/images/product/product4.png'
+import axios from 'axios';
+import AppUrl from '../../api/AppUrl';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 class Cart extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            loaderDiv: "",
+            mainDiv: "d-none",
+            CatrtData:[],
+            UserDetails:[],
+            retries: 0,
+        }
+    }
+
+
+    async componentDidMount () {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            // Use your preferred method for redirecting to the login page
+            window.location.href = '/login';
+            return null; // Render nothing
+        }
+
+        if(token) {
+            axios.get(AppUrl.UserData, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Include the token in the Authorization header
+                }
+            }).then(response => {
+                this.setState({ UserDetails: response.data })
+                this.fetchData();
+            }).catch(error => {
+                toast.error("Unable to validate your session please login and try again" );
+                localStorage.removeItem('token');
+            })
+        }
+
+        
+    }
+
+
+    fetchData = () => {
+        const token = localStorage.getItem('token');
+        let id = this.state.UserDetails.id;
+
+        if (!token) {
+            // Use your preferred method for redirecting to the login page
+            window.location.href = '/login';
+            return null; // Render nothing
+        }
+
+        axios.get(AppUrl.GetCartDetails(id))
+            .then(response => {
+                this.setState({ CatrtData: response.data })
+            }).catch(error => {
+                this.handleFetchError();
+            })
+    }
+
+    handleFetchError = () => {
+        const { retries } = this.state;
+        if (this.state.retries === 0) {
+            setTimeout(() => {
+                this.setState({ retries: retries + 1 });
+                this.fetchData();
+            }, 60000)
+
+        } else {
+            // Subsequent retries after 1 minute
+            setTimeout(() => {
+                this.setState({ retries: retries + 1 });
+                this.fetchData();
+            }, 180000);
+        }
+        if (retries === 0) {
+            toast.error(
+                "It looks like there was a problem retrieving the data"
+            );
+        }
+    };
+
+
+    checkuser = () => {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            // Use your preferred method for redirecting to the login page
+            window.location.href = '/login';
+            return null; // Render nothing
+        }
+
+        if(token) {
+            axios.get(AppUrl.UserData, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Include the token in the Authorization header
+                }
+            }).then(response => {
+                this.setState({ UserDetails: response.data })
+            }).catch(error => {
+                toast.error("Unable to validate your session please login and try again" );
+                localStorage.removeItem('token');
+            })
+        }
+        
+    }
+
     render() {
         return (
             <Fragment>
