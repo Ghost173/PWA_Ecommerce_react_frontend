@@ -34,10 +34,15 @@ class Cart extends Component {
                     Authorization: `Bearer ${token}` // Include the token in the Authorization header
                 }
             }).then(response => {
-                this.setState({ UserDetails: response.data, loaderDiv: "d-none", mainDiv: "" })
-                this.fetchData();
+                let statuscode = response.status;
+                if (statuscode == 200) {
+                    this.fetchData();
+                } else {
+                    toast.error("logout and try again");
+                }
+                
             }).catch(error => {
-                toast.error("Unable to validate your session please login and try again");
+                toast.error("Something went Wrong");
                 localStorage.removeItem('token');
             })
         }
@@ -48,19 +53,15 @@ class Cart extends Component {
 
     fetchData = () => {
         const token = localStorage.getItem('token');
-        let id = this.state.UserDetails.id;
-
-        if (!token) {
-            // Use your preferred method for redirecting to the login page
-            window.location.href = '/login';
-            return null; // Render nothing
-        }
-
-        axios.get(AppUrl.GetCartDetails(id))
-            .then(response => {
-                this.setState({ CatrtData: response.data })
+            axios.get(AppUrl.GetCartDetails, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Include the token in the Authorization header
+                }
+            }).then(response => {
+                this.setState({ CatrtData: response.data, loaderDiv: "d-none", mainDiv: "" })
             }).catch(error => {
                 this.handleFetchError();
+                toast.error("Something Went Wrong!!!!");
             })
     }
 
@@ -87,11 +88,38 @@ class Cart extends Component {
     };
 
 
+    removeCartItems = (id) => {
+        const token = localStorage.getItem('token');
+
+        if (token) {
+            axios.get(AppUrl.RemoveCartItem(id), {
+                headers: {
+                    Authorization: `Bearer ${token}` // Include the token in the Authorization header
+                }
+            }).then(response => {
+               if(response.data ===1) {
+                toast.success("Cart Item Remove", {
+                    onClose: () => {
+                        window.location.reload(); // Refresh the page after the toast is closed
+                      }
+                })
+                window.location.reload(); // Refresh the page
+               }else {
+
+               }
+            }).catch(error => {
+                toast.error("Something Went Wrong!!!!");
+                localStorage.removeItem('token');
+            })
+        }
+
+    }
+
 
 
     render() {
 
-       const  MycartList = this.state.CatrtData;
+        const MycartList = this.state.CatrtData;
         const data = MycartList.map((MycartList, i) => {
 
 
@@ -106,12 +134,12 @@ class Cart extends Component {
                             <Col md={6} lg={6} sm={6} xs={6}>
                                 <h5 className="product-name">{MycartList.product_name}</h5>
                                 <h6> Quantity = {MycartList.product_quantity} </h6>
-                                <p>{MycartList.product_size} | {MycartList.product_color}</p>
+                                <p>Size:{MycartList.product_size} | Color:{MycartList.product_color}</p>
                                 <h6>Price = {MycartList.product_quantity} x {MycartList.unit_price} = {MycartList.total_price}LKR</h6>
                             </Col>
 
                             <Col md={3} lg={3} sm={12} xs={12}>
-                                <Button className="btn btn-block w-100 mt-3  site-btn"><i className="fa fa-trash-alt"></i> Remove </Button>
+                                <Button onClick={() => this.removeCartItems(MycartList.id)} className="btn btn-block w-100 mt-3  site-btn"><i className="fa fa-trash-alt"></i> Remove </Button>
 
                             </Col>
                         </Row>
