@@ -27,6 +27,18 @@
     background: #051b35 !important;
 }
 
+.small-input {
+    width: 100px; /* Adjust the width as per your requirements */
+  }
+
+.site-btn-cart-delete{
+    font-weight: 300;
+    padding: 5px;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: white !important;
+    background: #b40000 !important;
+}
+
 
 .pure-material-button-contained {
     position: relative;

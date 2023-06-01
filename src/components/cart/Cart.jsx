@@ -40,7 +40,7 @@ class Cart extends Component {
                 } else {
                     toast.error("logout and try again");
                 }
-                
+
             }).catch(error => {
                 toast.error("Something went Wrong");
                 localStorage.removeItem('token');
@@ -53,16 +53,16 @@ class Cart extends Component {
 
     fetchData = () => {
         const token = localStorage.getItem('token');
-            axios.get(AppUrl.GetCartDetails, {
-                headers: {
-                    Authorization: `Bearer ${token}` // Include the token in the Authorization header
-                }
-            }).then(response => {
-                this.setState({ CatrtData: response.data, loaderDiv: "d-none", mainDiv: "" })
-            }).catch(error => {
-                this.handleFetchError();
-                toast.error("Something Went Wrong!!!!");
-            })
+        axios.get(AppUrl.GetCartDetails, {
+            headers: {
+                Authorization: `Bearer ${token}` // Include the token in the Authorization header
+            }
+        }).then(response => {
+            this.setState({ CatrtData: response.data, loaderDiv: "d-none", mainDiv: "" })
+        }).catch(error => {
+            this.handleFetchError();
+            toast.error("Something Went Wrong!!!!");
+        })
     }
 
     handleFetchError = () => {
@@ -97,22 +97,64 @@ class Cart extends Component {
                     Authorization: `Bearer ${token}` // Include the token in the Authorization header
                 }
             }).then(response => {
-               if(response.data ===1) {
-                toast.success("Cart Item Remove", {
-                    onClose: () => {
-                        window.location.reload(); // Refresh the page after the toast is closed
-                      }
-                })
-                window.location.reload(); // Refresh the page
-               }else {
+                if (response.data === 1) {
+                    toast.success("Cart Item Remove", {
+                        onClose: () => {
+                            window.location.reload(); // Refresh the page after the toast is closed
+                        }
+                    })
+                    window.location.reload(); // Refresh the page
+                } else {
 
-               }
+                }
             }).catch(error => {
                 toast.error("Something Went Wrong!!!!");
                 localStorage.removeItem('token');
             })
         }
 
+    }
+
+    increaseitem = (id) => {
+        const token = localStorage.getItem('token');
+        axios.get(AppUrl.IncreaseCartItem(id), {
+            headers: {
+                Authorization: `Bearer ${token}` // Include the token in the Authorization header
+            }
+        }).then(response => {
+            if (response.data === 1) {
+                toast.success("Cart Item increase by One", {
+                    onClose: () => {
+                        window.location.reload(); // Refresh the page after the toast is closed
+                    }
+                })
+            } else {
+                toast.error("Fail tp update the cart item")
+            }
+        }).catch(error => {
+            toast.error("Something Went Wrong!!!!");
+        })
+    }
+
+    decreaseitem = (id) => {
+        const token = localStorage.getItem('token');
+        axios.get(AppUrl.DecreaseCartItem(id), {
+            headers: {
+                Authorization: `Bearer ${token}` // Include the token in the Authorization header
+            }
+        }).then(response => {
+            if (response.data === 1) {
+                toast.success("Cart Item decrease by One", {
+                    onClose: () => {
+                        window.location.reload(); // Refresh the page after the toast is closed
+                    }
+                })
+            } else {
+                toast.error("Fail tp update the cart item")
+            }
+        }).catch(error => {
+            toast.error("Something Went Wrong!!!!");
+        })
     }
 
 
@@ -139,7 +181,16 @@ class Cart extends Component {
                             </Col>
 
                             <Col md={3} lg={3} sm={12} xs={12}>
-                                <Button onClick={() => this.removeCartItems(MycartList.id)} className="btn btn-block w-100 mt-3  site-btn"><i className="fa fa-trash-alt"></i> Remove </Button>
+
+                                <Button onClick={() => this.increaseitem(MycartList.id)}
+                                    className="btn mt-2 mx-1 btn-lg site-btn"><i className="fa fa-plus" title='increase item'></i> </Button>
+
+
+                                <Button onClick={() => this.decreaseitem(MycartList.id)}
+                                    className="btn mt-2 mx-1 btn-lg site-btn"><i className="fa fa-minus" title='decrease item'></i> </Button>
+
+                                <Button onClick={() => this.removeCartItems(MycartList.id)}
+                                    className="btn mt-2 mx-1 btn-lg site-btn-cart-delete"><i className="fa fa-trash-alt" title='Delete item'></i> </Button>
 
                             </Col>
                         </Row>
