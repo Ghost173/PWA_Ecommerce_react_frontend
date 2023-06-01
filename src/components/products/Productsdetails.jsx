@@ -218,7 +218,11 @@ class Productsetails extends Component {
 
             axios.post(AppUrl.UserAddToCart, MyFormData)
             .then(response => {
-              toast.success("Product added to cart successfully");
+              toast.success("Product added to cart successfully", {
+                onClose: () => {
+                    window.location.reload(); // Refresh the page after the toast is closed
+                  }
+              });
             })
             .catch(error => {
               if (error.response && error.response.status === 400) {
