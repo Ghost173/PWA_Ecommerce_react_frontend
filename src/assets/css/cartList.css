@@ -1,5 +1,7 @@
-.cart-product-img{
-    width: 80px;
+.cart-product-img {
+    width: 90%;
     height: 110px;
-    margin-left: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }

@@ -72,6 +72,7 @@ class NavMenuDesktop extends Component {
 
   logout = () => {
     localStorage.clear();
+    window.location.reload(); 
   }
 
 

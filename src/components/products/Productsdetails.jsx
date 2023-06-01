@@ -92,6 +92,7 @@ class Productsetails extends Component {
                         mainDiv: "",
                         retries: 0, // Reset the retries count when the request succeeds
                     });
+                    console.log("fkcolor " + this.state.product_color)
                 } else {
 
                     this.handleFetchError();
@@ -183,10 +184,8 @@ class Productsetails extends Component {
 
     addToCart = () => {
         this.checkuser();
-        let isSize = this.state.isSize;
-        let isColor = this.state.isColor;
-        let color = this.state.color;
-        let size = this.state.size;
+        let product_color = this.state.product_color;
+        let product_size = this.state.product_size;
         let qty = this.state.qty;
         let product_id = this.state.product_id;
         let email = this.state.UserDetails.email;
@@ -194,10 +193,12 @@ class Productsetails extends Component {
         let product_image = this.state.product_image;
         let product_title = this.state.product_title;
 
+        let color = this.state.color;
+        let size = this.state.size;
 
-        if (isColor === "YES" && color.length === 0) {
+        if (product_color !== "na" && color.length === 0) {
             toast.error("Please select a color");
-        } else if (isSize === "YES" && size.length === 0) {
+        } else if (product_size !== "na" && size.length === 0) {
             toast.error("Please select a size");
         } else if (qty.length === 0) {
             toast.error("please add a quantity  ");
@@ -260,6 +261,7 @@ class Productsetails extends Component {
         let product_idget = this.props.params.product_id
 
         var color = this.state.product_color
+
         var ColorDiv = "d-none"
         if (color == "na") {
             ColorDiv = "d-none"
@@ -287,18 +289,22 @@ class Productsetails extends Component {
 
         //addtocart 
         if (this.state.isSize === null) {
-            if (size != 'na') {
-                this.setState({ isSize: "YES" })
+            if (size !== 'na') {
+                this.setState({ isSize: "Yes" })
+                console.log("sixe " + size)
             } else {
-                this.setState({ isSize: "NO" })
+                this.setState({ isSize: "No" })
             }
         }
 
         if (this.state.isColor === null) {
-            if (color != 'na') {
+            if (color !== 'na') {
                 this.setState({ isColor: "YES" })
+               
+                console.log("we have a color")
             } else {
-                this.setState({ isColor: "NO" })
+                this.setState({ isColor: "No" })
+                console.log("we have a 00000 color")
             }
         }
 
@@ -361,7 +367,7 @@ class Productsetails extends Component {
                                     </div>
 
 
-                                    <div className='sizeDiv'>
+                                    <div className={sizeDiv}>
                                         <h6 className="mt-2">Choose size <span className='text-danger'>*</span></h6>
                                         <select onChange={(e) => { this.setState({ size: e.target.value }) }} className='form-control form-select'>
                                             <option disabled selected>--- Choose Size ---</option>

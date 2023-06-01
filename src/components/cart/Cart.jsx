@@ -15,6 +15,7 @@ class Cart extends Component {
             CatrtData: [],
             UserDetails: [],
             retries: 0,
+            
         }
     }
 
@@ -162,11 +163,12 @@ class Cart extends Component {
     render() {
 
         const MycartList = this.state.CatrtData;
+        let totalPrice =0;
         const data = MycartList.map((MycartList, i) => {
+            totalPrice = totalPrice+parseInt(MycartList.total_price)
 
-
-            return <Col key={i.toString} className="p-1" lg={12} md={12} sm={12} xs={12}  >
-                <Card className='shadow'>
+            return <Col className="p-1" lg={12} md={12} sm={12} xs={12}  >
+                <Card className='shadow' key={i.toString}>
                     <Card.Body>
                         <Row>
                             <Col md={3} lg={3} sm={6} xs={6}>
@@ -183,14 +185,14 @@ class Cart extends Component {
                             <Col md={3} lg={3} sm={12} xs={12}>
 
                                 <Button onClick={() => this.increaseitem(MycartList.id)}
-                                    className="btn mt-2 mx-1 btn-lg site-btn"><i className="fa fa-plus" title='increase item'></i> </Button>
+                                    className="btn mt-2 mx-1 btn-sm site-btn-cart-plus"><i className="fa fa-plus" title='increase item'></i> </Button>
 
 
                                 <Button onClick={() => this.decreaseitem(MycartList.id)}
-                                    className="btn mt-2 mx-1 btn-lg site-btn"><i className="fa fa-minus" title='decrease item'></i> </Button>
+                                    className="btn mt-2 mx-1 btn-sm site-btn-cart-minus"><i className="fa fa-minus" title='decrease item'></i> </Button>
 
                                 <Button onClick={() => this.removeCartItems(MycartList.id)}
-                                    className="btn mt-2 mx-1 btn-lg site-btn-cart-delete"><i className="fa fa-trash-alt" title='Delete item'></i> </Button>
+                                    className="btn mt-2 mx-1 btn-sm site-btn-cart-delete"><i className="fa fa-trash-alt" title='Delete item'></i> </Button>
 
                             </Col>
                         </Row>
@@ -227,7 +229,56 @@ class Cart extends Component {
 
                     <div className={this.state.mainDiv}>
                         <Row>
-                            {data}
+
+
+                            <Col className="p-1" lg={8} md={8} sm={12} xs={12} >
+                                {data}
+                            </Col>
+
+                            <Col className="p-1" lg={4} md={4} sm={12} xs={12} >
+                                <div className="card p-2 shadow">
+                                    <div className="card-body">
+                                        <div className="container-fluid ">
+                                            <div className="row">
+                                                <div className="col-md-12 p-1  col-lg-12 col-sm-12 col-12">
+                                                    <h5 className="Product-Name text-danger">Total Amount: {totalPrice} LKR</h5>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                            
+                                                <p>Your name: {this.state.UserDetails.name}</p>
+                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                    <label className="form-label">Name  <span className='text-danger'>*</span></label>
+                                                    <input className="form-control" type="text" placeholder="Enter receiver name" />
+                                                </div>
+
+
+                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                    <label className="form-label">Phone Number  <span className='text-danger'>*</span></label>
+                                                    <input className="form-control" type="text" placeholder="Enter receiver name" />
+                                                </div>
+
+                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                    <label className="form-label">Delivery Address <span className='text-danger'>*</span></label>
+                                                    <textarea rows={2} className="form-control" type="text" placeholder="" />
+                                                </div>
+                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                    <label className="form-label">Choose Payment Method  <span className='text-danger'>*</span></label>
+                                                    <select className="form-control">
+                                                        <option value="Cash On Delivery">Cash On Delivery</option>
+                                                        <option value="Cash On Delivery">Online payment (PayPal)</option>
+                                                    </select>
+                                                </div>
+                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                    <button className="btn site-btn">Confirm Order </button>
+                                                </div>
+
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Col>
                         </Row>
 
                     </div>
