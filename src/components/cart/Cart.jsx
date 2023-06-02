@@ -15,6 +15,7 @@ class Cart extends Component {
             CatrtData: [],
             UserDetails: [],
             retries: 0,
+            
         }
     }
 
@@ -40,7 +41,7 @@ class Cart extends Component {
                 } else {
                     toast.error("logout and try again");
                 }
-                
+
             }).catch(error => {
                 toast.error("Something went Wrong");
                 localStorage.removeItem('token');
@@ -53,16 +54,16 @@ class Cart extends Component {
 
     fetchData = () => {
         const token = localStorage.getItem('token');
-            axios.get(AppUrl.GetCartDetails, {
-                headers: {
-                    Authorization: `Bearer ${token}` // Include the token in the Authorization header
-                }
-            }).then(response => {
-                this.setState({ CatrtData: response.data, loaderDiv: "d-none", mainDiv: "" })
-            }).catch(error => {
-                this.handleFetchError();
-                toast.error("Something Went Wrong!!!!");
-            })
+        axios.get(AppUrl.GetCartDetails, {
+            headers: {
+                Authorization: `Bearer ${token}` // Include the token in the Authorization header
+            }
+        }).then(response => {
+            this.setState({ CatrtData: response.data, loaderDiv: "d-none", mainDiv: "" })
+        }).catch(error => {
+            this.handleFetchError();
+            toast.error("Something Went Wrong!!!!");
+        })
     }
 
     handleFetchError = () => {
@@ -97,16 +98,16 @@ class Cart extends Component {
                     Authorization: `Bearer ${token}` // Include the token in the Authorization header
                 }
             }).then(response => {
-               if(response.data ===1) {
-                toast.success("Cart Item Remove", {
-                    onClose: () => {
-                        window.location.reload(); // Refresh the page after the toast is closed
-                      }
-                })
-                window.location.reload(); // Refresh the page
-               }else {
+                if (response.data === 1) {
+                    toast.success("Cart Item Remove", {
+                        onClose: () => {
+                            window.location.reload(); // Refresh the page after the toast is closed
+                        }
+                    })
+                    window.location.reload(); // Refresh the page
+                } else {
 
-               }
+                }
             }).catch(error => {
                 toast.error("Something Went Wrong!!!!");
                 localStorage.removeItem('token');
@@ -115,16 +116,59 @@ class Cart extends Component {
 
     }
 
+    increaseitem = (id) => {
+        const token = localStorage.getItem('token');
+        axios.get(AppUrl.IncreaseCartItem(id), {
+            headers: {
+                Authorization: `Bearer ${token}` // Include the token in the Authorization header
+            }
+        }).then(response => {
+            if (response.data === 1) {
+                toast.success("Cart Item increase by One", {
+                    onClose: () => {
+                        window.location.reload(); // Refresh the page after the toast is closed
+                    }
+                })
+            } else {
+                toast.error("Fail tp update the cart item")
+            }
+        }).catch(error => {
+            toast.error("Something Went Wrong!!!!");
+        })
+    }
+
+    decreaseitem = (id) => {
+        const token = localStorage.getItem('token');
+        axios.get(AppUrl.DecreaseCartItem(id), {
+            headers: {
+                Authorization: `Bearer ${token}` // Include the token in the Authorization header
+            }
+        }).then(response => {
+            if (response.data === 1) {
+                toast.success("Cart Item decrease by One", {
+                    onClose: () => {
+                        window.location.reload(); // Refresh the page after the toast is closed
+                    }
+                })
+            } else {
+                toast.error("Fail tp update the cart item")
+            }
+        }).catch(error => {
+            toast.error("Something Went Wrong!!!!");
+        })
+    }
+
 
 
     render() {
 
         const MycartList = this.state.CatrtData;
+        let totalPrice =0;
         const data = MycartList.map((MycartList, i) => {
+            totalPrice = totalPrice+parseInt(MycartList.total_price)
 
-
-            return <Col key={i.toString} className="p-1" lg={12} md={12} sm={12} xs={12}  >
-                <Card className='shadow'>
+            return <Col className="p-1" lg={12} md={12} sm={12} xs={12}  >
+                <Card className='shadow' key={i.toString}>
                     <Card.Body>
                         <Row>
                             <Col md={3} lg={3} sm={6} xs={6}>
@@ -139,7 +183,16 @@ class Cart extends Component {
                             </Col>
 
                             <Col md={3} lg={3} sm={12} xs={12}>
-                                <Button onClick={() => this.removeCartItems(MycartList.id)} className="btn btn-block w-100 mt-3  site-btn"><i className="fa fa-trash-alt"></i> Remove </Button>
+
+                                <Button onClick={() => this.increaseitem(MycartList.id)}
+                                    className="btn mt-2 mx-1 btn-sm site-btn-cart-plus"><i className="fa fa-plus" title='increase item'></i> </Button>
+
+
+                                <Button onClick={() => this.decreaseitem(MycartList.id)}
+                                    className="btn mt-2 mx-1 btn-sm site-btn-cart-minus"><i className="fa fa-minus" title='decrease item'></i> </Button>
+
+                                <Button onClick={() => this.removeCartItems(MycartList.id)}
+                                    className="btn mt-2 mx-1 btn-sm site-btn-cart-delete"><i className="fa fa-trash-alt" title='Delete item'></i> </Button>
 
                             </Col>
                         </Row>
@@ -176,7 +229,56 @@ class Cart extends Component {
 
                     <div className={this.state.mainDiv}>
                         <Row>
-                            {data}
+
+
+                            <Col className="p-1" lg={8} md={8} sm={12} xs={12} >
+                                {data}
+                            </Col>
+
+                            <Col className="p-1" lg={4} md={4} sm={12} xs={12} >
+                                <div className="card p-2 shadow">
+                                    <div className="card-body">
+                                        <div className="container-fluid ">
+                                            <div className="row">
+                                                <div className="col-md-12 p-1  col-lg-12 col-sm-12 col-12">
+                                                    <h5 className="Product-Name text-danger">Total Amount: {totalPrice} LKR</h5>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                            
+                                                <p>Your name: {this.state.UserDetails.name}</p>
+                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                    <label className="form-label">Name  <span className='text-danger'>*</span></label>
+                                                    <input className="form-control" type="text" placeholder="Enter receiver name" />
+                                                </div>
+
+
+                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                    <label className="form-label">Phone Number  <span className='text-danger'>*</span></label>
+                                                    <input className="form-control" type="text" placeholder="Enter receiver name" />
+                                                </div>
+
+                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                    <label className="form-label">Delivery Address <span className='text-danger'>*</span></label>
+                                                    <textarea rows={2} className="form-control" type="text" placeholder="" />
+                                                </div>
+                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                    <label className="form-label">Choose Payment Method  <span className='text-danger'>*</span></label>
+                                                    <select className="form-control">
+                                                        <option value="Cash On Delivery">Cash On Delivery</option>
+                                                        <option value="Cash On Delivery">Online payment (PayPal)</option>
+                                                    </select>
+                                                </div>
+                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                    <button className="btn site-btn">Confirm Order </button>
+                                                </div>
+
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Col>
                         </Row>
 
                     </div>

@@ -59,11 +59,19 @@ class AppUrl {
   static GetCartDetails = this.BaseURL + "/getcartitems"
 
     //remove cart items
-    static RemoveCartItem(cart_id) {
-      return this.BaseURL+"/removecartitem/"+cart_id;
-    }
-  
+  static RemoveCartItem(cart_id) {
+    return this.BaseURL+"/removecartitem/"+cart_id;
+  }
 
+  // increase cart item Quantity by +1 
+  static IncreaseCartItem(cart_id) {
+    return this.BaseURL+"/cartitemplus/"+cart_id;
+  }
+  
+  //decrease art item Quantity by -1 
+  static DecreaseCartItem(cart_id) {
+    return this.BaseURL+"/cartitemminus/"+cart_id;
+  }
 }
 
 export default AppUrl

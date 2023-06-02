@@ -39,7 +39,7 @@ class AppRoute extends Component {
           <Route exact path='/refund' element={<RefundPage />} />
           
           {/* single product details page */}
-          <Route exact path='/singleproductdetails/:product_id' element={<ProductDetailsPage />} />
+          <Route exact path='/singleproductdetails/:product_id' element={<ProductDetailsPage />} />http://localhost:3000/singleproductdetails/7
 
           {/* notification */}
           <Route exact path='/notification' element={<NotificatioPage />} />

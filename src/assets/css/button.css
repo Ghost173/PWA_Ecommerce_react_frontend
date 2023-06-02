@@ -27,6 +27,36 @@
     background: #051b35 !important;
 }
 
+.small-input {
+    width: 100px; /* Adjust the width as per your requirements */
+  }
+
+.site-btn-cart-delete{
+    font-weight: 300;
+    padding: 5px;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: white !important;
+    background: #990000 !important;
+}
+
+.site-btn-cart-plus{
+    font-weight: 300;
+    padding: 5px;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: white !important;
+    background: #008000 !important;
+}
+
+
+.site-btn-cart-minus{
+    font-weight: 300;
+    padding: 5px;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: white !important;
+    background: #8B0000 !important;
+}
+
+
 
 .pure-material-button-contained {
     position: relative;
