@@ -32,7 +32,6 @@ class UserRegister extends Component {
             .then(response => {
                 localStorage.setItem("token", response.data.token)
                 this.setState({ loggedIn: true })
-
             }) .catch(error => {
                 if (error.response && error.response.data.errors) {
                   const errorMessage = error.response.data.errors[0];

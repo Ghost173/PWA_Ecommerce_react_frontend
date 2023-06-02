@@ -72,6 +72,10 @@ class AppUrl {
   static DecreaseCartItem(cart_id) {
     return this.BaseURL+"/cartitemminus/"+cart_id;
   }
+
+  //orders
+  static CartOrder = this.BaseURL + "/cartorders"
+
 }
 
 export default AppUrl
