@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import { Container, Row, Col, Button, Card, Form } from 'react-bootstrap';
 import axios from 'axios';
 import AppUrl from '../../api/AppUrl';
 import { ToastContainer, toast } from 'react-toastify';
-
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 class Cart extends Component {
 
@@ -15,7 +17,17 @@ class Cart extends Component {
             CatrtData: [],
             UserDetails: [],
             retries: 0,
-            
+            customer_name: "",
+            customer_email: "",
+            customer_phone: "",
+            customer_address: "",
+            payment_method: "COD",
+            payment_id: "",
+            OrderDone: "d-none"
+
+
+
+
         }
     }
 
@@ -48,6 +60,41 @@ class Cart extends Component {
             })
         }
 
+
+    }
+
+    confirmorder = (e) => {
+        e.preventDefault();
+        const data = {
+            customer_name: this.state.customer_name,
+            customer_phone: this.state.customer_phone,
+            customer_address: this.state.customer_address,
+            payment_method: this.state.payment_method,
+            payment_id: this.state.payment_id,
+        }
+        const token = localStorage.getItem('token');
+        if (data.customer_name.length === 0) {
+            toast.error("please Enter Name");
+        } else if (data.customer_phone.length === 0) {
+            toast.error("Please Enter Phone Number ");
+        } else if (data.customer_address.length === 0) {
+            toast.error("Without Address how we can deliver? !!! ");
+        }
+
+
+
+        axios.post(AppUrl.CartOrder, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(response => {
+            this.setState({ OrderDone: "", mainDiv: "d-none", })
+            toast.success("You have successfully place your order ");
+        }).catch(function (error) {
+
+
+        });
 
     }
 
@@ -161,11 +208,10 @@ class Cart extends Component {
 
 
     render() {
-
         const MycartList = this.state.CatrtData;
-        let totalPrice =0;
+        let totalPrice = 0;
         const data = MycartList.map((MycartList, i) => {
-            totalPrice = totalPrice+parseInt(MycartList.total_price)
+            totalPrice = totalPrice + parseInt(MycartList.total_price)
 
             return <Col className="p-1" lg={12} md={12} sm={12} xs={12}  >
                 <Card className='shadow' key={i.toString}>
@@ -204,10 +250,8 @@ class Cart extends Component {
         return (
             <Fragment>
                 <Container>
-
                     <div className="section-title text-center mb-55"><h2>Product Cart List</h2>
                     </div>
-
                     <div className={this.state.loaderDiv}>
                         <div class="ph-item">
                             <div class="ph-col-12">
@@ -225,63 +269,77 @@ class Cart extends Component {
                             </div>
                         </div>
                     </div>
-
-
                     <div className={this.state.mainDiv}>
-                        <Row>
 
+                        <div>
+                            <Row>
+                                <Col className="p-1" lg={8} md={8} sm={12} xs={12} >
+                                    {data}
+                                </Col>
 
-                            <Col className="p-1" lg={8} md={8} sm={12} xs={12} >
-                                {data}
-                            </Col>
-
-                            <Col className="p-1" lg={4} md={4} sm={12} xs={12} >
-                                <div className="card p-2 shadow">
-                                    <div className="card-body">
-                                        <div className="container-fluid ">
-                                            <div className="row">
-                                                <div className="col-md-12 p-1  col-lg-12 col-sm-12 col-12">
-                                                    <h5 className="Product-Name text-danger">Total Amount: {totalPrice} LKR</h5>
+                                <Col className="p-1" lg={4} md={4} sm={12} xs={12} >
+                                    <div className="card p-2 shadow">
+                                        <div className="card-body">
+                                            <div className="container-fluid ">
+                                                <div className="row">
+                                                    <div className="col-md-12 p-1  col-lg-12 col-sm-12 col-12">
+                                                        <h5 className="Product-Name text-danger">Total Amount: {totalPrice} LKR</h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="row">
-                                            
-                                                <p>Your name: {this.state.UserDetails.name}</p>
-                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
-                                                    <label className="form-label">Name  <span className='text-danger'>*</span></label>
-                                                    <input className="form-control" type="text" placeholder="Enter receiver name" />
-                                                </div>
+                                                <div className="row">
+                                                    <Form id='orderForm' onSubmit={this.confirmorder}>
+
+                                                        <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                            <label className="form-label">Name  <span className='text-danger'>*</span></label>
+                                                            <input onChange={(e) => { this.setState({ customer_name: e.target.value }) }} className="form-control" type="text" placeholder="Enter receiver name" />
+                                                        </div>
 
 
-                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
-                                                    <label className="form-label">Phone Number  <span className='text-danger'>*</span></label>
-                                                    <input className="form-control" type="text" placeholder="Enter receiver name" />
-                                                </div>
+                                                        <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                            <label className="form-label">Phone Number  <span className='text-danger'>*</span></label>
+                                                            <input onChange={(e) => { this.setState({ customer_phone: e.target.value }) }} className="form-control" type="text" placeholder="Enter receiver name" />
+                                                        </div>
 
-                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
-                                                    <label className="form-label">Delivery Address <span className='text-danger'>*</span></label>
-                                                    <textarea rows={2} className="form-control" type="text" placeholder="" />
-                                                </div>
-                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
-                                                    <label className="form-label">Choose Payment Method  <span className='text-danger'>*</span></label>
-                                                    <select className="form-control">
-                                                        <option value="Cash On Delivery">Cash On Delivery</option>
-                                                        <option value="Cash On Delivery">Online payment (PayPal)</option>
-                                                    </select>
-                                                </div>
-                                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
-                                                    <button className="btn site-btn">Confirm Order </button>
-                                                </div>
+                                                        <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                            <label className="form-label">Delivery Address <span className='text-danger'>*</span></label>
+                                                            <textarea onChange={(e) => { this.setState({ customer_address: e.target.value }) }} rows={2} className="form-control" type="text" placeholder="" />
+                                                        </div>
+                                                        <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                            <label className="form-label">Choose Payment Method  <span className='text-danger'>*</span></label>
+                                                            <select onChange={(e) => { this.setState({ payment_method: e.target.value }) }} className="form-control">
+                                                                <option value="COD">Cash On Delivery</option>
+                                                                <option value="PAYPAL">Online payment (PayPal)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                            <button id='submitbtn' type='submit' className="btn site-btn">Confirm Order </button>
+                                                        </div>
+                                                    </Form>
 
-                                               
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Col>
-                        </Row>
+                                </Col>
+                            </Row>
+                        </div>
 
                     </div>
+
+
+                    <div className={this.state.OrderDone}>
+                            <Container className="text-center">
+                                <Row>
+                                    <Col>
+                                        <FontAwesomeIcon icon={faCheckCircle} size="4x" color="green" />
+                                        <h1>Order Confirmed</h1>
+                                        <p>Thank you for your order!</p>
+                                        <p>Your order has been confirmed and is being processed.</p>
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </div>
+
                 </Container>
             </Fragment>
         )
