@@ -9,6 +9,8 @@ import Badge from 'react-bootstrap/Badge';
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
 import InnerImageZoom from 'react-inner-image-zoom';
 import ReviewList from './ReviewList';
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { Link, Navigate } from 'react-router-dom'
 
 
 class Productsetails extends Component {
@@ -46,11 +48,17 @@ class Productsetails extends Component {
             color: "",
             size: "",
             qty: "",
-            UserDetails:[],
+            UserDetails: [],
+            total_value:"",
+            redirect: false
 
 
 
         };
+    }
+
+    totalvaluecalcute = (e) => {
+
     }
 
     imageOnclick(event) {
@@ -102,19 +110,19 @@ class Productsetails extends Component {
                 this.handleFetchError();
             });
 
-            if(token) {
-                axios.get(AppUrl.UserData, {
-                    headers: {
-                        Authorization: `Bearer ${token}` // Include the token in the Authorization header
-                    }
-                }).then(response => {
-                    this.setState({ UserDetails: response.data })
-                }).catch(error => {
-                    toast.error("Unable to validate your session please login and try again" );
-                    localStorage.removeItem('token');
-                })
-            }
-           
+        if (token) {
+            axios.get(AppUrl.UserData, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Include the token in the Authorization header
+                }
+            }).then(response => {
+                this.setState({ UserDetails: response.data })
+            }).catch(error => {
+                toast.error("Unable to validate your session please login and try again");
+                localStorage.removeItem('token');
+            })
+        }
+
     };
 
     handleFetchError = () => {
@@ -178,7 +186,7 @@ class Productsetails extends Component {
         }).then(response => {
             this.setState({ UserDetails: response.data })
         }).catch(error => {
-            toast.error("Unable to validate your session please login and try again" );
+            toast.error("Unable to validate your session please login and try again");
             localStorage.removeItem('token');
         })
     }
@@ -207,50 +215,111 @@ class Productsetails extends Component {
             toast.warning("please a Login then only you can add products to cart");
         }
 
-        else{
-            let MyFormData =  new FormData();
-            MyFormData.append("product_id",product_id);
-            MyFormData.append("user_id",user_id);
-            MyFormData.append("image",product_image);
-            MyFormData.append("email",email);
-            MyFormData.append("product_name",product_title);
-            MyFormData.append("product_size",size);
-            MyFormData.append("product_color",color);
-            MyFormData.append("product_quantity",qty);
+        else {
+            let MyFormData = new FormData();
+            MyFormData.append("product_id", product_id);
+            MyFormData.append("user_id", user_id);
+            MyFormData.append("image", product_image);
+            MyFormData.append("email", email);
+            MyFormData.append("product_name", product_title);
+            MyFormData.append("product_size", size);
+            MyFormData.append("product_color", color);
+            MyFormData.append("product_quantity", qty);
 
             axios.post(AppUrl.UserAddToCart, MyFormData)
-            .then(response => {
-              toast.success("Product added to cart successfully", {
-                onClose: () => {
-                    window.location.reload(); // Refresh the page after the toast is closed
-                  }
-              });
-            })
-            .catch(error => {
-              if (error.response && error.response.status === 400) {
-                toast.error(error.response.data.error, 
-                {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
+                .then(response => {
+                    toast.success("Product added to cart successfully", {
+                        onClose: () => {
+                            window.location.reload(); // Refresh the page after the toast is closed
+                        }
                     });
-              } else {
-                console.log(error);
-                toast.error("Unable to contact app server, please try again later");
-              }
-            });
+                })
+                .catch(error => {
+                    if (error.response && error.response.status === 400) {
+                        toast.error(error.response.data.error,
+                            {
+                                position: "top-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "colored",
+                            });
+                    } else {
+                        console.log(error);
+                        toast.error("Unable to contact app server, please try again later");
+                    }
+                });
         }
-        
-
-        
 
     }
 
+    OrderNow = () => {
+        this.checkuser();
+        let product_color = this.state.product_color;
+        let product_size = this.state.product_size;
+        let qty = this.state.qty;
+        let product_id = this.state.product_id;
+        let email = this.state.UserDetails.email;
+        let user_id = this.state.UserDetails.id;
+        let product_image = this.state.product_image;
+        let product_title = this.state.product_title;
+
+        let color = this.state.color;
+        let size = this.state.size;
+
+        if (product_color !== "na" && color.length === 0) {
+            toast.error("Please select a color");
+        } else if (product_size !== "na" && size.length === 0) {
+            toast.error("Please select a size");
+        } else if (qty.length === 0) {
+            toast.error("please add a quantity  ");
+        } else if (!localStorage.getItem('token')) {
+            toast.warning("please a Login then only you can add products to cart");
+        }
+
+        else {
+            let MyFormData = new FormData();
+            MyFormData.append("product_id", product_id);
+            MyFormData.append("user_id", user_id);
+            MyFormData.append("image", product_image);
+            MyFormData.append("email", email);
+            MyFormData.append("product_name", product_title);
+            MyFormData.append("product_size", size);
+            MyFormData.append("product_color", color);
+            MyFormData.append("product_quantity", qty);
+
+            axios.post(AppUrl.UserAddToCart, MyFormData)
+                .then(response => {
+                    toast.success("Product added to cart successfully", {
+                        onClose: () => {
+                            this.setState({ redirect: true })
+                        }
+                    });
+                })
+                .catch(error => {
+                    if (error.response && error.response.status === 400) {
+                        toast.error("Product already in cart plwase order this from your cart",
+                            {
+                                position: "top-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "colored",
+                            });
+                    } else {
+                        console.log(error);
+                        toast.error("Unable to contact app server, please try again later");
+                    }
+                });
+        }
+
+    }
     // end add to cart
 
     // colorOnChange = (e) => {
@@ -259,6 +328,12 @@ class Productsetails extends Component {
     // }
 
     render() {
+
+        if (this.state.redirect) {
+            return <Navigate to={'/cart'} />
+          }
+      
+
         let product_idget = this.props.params.product_id
 
         var color = this.state.product_color
@@ -301,7 +376,7 @@ class Productsetails extends Component {
         if (this.state.isColor === null) {
             if (color !== 'na') {
                 this.setState({ isColor: "YES" })
-               
+
                 console.log("we have a color")
             } else {
                 this.setState({ isColor: "No" })
@@ -383,9 +458,40 @@ class Productsetails extends Component {
 
                                     <div className="input-group mt-3">
                                         <button onClick={this.addToCart} className="btn site-btn m-1 "> <i className="fa fa-shopping-cart"></i>  Add To Cart</button>
-                                        <button className="btn btn-primary m-1"> <i className="fa fa-car"></i> Order Now</button>
+                                        <button onClick={this.OrderNow} className="btn btn-primary m-1"> <i className="fa fa-car"></i> Order Now</button>
+
+                                        
                                         {/* <button className="btn btn-primary m-1"> <i className="fa fa-heart"></i> Favourite</button> */}
                                     </div>
+                                    {/* <div className="input-group mt-3">
+                                    <PayPalScriptProvider>
+                                            <PayPalButtons createOrder={(data, actions) => {
+                                                // Access the custom state values here
+                                                const paypalnamename = this.state.UserDetails.name;
+                                                const paypalemail = this.state.UserDetails.email;
+                                                const qtyall = this.state.product_qty;
+                                                const uniprce = this.state.product_price;
+                                                const total = qtyall * uniprce;
+                                                // Create the order with custom data
+                                                return actions.order.create({
+                                                    purchase_units: [
+                                                        {
+                                                            amount: {
+                                                                currency_code: "USD",
+                                                                value: total,
+                                                            },
+                                                            custom_id: paypalnamename, // Example: Using 'name' as custom_id
+                                                            description: paypalemail, // Example: Using 'otherValue' as description
+                                                        },
+                                                    ],
+                                                });
+                                            }}
+                                                options={{
+                                                    "client-id": "AXsalEQ6ngmBcM5AjMgSG9rm9QYkzAqZDb0ycqQjUDdqShnjXZQ7gz8qq7i5Dc4RQ8teV7-4GmR_vwL5",
+                                                }}
+                                            />
+                                        </PayPalScriptProvider>
+                                    </div> */}
                                 </Col>
                             </Row>
 
