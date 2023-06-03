@@ -21,7 +21,7 @@ class Cart extends Component {
             customer_email: "",
             customer_phone: "",
             customer_address: "",
-            payment_method: "COD",
+            payment_method: "BT",
             payment_id: "",
             OrderDone: "d-none"
 
@@ -310,7 +310,7 @@ class Cart extends Component {
                                                         <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
                                                             <label className="form-label">Choose Payment Method  <span className='text-danger'>*</span></label>
                                                             <select onChange={(e) => { this.setState({ payment_method: e.target.value }) }} className="form-control">
-                                                                <option value="COD">Cash On Delivery</option>
+                                                                <option value="BT">Bank Transfer</option>
                                                                 <option value="PAYPAL">Online payment (PayPal)</option>
                                                             </select>
                                                         </div>
