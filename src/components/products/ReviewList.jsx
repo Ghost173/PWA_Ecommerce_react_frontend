@@ -44,14 +44,14 @@ export class ReviewList extends Component {
 
                 if (mydata.reviewer_rating === "1") {
                     return <div>
-                        <p className=" p-0 m-0"><span className="Review-Title">{mydata.reviewer_name}</span>
+                        <p className=" p-0 m-0"><span className="Review-Title">{mydata.reviewer_name}</span>&nbsp; 
                             <span className="text-success"><i className="fa fa-star"></i> </span> </p>
                         <p>{mydata.reviewer_comments}</p>
 
                     </div>
                 } else if (mydata.reviewer_rating === "2") {
                     return <div>
-                        <p className=" p-0 m-0"><span className="Review-Title">{mydata.reviewer_name}</span>
+                        <p className=" p-0 m-0"><span className="Review-Title">{mydata.reviewer_name}</span>&nbsp; 
                             <span className="text-success"><i className="fa fa-star"></i><i className="fa fa-star"></i> </span> </p>
                         <p>{mydata.reviewer_comments}</p>
 
@@ -60,7 +60,7 @@ export class ReviewList extends Component {
                 }
                 else if (mydata.reviewer_rating === "3") {
                     return <div>
-                        <p className=" p-0 m-0"><span className="Review-Title">{mydata.reviewer_name}</span>
+                        <p className=" p-0 m-0"><span className="Review-Title">{mydata.reviewer_name}</span>&nbsp; 
                             <span className="text-success"><i className="fa fa-star"></i><i className="fa fa-star"></i><i className="fa fa-star"></i> </span> </p>
                         <p>{mydata.reviewer_comments}</p>
 
@@ -68,7 +68,7 @@ export class ReviewList extends Component {
                 }
                 else if (mydata.reviewer_rating === "4") {
                     return <div>
-                        <p className=" p-0 m-0"><span className="Review-Title">{mydata.reviewer_name}</span>
+                        <p className=" p-0 m-0"><span className="Review-Title">{mydata.reviewer_name}</span>&nbsp; 
                             <span className="text-success"><i className="fa fa-star"></i><i className="fa fa-star"></i><i className="fa fa-star"></i><i className="fa fa-star"></i> </span> </p>
                         <p>{mydata.reviewer_comments}</p>
 
@@ -77,7 +77,7 @@ export class ReviewList extends Component {
                 }
                 else if (mydata.reviewer_rating === "5") {
                     return <div>
-                        <p className=" p-0 m-0"><span className="Review-Title">{mydata.reviewer_name}</span>
+                        <p className=" p-0 m-0"><span className="Review-Title">{mydata.reviewer_name}</span>&nbsp; 
                             <span className="text-success"><i className="fa fa-star"></i><i className="fa fa-star"></i><i className="fa fa-star"></i><i className="fa fa-star"></i><i className="fa fa-star"></i> </span> </p>
                         <p>{mydata.reviewer_comments}</p>
 
@@ -90,7 +90,7 @@ export class ReviewList extends Component {
 
         return (
             <Fragment>
-                <Col className="" md={6} lg={6} sm={12} xs={12}>
+                <Col className="review-container" md={6} lg={6} sm={12} xs={12}>
                     <h6 className="mt-2">REVIEWS</h6>
                     {mydata}
                 </Col>
