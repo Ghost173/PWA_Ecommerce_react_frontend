@@ -140,6 +140,7 @@ class Productsetails extends Component {
     };
 
     componentDidMount() {
+        window.scroll(0, 0);
         let product_idget = this.props.params.product_id
         this.setState({ product_id: product_idget })
         this.fetchData();

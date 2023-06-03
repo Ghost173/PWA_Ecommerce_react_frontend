@@ -79,6 +79,9 @@ class AppUrl {
   //get all orders details of login users
   static AuthUserOrderDetails = this.BaseURL + "/authuserorders"
 
+  //submit review for products
+  static SubmitReview = this.BaseURL + "/postreview"
+
 }
 
 export default AppUrl

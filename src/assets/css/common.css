@@ -42,3 +42,8 @@ body {
     margin-right: auto;
     margin-left: auto;
 }
+
+.review-container {
+    max-height: 200px; /* Set the maximum height for the container */
+    overflow-y: auto; /* Enable vertical scrolling if content exceeds the height */
+  }
