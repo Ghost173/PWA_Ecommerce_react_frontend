@@ -1,15 +1,24 @@
 import React, { Component, Fragment } from 'react'
+import { Container, Row, Col, Button, Card, Form, Modal } from 'react-bootstrap';
+import Badge from 'react-bootstrap/Badge';
 
 import axios from 'axios';
 import AppUrl from '../../api/AppUrl';
 import { Navigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 export class Profile extends Component {
 
     constructor() {
         super();
         this.state = {
-            UserDetails: []
+            UserDetails: [],
+            AuthUserOrderDetails: [],
+            loaderDiv: "",
+            mainDiv: "d-none",
+            product_name: "",
+            orderid: "",
+            show: false,
         }
 
     }
@@ -17,7 +26,7 @@ export class Profile extends Component {
     componentDidMount() {
 
         // Redirect to login if token is not present
-       
+
         const token = localStorage.getItem('token');
 
         if (!token) {
@@ -37,6 +46,33 @@ export class Profile extends Component {
             window.location.href = '/login';
         })
 
+
+        axios.get(AppUrl.AuthUserOrderDetails, {
+            headers: {
+                Authorization: `Bearer ${token}` // Include the token in the Authorization header
+            }
+        }).then(response => {
+            this.setState({ AuthUserOrderDetails: response.data, loaderDiv: "d-none", mainDiv: "" })
+        }).catch(error => {
+            toast.error('fail to retrieve your orders')
+        })
+
+
+
+    }
+
+    handleClose = () => {
+        this.setState({ show: false })
+    };
+    handleShow = (event) => {
+        this.setState({ show: true });
+        let product_name = event.target.getAttribute("data-title")
+        let orderid = event.target.getAttribute("data-orderid")
+        this.setState({
+            product_name: product_name,
+            orderid: orderid,
+        })
+
     }
 
 
@@ -49,14 +85,129 @@ export class Profile extends Component {
             // Use your preferred method for redirecting to the login page
             return <Navigate to={'/login'} />
         }
+
+
+        const Myorder = this.state.AuthUserOrderDetails;
+        const data = Myorder.map((Myorder, i) => {
+
+            if (Myorder.order_status === 'Pending') {
+                return <Col className="p-1" lg={12} md={12} sm={12} xs={12}  >
+                    <Card className='shadow' key={i.toString}>
+                        <Card.Body>
+                            <Row>
+
+                                <Col md={2} lg={2} sm={6} xs={6}>
+                                    <img className="cart-product-img" src={Myorder.product_image} />
+                                </Col>
+
+                                <Col md={6} lg={6} sm={6} xs={6}>
+                                    <h5 className="product-name">{Myorder.product_name}</h5>
+                                    <h6> Quantity = {Myorder.product_quantity} </h6>
+                                    <p>Size:{Myorder.product_size} | Color:{Myorder.product_color}</p>
+                                    <h6>Price = {Myorder.product_quantity} x {Myorder.product_unit_price} = {Myorder.product_total_price}LKR</h6>
+                                </Col>
+                                <Col md={2} lg={2} sm={12} xs={12}>
+                                    <Badge bg="primary">{Myorder.order_status}</Badge>
+                                </Col>
+
+                                <Col md={2} lg={2} sm={12} xs={12}>
+                                    <Row>
+                                        {/* <Button className="btn mt-2 mx-1 btn-sm "> View Order</Button> */}
+                                        <Button onClick={this.handleShow} data-title={Myorder.product_name}
+                                            data-orderid={Myorder.order_id}
+                                            className="btn mt-2 mx-1 btn-sm site-btn-cart-plus"> Write review </Button>
+                                        <Button className="btn mt-2 mx-1 btn-sm site-btn-cart-delete"> Cancel Order </Button>
+                                    </Row>
+
+                                </Col>
+                            </Row>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            } else if (Myorder.order_status === 'Processing') {
+                return <Col className="p-1" lg={12} md={12} sm={12} xs={12}  >
+                    <Card className='shadow' key={i.toString}>
+                        <Card.Body>
+                            <Row>
+
+                                <Col md={2} lg={2} sm={6} xs={6}>
+                                    <img className="cart-product-img" src={Myorder.product_image} />
+                                </Col>
+
+                                <Col md={6} lg={6} sm={6} xs={6}>
+                                    <h5 className="product-name">{Myorder.product_name}</h5>
+                                    <h6> Quantity = {Myorder.product_quantity} </h6>
+                                    <p>Size:{Myorder.product_size} | Color:{Myorder.product_color}</p>
+                                    <h6>Price = {Myorder.product_quantity} x {Myorder.product_unit_price} = {Myorder.product_total_price}LKR</h6>
+                                </Col>
+                                <Col md={2} lg={2} sm={12} xs={12}>
+                                    <Badge bg="success">{Myorder.order_status}</Badge>
+                                </Col>
+
+                                <Col md={2} lg={2} sm={12} xs={12}>
+                                    <Row>
+                                        {/* <Button className="btn mt-2 mx-1 btn-sm "> View Order</Button> */}
+                                        <Button className="btn mt-2 mx-1 btn-sm site-btn-cart-plus"> Write review </Button>
+                                        <Button className="btn mt-2 mx-1 btn-sm site-btn-cart-delete"> Cancel Order </Button>
+                                    </Row>
+
+                                </Col>
+                            </Row>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            }
+
+        })
+
         return (
             <Fragment>
-                <h1> User Profile Page </h1>
+                <Container>
+                    <Row>
+                        <Col md={4} sm={12}>
+                            <div className="card">
+                                <div className="card-body">
+                                    <h5 className="card-title">User Details</h5>
+                                    <ul className="list-group">
+                                        <li className="list-group-item">Name:  {this.state.UserDetails.name} </li>
+                                        <li className="list-group-item">Email:  {this.state.UserDetails.email}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </Col>
 
-                <ul className="list-group">
-                    <li className="list-group-item">Name : {this.state.UserDetails.name}  </li>
-                    <li className="list-group-item">Email :  {this.state.UserDetails.email}  </li>
-                </ul>
+                        <Col md={8} sm={12}>
+                            <div className="card">
+                                <div className="card-body">
+                                    <h5 className="card-title">Order Details</h5>
+                                    <p>{data}</p>
+                                </div>
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
+
+
+
+
+                <Modal show={this.state.show} onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                        <h6><i className="fa fa-bell"></i> Date</h6>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <h6>{this.state.product_name}</h6>
+                        <p>
+                        {this.state.orderid}
+                        </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.handleClose}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+
             </Fragment>
         )
     }

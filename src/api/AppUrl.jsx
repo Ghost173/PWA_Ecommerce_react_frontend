@@ -76,6 +76,9 @@ class AppUrl {
   //orders
   static CartOrder = this.BaseURL + "/cartorders"
 
+  //get all orders details of login users
+  static AuthUserOrderDetails = this.BaseURL + "/authuserorders"
+
 }
 
 export default AppUrl
