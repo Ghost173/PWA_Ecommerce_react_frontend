@@ -20,6 +20,8 @@ import RegisterPage from '../pages/RegisterPage';
 import FogetPasswordPage from '../pages/FogetPasswordPage';
 import RestPasswordPage from '../pages/RestPasswordPage';
 import UserProfilePage from '../pages/UserProfilePage';
+import AuthUserOrdersPage from '../pages/AuthUserOrdersPage';
+
 
 class AppRoute extends Component {
   render() {
@@ -32,6 +34,7 @@ class AppRoute extends Component {
           <Route exact path='/forgetpassword' element={<FogetPasswordPage />} />
           <Route exact path='/restpassword/:code' element={<RestPasswordPage />} />
           <Route exact path='/profile' element={<UserProfilePage />} />
+          <Route exact path='/myorders' element={<AuthUserOrdersPage />} />
 
           <Route exact path='/contact' element={<ContactPage />} />
           <Route exact path='/purchase' element={<Purchase />} />

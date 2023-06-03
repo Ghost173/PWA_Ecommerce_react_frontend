@@ -74,7 +74,7 @@ class HomeSlider extends Component {
     const sliderimages = this.state.sliderImages;
     const data = sliderimages.map((sliderimages, i) => {
       return <div key={i.toString}>
-        <img className='slider-img' src={sliderimages.slider_image} />
+        <img className='slider-img' src={sliderimages.slider_image} alt='banner images'/>
       </div>
     })
 

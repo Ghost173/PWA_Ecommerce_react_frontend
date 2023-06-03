@@ -14,7 +14,7 @@ class ForgetPassword extends Component {
     super();
     this.state = {
       email: "",
-      message: []
+      message: ""
     }
   }
 
@@ -45,9 +45,10 @@ class ForgetPassword extends Component {
           forgetpasswordForm.reset();
         }).catch(error => {
           this.setState({ message: error.response.data.message })
-          toast.error(this.state.message)
+          toast.error(error.response.data.message)
         }).finally(() => {
           resetBtn.disabled = false; // Enable the button
+          resetBtn.innerHTML = "Get Reset Password Email";
         });
     
 
