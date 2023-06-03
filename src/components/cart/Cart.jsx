@@ -81,7 +81,9 @@ class Cart extends Component {
             toast.error("Without Address how we can deliver? !!! ");
         }
 
-
+        let submitBtn = document.getElementById('submitbtn');
+        submitBtn.innerHTML = "Confirming Orders...";
+        submitBtn.disabled = true; // Disable the button
 
         axios.post(AppUrl.CartOrder, data, {
             headers: {
@@ -91,11 +93,12 @@ class Cart extends Component {
         }).then(response => {
             this.setState({ OrderDone: "", mainDiv: "d-none", })
             toast.success("You have successfully place your order ");
-        }).catch(function (error) {
+        }).catch(error =>  {
+            toast.error("Fail to Confirm a Orders ");
 
-
+        }).finally(() => {
+            submitBtn.disabled = false; // Enable the button
         });
-
     }
 
 
@@ -328,17 +331,17 @@ class Cart extends Component {
 
 
                     <div className={this.state.OrderDone}>
-                            <Container className="text-center">
-                                <Row>
-                                    <Col>
-                                        <FontAwesomeIcon icon={faCheckCircle} size="4x" color="green" />
-                                        <h1>Order Confirmed</h1>
-                                        <p>Thank you for your order!</p>
-                                        <p>Your order has been confirmed and is being processed.</p>
-                                    </Col>
-                                </Row>
-                            </Container>
-                        </div>
+                        <Container className="text-center">
+                            <Row>
+                                <Col>
+                                    <FontAwesomeIcon icon={faCheckCircle} size="4x" color="green" />
+                                    <h1>Order Confirmed</h1>
+                                    <p>Thank you for your order!</p>
+                                    <p>Your order has been confirmed and is being processed.</p>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </div>
 
                 </Container>
             </Fragment>
