@@ -31,6 +31,21 @@ class Cart extends Component {
         }
     }
 
+    checkuser = () => {
+        const token = localStorage.getItem('token');
+        axios.get(AppUrl.UserData, {
+            headers: {
+                Authorization: `Bearer ${token}` // Include the token in the Authorization header
+            }
+        }).then(response => {
+            this.setState({ UserDetails: response.data })
+        }).catch(error => {
+            toast.error("Unable to validate your session please login and try again");
+            localStorage.removeItem('token');
+            window.location.reload();
+        })
+    }
+
 
     componentDidMount() {
         const token = localStorage.getItem('token');
@@ -42,6 +57,8 @@ class Cart extends Component {
         }
 
         if (token) {
+            this.checkuser();
+
             axios.get(AppUrl.UserData, {
                 headers: {
                     Authorization: `Bearer ${token}` // Include the token in the Authorization header
@@ -73,6 +90,8 @@ class Cart extends Component {
             payment_id: this.state.payment_id,
         }
         const token = localStorage.getItem('token');
+        this.checkuser();
+
         if (data.customer_name.length === 0) {
             toast.error("please Enter Name");
         } else if (data.customer_phone.length === 0) {
@@ -80,6 +99,7 @@ class Cart extends Component {
         } else if (data.customer_address.length === 0) {
             toast.error("Without Address how we can deliver? !!! ");
         }
+        
 
         let submitBtn = document.getElementById('submitbtn');
         submitBtn.innerHTML = "Confirming Orders...";
