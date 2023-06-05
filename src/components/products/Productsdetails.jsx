@@ -71,7 +71,9 @@ class Productsetails extends Component {
     fetchData = () => {
         let product_id = this.props.params.product_id;
         let token = localStorage.getItem('token');
-
+        if(token) {
+            this.checkuser();
+        }
         axios
             .get(AppUrl.SingleProductDetails(product_id))
             .then((response) => {
@@ -109,19 +111,6 @@ class Productsetails extends Component {
             .catch((error) => {
                 this.handleFetchError();
             });
-
-        if (token) {
-            axios.get(AppUrl.UserData, {
-                headers: {
-                    Authorization: `Bearer ${token}` // Include the token in the Authorization header
-                }
-            }).then(response => {
-                this.setState({ UserDetails: response.data })
-            }).catch(error => {
-                toast.error("Unable to validate your session please login and try again");
-                localStorage.removeItem('token');
-            })
-        }
 
     };
 
@@ -188,6 +177,7 @@ class Productsetails extends Component {
         }).catch(error => {
             toast.error("Unable to validate your session please login and try again");
             localStorage.removeItem('token');
+            window.location.reload();
         })
     }
 
