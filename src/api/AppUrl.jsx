@@ -82,6 +82,9 @@ class AppUrl {
   //submit review for products
   static SubmitReview = this.BaseURL + "/postreview"
 
+  // cancel order
+static RequestCancelOrder = this.BaseURL + "/requestordercancel"
+
 }
 
 export default AppUrl

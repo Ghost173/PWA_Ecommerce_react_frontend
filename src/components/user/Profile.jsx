@@ -29,7 +29,8 @@ export class Profile extends Component {
             review_product_name: "",
             review_product_orderid: "",
             ratingstart: "",
-            review_comment:""
+            review_comment: "",
+            customer_cancel_reason:""
 
         }
 
@@ -102,6 +103,33 @@ export class Profile extends Component {
 
     }
 
+    cancelorder = (e) =>{
+        e.preventDefault();
+        const data = {
+            customer_cancel_reason: this.state.customer_cancel_reason,
+            order_id: this.state.orderid
+        }
+        if (data.customer_cancel_reason.length === 0) {
+            toast.error("please enter cancel reason");
+        }
+        let cancelorderbtn = document.getElementById('cancelorderbtn');
+        cancelorderbtn.innerHTML = "Cancelling your order ...";
+        cancelorderbtn.disabled = true; // Disable the button
+
+        axios.post(AppUrl.RequestCancelOrder, data)
+        .then(response => {
+            toast.success("You have successfully request to cancel your order");
+            this.handleClose();
+            window.location.reload(); // Refresh the page after the toast is closed
+        }).catch(error => {
+            toast.error("Fail to submit ");
+            this.handleClose();
+            window.location.reload();
+        }).finally(() => {
+            cancelorderbtn.disabled = false; // Enable the button
+        });
+
+    }
 
     postReview = (e) => {
         e.preventDefault();
@@ -111,6 +139,7 @@ export class Profile extends Component {
             order_id: this.state.review_product_orderid
         }
         const token = localStorage.getItem('token');
+
         if (data.reviewer_rating.length === 0) {
             toast.error("please Select a start for ratings");
         }
@@ -128,7 +157,7 @@ export class Profile extends Component {
             toast.success("You have successfully submit your review ");
             this.reviewhandleClose();
             window.location.reload(); // Refresh the page after the toast is closed
-        }).catch(error =>  {
+        }).catch(error => {
             toast.error("Fail to submit ");
 
         }).finally(() => {
@@ -151,77 +180,63 @@ export class Profile extends Component {
         const Myorder = this.state.AuthUserOrderDetails;
         const data = Myorder.map((Myorder, i) => {
 
-            if (Myorder.review === "0") {
-                return <Col className="p-1" lg={12} md={12} sm={12} xs={12}  >
-                    <Card className='shadow' key={i.toString}>
-                        <Card.Body>
-                            <Row>
+            // if (Myorder.review === "0") {
+            return <Col className="p-1" lg={12} md={12} sm={12} xs={12}  >
+                <Card className='shadow' key={i.toString}>
 
-                                <Col md={2} lg={2} sm={6} xs={6}>
-                                    <img className="cart-product-img" src={Myorder.product_image} />
-                                </Col>
+                    <Card.Body>
+                        <Row>
 
-                                <Col md={6} lg={6} sm={6} xs={6}>
-                                    <h5 className="product-name">{Myorder.product_name}</h5>
-                                    <h6> Quantity = {Myorder.product_quantity} </h6>
-                                    <p>Size:{Myorder.product_size} | Color:{Myorder.product_color}</p>
-                                    <h6>Price = {Myorder.product_quantity} x {Myorder.product_unit_price} = {Myorder.product_total_price}LKR</h6>
-                                </Col>
-                                <Col md={2} lg={2} sm={12} xs={12}>
-                                    <Badge bg="primary">{Myorder.order_status}</Badge>
-                                </Col>
+                            <Col md={2} lg={2} sm={6} xs={6}>
+                                <img className="cart-product-img" src={Myorder.product_image} />
+                            </Col>
 
-                                <Col md={2} lg={2} sm={12} xs={12}>
-                                    <Row>
-                                        {/* <Button className="btn mt-2 mx-1 btn-sm "> View Order</Button> */}
+                            <Col md={6} lg={6} sm={6} xs={6}>
+                                <h5 className="product-name">{Myorder.product_name}</h5>
+                                <h6> Quantity = {Myorder.product_quantity} </h6>
+                                <p>Size:{Myorder.product_size} | Color:{Myorder.product_color}</p>
+                                <h6>Price = {Myorder.product_quantity} x {Myorder.product_unit_price} = {Myorder.product_total_price}LKR</h6>
+                            </Col>
+                            <Col md={2} lg={2} sm={12} xs={12}>
+                                <Badge bg="primary">{Myorder.order_status}</Badge>
+                            </Col>
+
+                            <Col md={2} lg={2} sm={12} xs={12}>
+                                <Row>
+                                    {Myorder.review === "0" && (
                                         <Button
-                                            onClick={this.reviewhandleShow} data-title={Myorder.product_name}
+                                            onClick={this.reviewhandleShow}
+                                            data-title={Myorder.product_name}
                                             data-orderid={Myorder.order_id}
-                                            className="btn mt-2 mx-1 btn-sm site-btn-cart-plus"> Write review </Button>
+                                            className="btn mt-2 mx-1 btn-sm site-btn-cart-plus"
+                                        >
+                                            Write review
+                                        </Button>
+                                    )}
+
+                                    {/* {Myorder.review === "1" && (
+                                        <Badge bg="warning">Review submitted</Badge>
+                                    )} */}
+
+                                    {Myorder.customer_cancel_request === 0 && (
 
                                         <Button className="btn mt-2 mx-1 btn-sm site-btn-cart-delete" onClick={this.handleShow} data-title={Myorder.product_name}
                                             data-orderid={Myorder.order_id}> Cancel Order </Button>
-                                    </Row>
+                                    )}
 
-                                </Col>
-                            </Row>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            } else if (Myorder.review === "1") {
-                return <Col className="p-1" lg={12} md={12} sm={12} xs={12}  >
-                    <Card className='shadow' key={i.toString}>
-                        <Card.Body>
-                            <Row>
 
-                                <Col md={2} lg={2} sm={6} xs={6}>
-                                    <img className="cart-product-img" src={Myorder.product_image} />
-                                </Col>
 
-                                <Col md={6} lg={6} sm={6} xs={6}>
-                                    <h5 className="product-name">{Myorder.product_name}</h5>
-                                    <h6> Quantity = {Myorder.product_quantity} </h6>
-                                    <p>Size:{Myorder.product_size} | Color:{Myorder.product_color}</p>
-                                    <h6>Price = {Myorder.product_quantity} x {Myorder.product_unit_price} = {Myorder.product_total_price}LKR</h6>
-                                </Col>
-                                <Col md={2} lg={2} sm={12} xs={12}>
-                                    <Badge bg="primary">{Myorder.order_status}</Badge>
-                                </Col>
+                                </Row>
+                            </Col>
+                        </Row>
 
-                                <Col md={2} lg={2} sm={12} xs={12}>
-                                    <Row>
-                                        {/* <Button className="btn mt-2 mx-1 btn-sm "> View Order</Button> */}
-                                        {/* <Button className="btn mt-2 mx-1 btn-sm site-btn-cart-plus"> Write review </Button> */}
-                                        <Button className="btn mt-2 mx-1 btn-sm site-btn-cart-delete"> Cancel Order </Button>
-                                    </Row>
+                    </Card.Body>
+                    {Myorder.customer_cancel_request === 1 && (
+                        <Card.Footer className=" text-danger">You request to cancel your order</Card.Footer>
+                    )}
 
-                                </Col>
-                            </Row>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            }
-
+                </Card>
+            </Col>
         })
 
         return (
@@ -267,58 +282,66 @@ export class Profile extends Component {
 
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
-                        <h6><i className="fa fa-bell"></i> Date</h6>
+                        <h6> Cancel Your order</h6>
                     </Modal.Header>
                     <Modal.Body>
                         <h6>{this.state.product_name}</h6>
                         <p>
                             {this.state.orderid}
                         </p>
+                        <hr style={{ borderTop: '1px solid red' }} />
+
+                        <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                    <label className="form-label">Cancel Reason <span className='text-danger'>*</span></label>
+                                    <input onChange={(e) => { this.setState({ customer_cancel_reason: e.target.value }) }} 
+                                    className="form-control"
+                                     type="text" placeholder="Enter your cancel reason" />
+                                </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleClose}>
-                            Close
+                        <Button variant="danger" id='cancelorderbtn' type='submit' onClick={this.cancelorder}>
+                           Cancel your order
                         </Button>
                     </Modal.Footer>
                 </Modal>
 
 
                 <Modal show={this.state.reviewshow} onHide={this.reviewhandleClose}>
-  <Modal.Header closeButton>
-    <h6 >Share Your Experience</h6>
-  </Modal.Header>
-  <Modal.Body>
-    <div className="row">
-      <Form id='reviewform'>
-        <h6>Product Name: {this.state.review_product_name}</h6>
-        <h6>Order Id: {this.state.review_product_orderid}</h6>
-        <hr style={{ borderTop: '1px solid red' }} />
+                    <Modal.Header closeButton>
+                        <h6 >Share Your Experience</h6>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="row">
+                            <Form id='reviewform'>
+                                <h6>Product Name: {this.state.review_product_name}</h6>
+                                <h6>Order Id: {this.state.review_product_orderid}</h6>
+                                <hr style={{ borderTop: '1px solid red' }} />
 
-        <Typography component="legend">Your Rating <span className='text-danger'>*</span></Typography>
-        <Rating
-          onChange={(e) => { this.setState({ ratingstart: e.target.value }) }}
-          name="size-large"
-          size="large"
-        />
+                                <Typography component="legend">Your Rating <span className='text-danger'>*</span></Typography>
+                                <Rating
+                                    onChange={(e) => { this.setState({ ratingstart: e.target.value }) }}
+                                    name="size-large"
+                                    size="large"
+                                />
 
-        <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
-          <label className="form-label">Your Review </label>
-          <input onChange={(e) => { this.setState({ review_comment: e.target.value }) }} className="form-control" type="text" placeholder="Enter your review" />
-        </div>
-      </Form>
-      <p style={{ fontSize: '12px', color: 'gray' }}>Your review helps others make informed decisions and allows us to improve our products and services. We appreciate your feedback!</p>
-    </div>
-  </Modal.Body>
-  <Modal.Footer>
- 
-    <Button variant="danger" onClick={this.reviewhandleClose} >
-      Close
-    </Button>
-    <Button variant="success" id='submitbtn' type='submit' onClick={this.postReview}>
-      Add Review
-    </Button>
-  </Modal.Footer>
-</Modal>
+                                <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                    <label className="form-label">Your Review </label>
+                                    <input onChange={(e) => { this.setState({ review_comment: e.target.value }) }} className="form-control" type="text" placeholder="Enter your review" />
+                                </div>
+                            </Form>
+                            <p style={{ fontSize: '12px', color: 'gray' }}>Your review helps others make informed decisions and allows us to improve our products and services. We appreciate your feedback!</p>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+
+                        <Button variant="danger" onClick={this.reviewhandleClose} >
+                            Close
+                        </Button>
+                        <Button variant="success" id='submitbtn' type='submit' onClick={this.postReview}>
+                            Add Review
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
 
             </Fragment>
         )
