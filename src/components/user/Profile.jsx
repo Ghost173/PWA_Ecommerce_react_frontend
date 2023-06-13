@@ -232,7 +232,7 @@ export class Profile extends Component {
 
                     </Card.Body>
                     {Myorder.customer_cancel_request === 1 && (
-                        <Card.Footer className=" text-danger">You request to cancel your order</Card.Footer>
+                        <Card.Footer className=" text-danger">Cancellation Request Received</Card.Footer>
                     )}
 
                 </Card>
