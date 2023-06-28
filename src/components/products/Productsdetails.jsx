@@ -407,7 +407,7 @@ class Productsetails extends Component {
                                         </Row>
                                     </Container>
                                 </Col>
-                                <Col className="p-3 " md={6} lg={6} sm={12} xs={12}>
+                                <Col className="p-3 " md={4} lg={4} sm={12} xs={12}>
                                     <div>
                                         <Row>
                                             <Col md={8}>
@@ -483,6 +483,7 @@ class Productsetails extends Component {
                                         </PayPalScriptProvider>
                                     </div> */}
                                 </Col>
+                                <Col className="p-3 " md={2} lg={2} sm={12} xs={12}></Col>
                             </Row>
 
                             <Row>

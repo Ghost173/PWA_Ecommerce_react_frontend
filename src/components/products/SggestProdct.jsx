@@ -90,7 +90,7 @@ componentDidMount() {
                         <img className="center" src={suggestProducts.product_image} />
                         <Card.Body>
                             <p className="product-name-on-card">{suggestProducts.product_title}</p>
-                            <p className='product-price-on-card'>Rs: <strike className="text-secondary">{suggestProducts.product_price}</strike> {suggestProducts.discount_price}</p>
+                            <p className='product-price-on-card'>Rs:{suggestProducts.discount_price} <strike className="text-secondary">{suggestProducts.product_price}</strike> </p>
 
 
                         </Card.Body>

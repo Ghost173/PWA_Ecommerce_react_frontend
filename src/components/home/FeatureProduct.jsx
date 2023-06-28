@@ -97,7 +97,7 @@ class featureProduct extends Component {
                                 <img className="center" alt="foo" src={featureproductslist.product_image} />
                             </Card.Body>
                             <p className='product-name-on-card'>{featureproductslist.product_title}</p>
-                            <p className='product-price-on-card'>Rs: <strike className="text-secondary">{featureproductslist.product_price}</strike> {featureproductslist.discount_price}</p>
+                            <p className='product-price-on-card'>Rs: {featureproductslist.discount_price} <strike className="text-secondary">{featureproductslist.product_price}</strike> </p>
                         </Card>
                     </Link>
                 </Col>
