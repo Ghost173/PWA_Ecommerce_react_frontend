@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col, Button, Card, Form, Modal } from 'react-bootstrap';
 import Badge from 'react-bootstrap/Badge';
-import moment from 'moment';
+import { formatDistanceToNow } from 'date-fns';
 import Rating from '@mui/material/Rating';
 import axios from 'axios';
 import AppUrl from '../../api/AppUrl';
@@ -175,7 +175,9 @@ export class Profile extends Component {
         }
 
         const { updated_at } = this.state.UserDetails;
-        const lastLoginDate = moment(updated_at).fromNow();
+        const updatedDate = new Date('2023-06-18 05:51:51');
+        const lastLoginDate = formatDistanceToNow(updatedDate, { addSuffix: true });
+
 
         const Myorder = this.state.AuthUserOrderDetails;
         const data = Myorder.map((Myorder, i) => {

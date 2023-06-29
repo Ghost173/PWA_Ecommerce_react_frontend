@@ -101,6 +101,7 @@ class Productsetails extends Component {
                         loaderDiv: "d-none",
                         mainDiv: "",
                         retries: 0, // Reset the retries count when the request succeeds
+                        product_qty_warn:"d-none"
                     });
                     console.log("fkcolor " + this.state.product_color)
                 } else {
@@ -141,6 +142,11 @@ class Productsetails extends Component {
         let product_idget = this.props.params.product_id
         this.setState({ product_id: product_idget })
         this.fetchData();
+
+        if(this.state.product_qty <= 0) {
+            this.setState ({ 
+                product_qty_warn: "" })
+        }
 
     }
 
@@ -423,7 +429,7 @@ class Productsetails extends Component {
 
                                     {this.priceOptions(this.state.product_price, this.state.discount_price)}
 
-
+                                        {/* <p>{this.state.product_short_description}</p> */}
                                     <div className={ColorDiv}>
                                         <h6 className="mt-2">Choose Color <span className='text-danger'>*</span></h6>
                                         <select onChange={(e) => { this.setState({ color: e.target.value }) }} className='form-control form-select'>
@@ -445,7 +451,9 @@ class Productsetails extends Component {
 
                                     <h6 className="mt-2">Quantity <span className='text-danger'>*</span></h6>
                                     <input onChange={(e) => { this.setState({ qty: e.target.value }) }} className="form-control text-center w-50" type="number" />
-
+                                        {/* <div className={this.state.product_qty_warn}>
+                                            <p className='text-danger'>This product is out of stock</p>
+                                        </div> */}
                                     <div className="input-group mt-3">
                                         <button onClick={this.addToCart} className="btn site-btn m-1 "> <i className="fa fa-shopping-cart"></i>  Add To Cart</button>
                                         <button onClick={this.OrderNow} className="btn btn-primary m-1"> <i className="fa fa-car"></i> Order Now</button>
@@ -453,35 +461,6 @@ class Productsetails extends Component {
                                         
                                         {/* <button className="btn btn-primary m-1"> <i className="fa fa-heart"></i> Favourite</button> */}
                                     </div>
-                                    {/* <div className="input-group mt-3">
-                                    <PayPalScriptProvider>
-                                            <PayPalButtons createOrder={(data, actions) => {
-                                                // Access the custom state values here
-                                                const paypalnamename = this.state.UserDetails.name;
-                                                const paypalemail = this.state.UserDetails.email;
-                                                const qtyall = this.state.product_qty;
-                                                const uniprce = this.state.product_price;
-                                                const total = qtyall * uniprce;
-                                                // Create the order with custom data
-                                                return actions.order.create({
-                                                    purchase_units: [
-                                                        {
-                                                            amount: {
-                                                                currency_code: "USD",
-                                                                value: total,
-                                                            },
-                                                            custom_id: paypalnamename, // Example: Using 'name' as custom_id
-                                                            description: paypalemail, // Example: Using 'otherValue' as description
-                                                        },
-                                                    ],
-                                                });
-                                            }}
-                                                options={{
-                                                    "client-id": "AXsalEQ6ngmBcM5AjMgSG9rm9QYkzAqZDb0ycqQjUDdqShnjXZQ7gz8qq7i5Dc4RQ8teV7-4GmR_vwL5",
-                                                }}
-                                            />
-                                        </PayPalScriptProvider>
-                                    </div> */}
                                 </Col>
                                 <Col className="p-3 " md={2} lg={2} sm={12} xs={12}></Col>
                             </Row>

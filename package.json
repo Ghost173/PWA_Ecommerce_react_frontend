@@ -19,6 +19,7 @@
     "animate.css": "^4.1.1",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
+    "date-fns": "^2.30.0",
     "moment": "^2.29.4",
     "placeholder-loading": "^0.6.0",
     "react": "^18.2.0",
