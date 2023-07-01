@@ -75,7 +75,7 @@ class UserLogin extends Component {
                   <Form className='onboardForm' onSubmit={this.formSubmit}>
                     <h4 className="section-title-login"> USER SING IN </h4>
                     <input className="form-control m-2" onChange={(e) => { this.setState({ email: e.target.value }) }} type="text" placeholder="Enter your email" required />
-                    <input className="form-control m-2" onChange={(e) => { this.setState({ password: e.target.value }) }} type="text" placeholder="Enter your password" required />
+                    <input className="form-control m-2" onChange={(e) => { this.setState({ password: e.target.value }) }} type="password" placeholder="Enter your password" required />
                     <Button type='submit' className="btn btn-block m-2 site-btn-login"> Login </Button>
 
                     <br></br><br></br>

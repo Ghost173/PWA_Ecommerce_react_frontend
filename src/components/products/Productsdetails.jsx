@@ -297,7 +297,7 @@ class Productsetails extends Component {
                 })
                 .catch(error => {
                     if (error.response && error.response.status === 400) {
-                        toast.error("Product already in cart plwase order this from your cart",
+                        toast.error("Product already in your cart please order this from your cart",
                             {
                                 position: "top-right",
                                 autoClose: 5000,
