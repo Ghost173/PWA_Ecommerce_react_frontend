@@ -21,6 +21,7 @@ import FogetPasswordPage from '../pages/FogetPasswordPage';
 import RestPasswordPage from '../pages/RestPasswordPage';
 import UserProfilePage from '../pages/UserProfilePage';
 import AuthUserOrdersPage from '../pages/AuthUserOrdersPage';
+import FaqPage from '../pages/FaqPage';
 
 
 class AppRoute extends Component {
@@ -40,6 +41,7 @@ class AppRoute extends Component {
           <Route exact path='/purchase' element={<Purchase />} />
           <Route exact path='/privacy' element={<PrivacyPage />} />
           <Route exact path='/refund' element={<RefundPage />} />
+          <Route exact path='/faq' element={<FaqPage />} />
           
           {/* single product details page */}
           <Route exact path='/singleproductdetails/:product_id' element={<ProductDetailsPage />} />http://localhost:3000/singleproductdetails/7

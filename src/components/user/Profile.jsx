@@ -213,7 +213,8 @@ export class Profile extends Component {
                                         onClick={this.reviewhandleShow}
                                         data-title={Myorder.product_name}
                                         data-orderid={Myorder.order_id}
-                                        className="btn mt-2 mx-1 btn-sm site-btn-cart-plus"
+                                        className="btn mt-2 mx-1 btn-sm shadow"
+                                        variant="success"
                                     >
                                         Write review
                                     </Button>
@@ -223,9 +224,9 @@ export class Profile extends Component {
                                     <Badge bg="warning">Review submitted</Badge>
                                 )} */}
 
-                                {Myorder.customer_cancel_request === 0 && (
+                                {Myorder.customer_cancel_request === '0' && (
 
-                                    <Button className="btn mt-2 mx-1 btn-sm site-btn-cart-delete" onClick={this.handleShow} data-title={Myorder.product_name}
+                                    <Button className="btn mt-2 mx-1 btn-sm " variant="danger" onClick={this.handleShow} data-title={Myorder.product_name}
                                         data-orderid={Myorder.order_id}> Cancel Order </Button>
                                 )}
 
