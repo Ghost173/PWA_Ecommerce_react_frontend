@@ -71,7 +71,17 @@ class Refund extends Component {
               <div className={this.state.mainDiv}>
                 <h4 className="section-title-login">Refund Page </h4>
                 <p className="section-title-contact">
-                  {this.state.refund}
+                  <strong>Refund Policy:</strong>
+                  <p>We want you to be completely satisfied with your purchase. If you need to request a refund, please follow the guidelines below:</p>
+                  <ol>
+                    <li>If you wish to cancel your order, please contact our customer support team as soon as possible. Orders can only be canceled before they have been shipped.</li>
+                    <li>Once your order is canceled, we will initiate the refund process.</li>
+                    <li>Refunds will be issued within 10 working days after the cancellation request is approved.</li>
+                    <li>The refund will be issued through the original payment method used for the purchase.</li>
+                    <li>Please note that it may take additional time for the refund to be reflected in your account, depending on your bank or payment provider.</li>
+                    <li>If you have any questions or concerns regarding your refund, please contact our customer support team for assistance.</li>
+                  </ol>
+
                 </p>
               </div>
 
