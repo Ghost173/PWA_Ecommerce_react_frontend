@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 class Cart extends Component {
 
@@ -23,7 +24,11 @@ class Cart extends Component {
             customer_address: "",
             payment_method: "BT",
             payment_id: "",
-            OrderDone: "d-none"
+            transactionId: "",
+            OrderDone: "d-none",
+            orderId: "",
+            orderPending:"d-none"
+
 
 
 
@@ -81,7 +86,8 @@ class Cart extends Component {
     }
 
     confirmorder = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
+        this.setState({ orderPending: "", mainDiv: "d-none", })
         const data = {
             customer_name: this.state.customer_name,
             customer_phone: this.state.customer_phone,
@@ -99,7 +105,7 @@ class Cart extends Component {
         } else if (data.customer_address.length === 0) {
             toast.error("Without Address how we can deliver? !!! ");
         }
-        
+
 
         let submitBtn = document.getElementById('submitbtn');
         submitBtn.innerHTML = "Confirming Orders...";
@@ -111,9 +117,9 @@ class Cart extends Component {
                 'Authorization': `Bearer ${token}`
             }
         }).then(response => {
-            this.setState({ OrderDone: "", mainDiv: "d-none", })
+            this.setState({ OrderDone: "", orderPending: "d-none", })
             toast.success("You have successfully place your order ");
-        }).catch(error =>  {
+        }).catch(error => {
             toast.error("Fail to Confirm a Orders ");
 
         }).finally(() => {
@@ -310,7 +316,7 @@ class Cart extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="row">
-                                                    <Form id='orderForm' onSubmit={this.confirmorder}>
+                                                    <Form id='orderForm'>
 
                                                         <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
                                                             <label className="form-label">Name  <span className='text-danger'>*</span></label>
@@ -334,9 +340,55 @@ class Cart extends Component {
                                                                 <option value="PAYPAL">Online payment (PayPal)</option>
                                                             </select>
                                                         </div>
+
+                                                        {this.state.payment_method === "PAYPAL" && (
+                                                            <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
+                                                                <PayPalScriptProvider options={{ "client-id": "AXsalEQ6ngmBcM5AjMgSG9rm9QYkzAqZDb0ycqQjUDdqShnjXZQ7gz8qq7i5Dc4RQ8teV7-4GmR_vwL5" }}>
+                                                                    <PayPalButtons
+                                                                        createOrder={(data, actions) => {
+                                                                            return actions.order
+                                                                                .create({
+                                                                                    purchase_units: [
+                                                                                        {
+                                                                                            amount: {
+                                                                                                value: totalPrice,
+                                                                                            },
+                                                                                        },
+                                                                                    ],
+                                                                                })
+                                                                                .then((orderId) => {
+                                                                                    return orderId;
+                                                                                });
+                                                                        }}
+                                                                        onApprove={(data, actions) => {
+                                                                            const orderId = this.state.orderId;
+                                                                            return actions.order
+                                                                              .capture(orderId)
+                                                                              .then((details) => {
+                                                                                const transactionId = details.id;
+                                                                                this.setState({ payment_id: transactionId }, () => {
+                                                                                  this.confirmorder();
+                                                                                });
+                                                                                return details;
+                                                                              })
+                                                                              .catch((error) => {
+                                                                                console.log(error);
+                                                                              });
+                                                                        }}
+                                                                    />
+                                                                </PayPalScriptProvider>
+                                                                <button id='submitbtn' type='submit' className="btn site-btn" disabled>Confirm Order</button>
+                                                            </div>
+
+
+                                                        )}
+
                                                         <div className="col-md-12 p-1 col-lg-12 col-sm-12 col-12">
-                                                            <button id='submitbtn' type='submit' className="btn site-btn">Confirm Order </button>
+                                                            {this.state.payment_method !== "PAYPAL" && (
+                                                                <button id='submitbtn' onClick={this.confirmorder} type='submit' className="btn site-btn">Confirm Order</button>
+                                                            )}
                                                         </div>
+
                                                     </Form>
 
                                                 </div>
@@ -358,6 +410,28 @@ class Cart extends Component {
                                     <h1>Order Confirmed</h1>
                                     <p>Thank you for your order!</p>
                                     <p>Your order has been confirmed and is being processed.</p>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </div>
+
+                    <div className={this.state.orderPending}>
+                        <Container className="text-center">
+                            <Row>
+                                <Col>
+                                    <h1>Please wait until order confirm</h1>
+                                    <p>Do not close or refresh this page</p>
+                                    <div class="ph-item">
+                                    <div class="ph-col-12">
+                                        <div class="ph-row">
+                                            <div class="ph-col-12"></div>
+                                            <div class="ph-col-12"></div>
+                                            <div class="ph-col-12"></div>
+                                            <div class="ph-col-12"></div>
+                                            <div class="ph-col-12"></div>
+                                        </div>
+                                    </div>
+                                </div>
                                 </Col>
                             </Row>
                         </Container>

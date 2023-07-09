@@ -67,8 +67,8 @@ class RestPassword extends Component {
                                         <h4 className="section-title-login"> REST PASSWORD</h4>
                                         <input className="form-control m-2" onChange={(e) => { this.setState({ token: e.target.value }) }} type="text" placeholder="Enter your pin code" />
                                         <input className="form-control m-2" onChange={(e) => { this.setState({ email: e.target.value }) }} type="text" placeholder="Enter your email" />
-                                        <input className="form-control m-2" onChange={(e) => { this.setState({ password: e.target.value }) }} type="text" placeholder="Enter your new password" />
-                                        <input className="form-control m-2" onChange={(e) => { this.setState({ password_confirmation: e.target.value }) }} type="text" placeholder="Renter your new password" />
+                                        <input className="form-control m-2" onChange={(e) => { this.setState({ password: e.target.value }) }} type="password" placeholder="Enter your new password" />
+                                        <input className="form-control m-2" onChange={(e) => { this.setState({ password_confirmation: e.target.value }) }} type="password" placeholder="Renter your new password" />
                                         <Button type='submit' id='resetbutton' className="btn btn-block m-2 site-btn-login">Update</Button>
                                     </Form>
                                 </Col>

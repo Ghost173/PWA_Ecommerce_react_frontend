@@ -42,7 +42,7 @@ export class ReviewList extends Component {
         if (Mylist.length > 0) {
             mydata = Mylist.map((mydata, i) => {
 
-                if (mydata.reviewer_rating === "1") {
+                if (mydata.reviewer_rating === '1') {
                     return <div>
                         <p className=" p-0 m-0"><span className="Review-Title">{mydata.reviewer_name}</span>&nbsp; 
                             <span className="text-success"><i className="fa fa-star"></i> </span> </p>

@@ -19,9 +19,9 @@ class CategoryProducts extends Component {
     const data = catproductlist.map((catproductlist, i) => {
 
       if (catproductlist.discount_price === 'na') {
-        return <Col className='p-0' key={i.toString} xl={3} lg={3} md={3} sm={6} xs={6}>
+        return <Col className='p-1' key={i.toString} xl={2} lg={2} md={3} sm={6} xs={6}>
           <Link className='text-link' to={"/singleproductdetails/"+ catproductlist.id}>
-          <Card className='image-box card w-100'>
+          <Card className='image-box card shadow'>
             <Card.Body>
               <img className="center w-75" alt="foo" src={catproductlist.product_image} />
             </Card.Body>
@@ -32,9 +32,9 @@ class CategoryProducts extends Component {
          
         </Col>
       } else {
-        return <Col className='p-0' key={i.toString} xl={3} lg={3} md={3} sm={6} xs={6}>
+        return <Col className='p-1' key={i.toString} xl={2} lg={2} md={3} sm={6} xs={6}>
           <Link className='text-link' to={"/singleproductdetails/"+ catproductlist.id}>
-          <Card className='image-box card w-100'>
+          <Card className='image-box card shadow'>
             <Card.Body>
               <img className="center w-75" alt="foo" src={catproductlist.product_image} />
             </Card.Body>

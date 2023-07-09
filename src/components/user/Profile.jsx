@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col, Button, Card, Form, Modal } from 'react-bootstrap';
 import Badge from 'react-bootstrap/Badge';
-import moment from 'moment';
+import { formatDistanceToNow } from 'date-fns';
 import Rating from '@mui/material/Rating';
 import axios from 'axios';
 import AppUrl from '../../api/AppUrl';
@@ -11,7 +11,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Typography from '@mui/material/Typography';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-
+import { Link } from 'react-router-dom';
 
 export class Profile extends Component {
 
@@ -175,67 +175,75 @@ export class Profile extends Component {
         }
 
         const { updated_at } = this.state.UserDetails;
-        const lastLoginDate = moment(updated_at).fromNow();
+        const updatedDate = new Date('2023-06-18 05:51:51');
+        const lastLoginDate = formatDistanceToNow(updatedDate, { addSuffix: true });
+
 
         const Myorder = this.state.AuthUserOrderDetails;
         const data = Myorder.map((Myorder, i) => {
 
             // if (Myorder.review === "0") {
             return <Col className="p-1" lg={12} md={12} sm={12} xs={12}  >
+                
                 <Card className='shadow' key={i.toString}>
+                <Card.Body>
+                    <Row>
 
-                    <Card.Body>
-                        <Row>
+                        <Col md={2} lg={2} sm={6} xs={6}>
+                        <Link className='text-link' to={"/singleproductdetails/"+ Myorder.product_id}>
+                        <img className="cart-product-img" src={Myorder.product_image} />
+                        </Link>
+                           
+                        </Col>
 
-                            <Col md={2} lg={2} sm={6} xs={6}>
-                                <img className="cart-product-img" src={Myorder.product_image} />
-                            </Col>
+                        <Col md={6} lg={6} sm={6} xs={6}>
+                            <h5 className="product-name">{Myorder.product_name}</h5>
+                            <h6> Quantity = {Myorder.product_quantity} </h6>
+                            <p>Size:{Myorder.product_size} | Color:{Myorder.product_color}</p>
+                            <h6>Price = {Myorder.product_quantity} x {Myorder.product_unit_price} = {Myorder.product_total_price}LKR</h6>
+                        </Col>
+                        <Col md={2} lg={2} sm={12} xs={12}>
+                            <Badge bg="primary">{Myorder.order_status}</Badge>
+                        </Col>
 
-                            <Col md={6} lg={6} sm={6} xs={6}>
-                                <h5 className="product-name">{Myorder.product_name}</h5>
-                                <h6> Quantity = {Myorder.product_quantity} </h6>
-                                <p>Size:{Myorder.product_size} | Color:{Myorder.product_color}</p>
-                                <h6>Price = {Myorder.product_quantity} x {Myorder.product_unit_price} = {Myorder.product_total_price}LKR</h6>
-                            </Col>
-                            <Col md={2} lg={2} sm={12} xs={12}>
-                                <Badge bg="primary">{Myorder.order_status}</Badge>
-                            </Col>
+                        <Col md={2} lg={2} sm={12} xs={12}>
+                            <Row>
+                                {Myorder.review === "0" && (
+                                    <Button
+                                        onClick={this.reviewhandleShow}
+                                        data-title={Myorder.product_name}
+                                        data-orderid={Myorder.order_id}
+                                        className="btn mt-2 mx-1 btn-sm shadow"
+                                        variant="success"
+                                    >
+                                        Write review
+                                    </Button>
+                                )}
 
-                            <Col md={2} lg={2} sm={12} xs={12}>
-                                <Row>
-                                    {Myorder.review === "0" && (
-                                        <Button
-                                            onClick={this.reviewhandleShow}
-                                            data-title={Myorder.product_name}
-                                            data-orderid={Myorder.order_id}
-                                            className="btn mt-2 mx-1 btn-sm site-btn-cart-plus"
-                                        >
-                                            Write review
-                                        </Button>
-                                    )}
+                                {/* {Myorder.review === "1" && (
+                                    <Badge bg="warning">Review submitted</Badge>
+                                )} */}
 
-                                    {/* {Myorder.review === "1" && (
-                                        <Badge bg="warning">Review submitted</Badge>
-                                    )} */}
+                                {Myorder.customer_cancel_request === '0' && (
 
-                                    {Myorder.customer_cancel_request === 0 && (
-
-                                        <Button className="btn mt-2 mx-1 btn-sm site-btn-cart-delete" onClick={this.handleShow} data-title={Myorder.product_name}
-                                            data-orderid={Myorder.order_id}> Cancel Order </Button>
-                                    )}
+                                    <Button className="btn mt-2 mx-1 btn-sm " variant="danger" onClick={this.handleShow} data-title={Myorder.product_name}
+                                        data-orderid={Myorder.order_id}> Cancel Order </Button>
+                                )}
 
 
 
-                                </Row>
-                            </Col>
-                        </Row>
+                            </Row>
+                        </Col>
+                    </Row>
 
-                    </Card.Body>
-                    {Myorder.customer_cancel_request === 1 && (
-                        <Card.Footer className=" text-danger">Cancellation Request Received</Card.Footer>
-                    )}
+                </Card.Body>
+                {Myorder.customer_cancel_request === 1 && (
+                    <Card.Footer className=" text-danger">Cancellation Request Received</Card.Footer>
+                )}
 
-                </Card>
+            </Card>
+               
+                
             </Col>
         })
 
