@@ -237,7 +237,7 @@ export class Profile extends Component {
                     </Row>
 
                 </Card.Body>
-                {Myorder.customer_cancel_request === 1 && (
+                {Myorder.customer_cancel_request === "1" && (
                     <Card.Footer className=" text-danger">Cancellation Request Received</Card.Footer>
                 )}
 

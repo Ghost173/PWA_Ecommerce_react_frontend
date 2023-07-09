@@ -71,7 +71,11 @@ export class About extends Component {
                             <div className={this.state.mainDiv}>
                                 <h4 className="section-title-login">About Us </h4>
                                 <p className="section-title-contact">
-                                    {this.state.about}
+                                <strong>About Us:</strong>
+  <p>Welcome to Aarazhi Sparkle, your premier destination for exquisite jewelry and skincare products. We are passionate about providing our customers with high-quality products that enhance their beauty and confidence.</p>
+  <p>At Aarazhi Sparkle, we believe that every individual deserves to shine and feel special. That's why we curate a wide range of saris, jewelry, and skincare products that cater to diverse tastes and preferences.</p>
+  <p>Our team of experts carefully selects each item, ensuring that it meets our stringent quality standards. We strive to bring you the latest trends and timeless classics that reflect elegance and sophistication.</p>
+  <p>We pride ourselves on excellent customer service and strive to create a seamless shopping experience for our valued customers. Our knowledgeable and friendly staff are always ready to assist you with any inquiries or concerns you may have.</p>
                                 </p>
                             </div>
 

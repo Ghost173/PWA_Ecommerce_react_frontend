@@ -70,7 +70,20 @@ class Purchase extends Component {
                             <div className={this.state.mainDiv}>
                                 <h4 className="section-title-login">Purchase Page </h4>
                                 <p className="section-title-contact">
-                                    {this.state.purchase_guide}
+                                    <strong>How To Purchase:</strong>
+                                    <p>Follow these steps to make a purchase on our e-commerce application:</p>
+                                    <ol>
+                                        <li>Browse our product categories or use the search function to find the item you want to purchase.</li>
+                                        <li>Click on the product to view more details, including price, description, and available options (e.g., size, color).</li>
+                                        <li>Select the desired options, and click "Add to Cart" to add the item to your shopping cart.</li>
+                                        <li>Review the items in your shopping cart, make any necessary changes, and click "Proceed to Checkout."</li>
+                                        <li>Provide your billing and shipping information, or choose from previously saved addresses if applicable.</li>
+                                        <li>Select your preferred payment method and enter the necessary details.</li>
+                                        <li>Review your order summary and click "Place Order" to complete the purchase.</li>
+                                        <li>Once your order is placed, you will receive an order confirmation email with the details of your purchase.</li>
+                                        <li>Track the status of your order through your account or by contacting our customer support team.</li>
+                                    </ol>
+
                                 </p>
                             </div>
 
